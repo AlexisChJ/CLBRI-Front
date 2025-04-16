@@ -68,7 +68,7 @@ const items = [
                               "stroke-current",
                               isActive
                                 ? "stroke-blue-500"
-                                : "stroke-white group-hover:stroke-blue-500"
+                                : "hover:stroke-blue-500"
                             )}
                           />
                           <span>{item.title}</span>

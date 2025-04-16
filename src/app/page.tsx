@@ -5,9 +5,13 @@ import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
 
 export default function Home() {
   return (
-    <div className="w-full flex bg-slate-200">
+    <div className="w-full flex bg-slate-200 min-h-screen">
       <SideBar children={undefined} />
-      <TablaAvanzada />
+      <main className="flex-1 p-60">
+        <div className="max-w-9xl mx-auto">
+          <TablaAvanzada />
+        </div>
+      </main>
     </div>
   );
 }

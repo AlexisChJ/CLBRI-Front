@@ -10,6 +10,7 @@ export default function Home() {
       <main className="flex-1 p-60">
         <div className="max-w-9xl mx-auto">
           <TablaAvanzada />
+          <DataContainerDashboard />
         </div>
       </main>
     </div>

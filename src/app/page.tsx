@@ -4,6 +4,7 @@ import SideBar from "@/components/SideBar/SideBar";
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
 
 export default function Home() {
+
   return (
     <div className="w-full flex bg-slate-200 min-h-screen">
       <SideBar children={undefined} />

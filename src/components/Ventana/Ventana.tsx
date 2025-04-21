@@ -29,4 +29,4 @@ const Ventana = ({ triggerComponent,
     )
 }
 
-export { Ventana };
+export default Ventana;

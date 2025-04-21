@@ -110,4 +110,4 @@ const Carrusel = ({
     )
 }
 
-export { Carrusel };
+export default Carrusel;

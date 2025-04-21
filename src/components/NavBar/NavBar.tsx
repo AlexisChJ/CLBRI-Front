@@ -17,8 +17,7 @@ interface Notification {
 
 
 interface NotificationIconProps {
-    notifications: Notification[],
-    hasNotifications: boolean,
+    notifications: Notification[]
 }
 
 
@@ -71,21 +70,16 @@ interface NavBarProps {
     title?: string,
     opts: string[],
     selected: number,
+    notificaciones: Notification[]
     onValueChange: (index: number) => void,
 }
 
 const NavBar = ({ title = "", 
                   opts = [], 
-                  selected = 0, 
+                  selected = 0,
+                  notificaciones = [], 
                   onValueChange = () => {} } : NavBarProps) => {
     const [current, setCurrent] = useState<number>(selected);
-    const notificaciones: Notification[] = [
-        {
-            title: "Saludo!",
-            description: "¿Como estas? pa tu casa palo",
-            creationDate: new Date(Date.now())
-        }
-    ]
 
     return (
         <div className={`flex flex-row border-b-[1px] border-b-blue-800 pb-1`}>
@@ -112,4 +106,4 @@ const NavBar = ({ title = "",
     )
 }
 
-export { NavBar };
+export default NavBar;

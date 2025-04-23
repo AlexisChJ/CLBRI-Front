@@ -12,6 +12,13 @@ export default function Home() {
         <div className="max-w-9xl mx-auto">
           <TablaAvanzada />
           <DataContainerDashboard />
+
+
+
+
+
+
+          
         </div>
       </main>
     </div>

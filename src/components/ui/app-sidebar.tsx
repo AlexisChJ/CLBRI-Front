@@ -50,25 +50,18 @@ const items = [
               <SidebarMenu>
                 {items.map((item) => {
                   const isActive = pathname === item.url
-  
                   return (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild>
+                      <SidebarMenuButton asChild >
                         <a
                           href={item.url}
                           className={clsx(
-                            "group flex items-center gap-2 px-4 py-2 transition-colors duration-200",
-                            isActive
-                              ? "text-blue-500"
-                              : "text-white hover:text-blue-500"
+                            "group flex items-center gap-2 px-4 py-2 transition-colors duration-200"
                           )}
                         >
                           <item.icon
                             className={clsx(
-                              "stroke-current",
-                              isActive
-                                ? "stroke-blue-500"
-                                : "hover:stroke-blue-500"
+                              "stroke-current"
                             )}
                           />
                           <span>{item.title}</span>

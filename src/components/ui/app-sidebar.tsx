@@ -55,14 +55,10 @@ const items = [
                       <SidebarMenuButton asChild >
                         <a
                           href={item.url}
-                          className={clsx(
-                            "group flex items-center gap-2 px-4 py-2 transition-colors duration-200"
-                          )}
+                          className={clsx( "group flex items-center gap-2 px-4 py-2 transition-colors duration-200" )}
                         >
                           <item.icon
-                            className={clsx(
-                              "stroke-current"
-                            )}
+                            className={clsx( "stroke-current")}
                           />
                           <span>{item.title}</span>
                         </a>

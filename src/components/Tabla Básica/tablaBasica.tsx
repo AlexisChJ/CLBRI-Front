@@ -54,7 +54,7 @@ import {
     },
   ]
   
-  export function TableDemo() {
+  export function TableBasic() {
     return (
       <Table>
         <TableCaption>A list of your recent invoices.</TableCaption>

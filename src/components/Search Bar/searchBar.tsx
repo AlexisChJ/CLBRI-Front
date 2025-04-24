@@ -12,7 +12,7 @@ import {
 
 import { Input } from "@/components/ui/input"
 
-export function SelectDemo() {
+export function Select4Search() {
   return (
     <Select>
       <SelectTrigger className="w-[180px]">

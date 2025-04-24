@@ -1,1 +1,1 @@
-export {Select4Search} from "./searchBar"
+export {SearchBar} from "./SearchBar"

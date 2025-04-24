@@ -1,0 +1,1 @@
+export {WhiteLogo} from "./LogoBlanco"

@@ -1,6 +1,8 @@
 import Carrusel from "@/components/Carrusel/Carrusel";
 import DataContainerDashboard from "@/components/DataContainerDashboard/DataContainerDashboard";
-import { Select4Search } from "@/components/Search Bar/searchBar";
+import { BlueLogo } from "@/components/Logo Azul/logoAzul";
+import { WhiteLogo } from "@/components/Logo Blanco/LogoBlanco";
+import { SearchBar } from "@/components/Search Bar/SearchBar";
 import SideBar from "@/components/SideBar/SideBar";
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
 
@@ -11,7 +13,8 @@ export default function Home() {
       <SideBar children={undefined} />
       <main className="flex-1 p-60">
         <div className="max-w-9xl mx-auto">
-          <Select4Search/>
+          <BlueLogo/> <WhiteLogo/>
+          <SearchBar />
           <DataContainerDashboard />
         </div>
       </main>

@@ -1,11 +1,9 @@
 import Carrusel from "@/components/Carrusel/Carrusel";
 import DataContainerDashboard from "@/components/DataContainerDashboard/DataContainerDashboard";
-import { BlueLogo } from "@/components/Logo Azul/logoAzul";
-import { WhiteLogo } from "@/components/Logo Blanco/LogoBlanco";
-import { SearchBar } from "@/components/Search Bar/SearchBar";
+import { BlueLogo } from "@/components/LogoAzul/logoAzul";
+import { WhiteLogo } from "@/components/LogoBlanco/LogoBlanco";
+import { SearchBar } from "@/components/SearchBar/SearchBar";
 import SideBar from "@/components/SideBar/SideBar";
-import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
-import { TablaBasica } from "@/components/Tabla Básica/TablaBasica";
 
 export default function Home() {
 
@@ -16,7 +14,6 @@ export default function Home() {
         <div className="max-w-9xl mx-auto">
           <BlueLogo/> <WhiteLogo/>
           <SearchBar />
-          <TablaBasica />
           <DataContainerDashboard />
         </div>
       </main>

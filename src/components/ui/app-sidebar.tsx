@@ -36,11 +36,9 @@ const items = [
       icon: CircleUser,
     },
   ]
-  
 
   export function AppSidebar() {
     const pathname = usePathname()
-  
     return (
       <Sidebar>
         <SidebarContent className="flex flex-col justify-center h-full bg-black text-white">

@@ -2,6 +2,7 @@
 import { usePathname } from "next/navigation"
 import clsx from "clsx"
 import { LayoutDashboard, CircleUser , Menu, Network } from "lucide-react"
+import { BlueLogo } from "../LogoAzul/logoAzul"
 
 import {
   Sidebar,
@@ -43,7 +44,7 @@ const items = [
       <Sidebar>
         <SidebarContent className="flex flex-col justify-center h-full bg-black text-white">
           <SidebarGroup>
-            <SidebarGroupLabel className="text-white">CLBRI</SidebarGroupLabel>
+            <BlueLogo />  
             <SidebarGroupContent>
               <SidebarMenu>
                 {items.map((item) => {
@@ -51,15 +52,16 @@ const items = [
                   return (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild >
-                        <a
+                      <a
                           href={item.url}
-                          className={clsx( "group flex items-center gap-2 px-4 py-2 transition-colors duration-200" )}
+                          className={clsx(
+                            "group flex items-center gap-1 px-4 py-2 transition-colors duration-200",
+                            "hover:bg-transparent hover:text-white"
+                          )}
                         >
-                          <item.icon
-                            className={clsx( "stroke-current")}
-                          />
+                          <item.icon className="stroke-current" />
                           <span>{item.title}</span>
-                        </a>
+                      </a>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   )

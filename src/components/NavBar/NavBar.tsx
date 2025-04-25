@@ -5,8 +5,8 @@ import NotificationSVG from "@/assets/notification.svg";
 import { useEffect, useRef, useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
-const prompt_300 = Prompt({ weight: "300" })
-const prompt_500 = Prompt({ weight: "500" })
+const prompt_300 = Prompt({ weight: "300", subsets: ["latin"] })
+const prompt_500 = Prompt({ weight: "500", subsets: ["latin"] })
 
 
 interface Notification {

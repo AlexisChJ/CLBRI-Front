@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { cva } from "class-variance-authority";
 
-const zen_700 = Zen_Maru_Gothic({ weight: "700" })
+const zen_700 = Zen_Maru_Gothic({ weight: "700", subsets: ["latin"] })
 
 
 const badgeVariants = cva(

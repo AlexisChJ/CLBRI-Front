@@ -1,1 +1,1 @@
-export {TableBasic} from "./tablaBasica"
+export {TablaBasica} from "./TablaBasica"

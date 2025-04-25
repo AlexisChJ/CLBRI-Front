@@ -5,6 +5,7 @@ import { WhiteLogo } from "@/components/Logo Blanco/LogoBlanco";
 import { SearchBar } from "@/components/Search Bar/SearchBar";
 import SideBar from "@/components/SideBar/SideBar";
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
+import { TablaBasica } from "@/components/Tabla Básica/TablaBasica";
 
 export default function Home() {
 
@@ -15,6 +16,7 @@ export default function Home() {
         <div className="max-w-9xl mx-auto">
           <BlueLogo/> <WhiteLogo/>
           <SearchBar />
+          <TablaBasica />
           <DataContainerDashboard />
         </div>
       </main>

@@ -28,13 +28,8 @@ export function AppSidebar() {
   return (
     <Sidebar className={clsx("transition-all duration-300", collapsed ? "w-[80px]" : "w-[240px]")}>
       <SidebarContent className="flex flex-col justify-between h-full bg-black text-white">
-        <SidebarGroup className="flex flex-col items-center gap-6 py-4">
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="text-white p-2 hover:text-blue-500"
-          >
-            <Menu />
-          </button>
+      <SidebarGroup className="flex flex-col items-center justify-center gap-6 py-4 flex-1">
+
 
           {!collapsed && <BlueLogo />}
 
@@ -62,6 +57,12 @@ export function AppSidebar() {
               })}
             </SidebarMenu>
           </SidebarGroupContent>
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="text-white p-2 hover:text-blue-500"
+          >
+            <Menu />
+          </button>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>

@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 import clsx from "clsx"
-import { LayoutDashboard, CircleUser, Menu, Network } from "lucide-react"
+import { LayoutDashboard, CircleUser, PanelLeftClose, PanelRightClose,  Network, Menu } from "lucide-react"
 import { BlueLogo } from "../LogoAzul/logoAzul"
 
 import {
@@ -28,16 +28,10 @@ export function AppSidebar() {
   return (
     <Sidebar className={clsx("transition-all duration-300", collapsed ? "w-[80px]" : "w-[240px]")}>
       <SidebarContent className="flex flex-col justify-between h-full bg-black text-white">
-        <SidebarGroup className="flex flex-col items-center gap-6 py-4">
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="text-white p-2 hover:text-blue-500"
-          >
-            <Menu />
-          </button>
-
-          {!collapsed && <BlueLogo />}
-
+      <SidebarGroup className="flex flex-col items-center justify-center gap-6 py-4 flex-1">
+          <div className="h-[300px] flex items-center justify-center">
+            {!collapsed && <BlueLogo />}
+          </div>
           <SidebarGroupContent className="flex-1 w-full">
             <SidebarMenu className="flex flex-col">
               {items.map((item) => {
@@ -62,6 +56,9 @@ export function AppSidebar() {
               })}
             </SidebarMenu>
           </SidebarGroupContent>
+          <button onClick={() => setCollapsed(!collapsed)} className="text-white p-2 hover:text-blue-500">
+            {collapsed ? <PanelRightClose /> : <PanelLeftClose />}
+          </button>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>

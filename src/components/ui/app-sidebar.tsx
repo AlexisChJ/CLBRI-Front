@@ -1,7 +1,8 @@
 "use client"
+import { useState } from "react"
 import { usePathname } from "next/navigation"
 import clsx from "clsx"
-import { LayoutDashboard, CircleUser , Menu, Network } from "lucide-react"
+import { LayoutDashboard, CircleUser, Menu, Network } from "lucide-react"
 import { BlueLogo } from "../LogoAzul/logoAzul"
 
 import {
@@ -14,37 +15,31 @@ import {
 } from "@/components/ui/sidebar"
 
 const items = [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: LayoutDashboard,
-    },
-    {
-      title: "Inventario",
-      url: "/inventario",
-      icon: Menu,
-    },
-    {
-      title: "Usuarios",
-      url: "/usuarios",
-      icon: Network,
-    },
-    {
-      title: "Perfil",
-      url: "/perfil",
-      icon: CircleUser,
-    },
-  ]
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+  { title: "Inventario", url: "/inventario", icon: Menu },
+  { title: "Usuarios", url: "/usuarios", icon: Network },
+  { title: "Perfil", url: "/perfil", icon: CircleUser },
+]
 
-  export function AppSidebar() {
-    const pathname = usePathname()
-    return (
-      <Sidebar>
-        <SidebarContent className="flex flex-col justify-center h-full bg-black text-white">
-          <SidebarGroup className="flex flex-col items-center gap-6">
-            <BlueLogo />  
-            <SidebarGroupContent className="flex-1">
-              <SidebarMenu className="flex flex-col">
+export function AppSidebar() {
+  const pathname = usePathname()
+  const [collapsed, setCollapsed] = useState(false)
+
+  return (
+    <Sidebar className={clsx("transition-all duration-300", collapsed ? "w-[80px]" : "w-[240px]")}>
+      <SidebarContent className="flex flex-col justify-between h-full bg-black text-white">
+        <SidebarGroup className="flex flex-col items-center gap-6 py-4">
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="text-white p-2 hover:text-blue-500"
+          >
+            <Menu />
+          </button>
+
+          {!collapsed && <BlueLogo />}
+
+          <SidebarGroupContent className="flex-1 w-full">
+            <SidebarMenu className="flex flex-col">
               {items.map((item) => {
                 const isActive = pathname === item.url
                 return (
@@ -52,21 +47,23 @@ const items = [
                     <a
                       href={item.url}
                       className={clsx(
-                        "group flex items-center justify-left gap-3 px-4 py-2 transition-colors duration-200",
-                        "hover:text-blue-500"
+                        "group flex items-center gap-3 px-4 py-2 transition-colors duration-200",
+                        "hover:text-blue-500",
+                        collapsed ? "justify-center" : "justify-start"
                       )}
                     >
-                      <item.icon className="w-7 h-7 stroke-current" />
-                      <span className="text-base font-large">{item.title}</span>
+                      <item.icon className="w-6 h-6 stroke-current" />
+                      {!collapsed && (
+                        <span className="text-base font-medium">{item.title}</span>
+                      )}
                     </a>
                   </SidebarMenuItem>
                 )
               })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-      </Sidebar>
-    )
-  }
-  
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
+  )
+}

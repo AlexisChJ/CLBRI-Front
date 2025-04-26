@@ -1,1 +1,1 @@
-export {default} from "./TablaAvanzada"
+export { default } from "./TablaAvanzada"

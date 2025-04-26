@@ -3,7 +3,7 @@ import { useState } from "react"
 import { usePathname } from "next/navigation"
 import clsx from "clsx"
 import { LayoutDashboard, CircleUser, PanelLeftClose, PanelRightClose,  Network, Menu } from "lucide-react"
-import { BlueLogo } from "../LogoAzul/logoAzul"
+import { BlueLogo } from "../LogoAzul/LogoAzul"
 
 import {
   Sidebar,

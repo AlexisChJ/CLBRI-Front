@@ -1,0 +1,1 @@
+export {TablaBasica} from "./TablaBasica"

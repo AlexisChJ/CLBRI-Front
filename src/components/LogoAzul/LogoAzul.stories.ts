@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { BlueLogo } from './logoAzul'; // Adjust path if needed
+import { BlueLogo } from './LogoAzul'; // Adjust path if needed
 
 const meta: Meta<typeof BlueLogo> = {
   title: 'Components/BlueLogo',

@@ -16,27 +16,27 @@ import { LineChart } from "lucide-react";
 import { useState } from "react"
 
 export default function Home() {
-  const [email, setEmail] = useState("")
+	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
 
-  return (
-    <div >
-      <LineChartComp/>
-      <CountryCombobox/>
-      <DatePicker/>
-      <SocialMedia/>
-      <TextInput
-					id="email"
-					value={email}
-					placeholder="Correo"
-					onChange={(e) => setEmail(e.target.value)}
-				/>
-        <PasswordInput
-					id="password"
-					value={password}
-          			placeholder="Contraseña"
-					onChange={(e) => setPassword(e.target.value)}
-				/>
-    </div>
-  );
+	return (
+		<div >
+		<LineChartComp/>
+		<CountryCombobox/>
+		<DatePicker/>
+		<SocialMedia/>
+		<TextInput
+			id="email"
+			value={email}
+			placeholder="Correo"
+			onChange={(e) => setEmail(e.target.value)}
+		/>
+		<PasswordInput
+			id="password"
+			value={password}
+			placeholder="Contraseña"
+			onChange={(e) => setPassword(e.target.value)}
+		/>
+		</div>
+	);
 }

@@ -14,7 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-const zen_700 = Zen_Maru_Gothic({weight: "700"})
+const zen_700 = Zen_Maru_Gothic({weight: "700", subsets: ['latin'], preload: true,})
 
 export function DatePicker() {
   const [date, setDate] = React.useState<Date>()

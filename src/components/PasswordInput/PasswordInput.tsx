@@ -8,7 +8,7 @@ import { Button } from '../ui/button'
 import { Input, type InputProps } from '../ui/input'
 import { cn } from '@/lib/utils'
 
-const zen_700 = Zen_Maru_Gothic({weight: "700"})
+const zen_700 = Zen_Maru_Gothic({weight: "700", subsets: ['latin'], preload: true,})
 
 const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(({ className, ...props }, ref) => {
 	const [showPassword, setShowPassword] = React.useState(false)

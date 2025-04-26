@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Advent_Pro } from "next/font/google";
 
-const adventPro = Advent_Pro({ subsets: ["latin"], weight: ["400", "700"] }); // Puedes agregar más pesos si quieres
+const adventPro = Advent_Pro({ subsets: ["latin"], weight: ["400", "700"], preload: true }); // Puedes agregar más pesos si quieres
 
 
 const DataContainerDashboard = () => {

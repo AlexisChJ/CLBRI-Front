@@ -5,8 +5,8 @@ import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 import { Red_Hat_Display } from "next/font/google"
 import { Barlow } from "next/font/google"
 
-const redhat_700 = Red_Hat_Display({weight: "700"})
-const barlow_500 = Barlow({weight: "500"})
+const redhat_700 = Red_Hat_Display({weight: "700", subsets: ['latin'], preload: true,})
+const barlow_500 = Barlow({weight: "500", subsets: ['latin'], preload: true,})
 
 import {
   Card,

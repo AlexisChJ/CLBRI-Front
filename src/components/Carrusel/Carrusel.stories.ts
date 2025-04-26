@@ -1,35 +1,25 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import Carrusel from './Carrusel';
+import React from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import Carrusel from "./Carrusel";
 
 const meta: Meta<typeof Carrusel> = {
-  title: 'Components/Carrusel',
+  title: "Componentes/Fecha/Carrusel",
   component: Carrusel,
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
 };
 
 export default meta;
+
 type Story = StoryObj<typeof Carrusel>;
 
 export const Default: Story = {
   args: {
-    data: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
-    onValueChange: (index) => console.log('Selected index:', index),
-  },
-};
-
-export const Empty: Story = {
-  args: {
-    data: [],
-    onValueChange: (index) => console.log('Selected index:', index),
-  },
-};
-
-export const SingleItem: Story = {
-  args: {
-    data: ['Único día'],
-    onValueChange: (index) => console.log('Selected index:', index),
+    data: ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+    onValueChange: (index: number) => {
+      console.log("Día seleccionado:", index);
+    },
   },
 };

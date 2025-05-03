@@ -1,7 +1,7 @@
 "use client"
 
 import Buttons from "@/components/Buttons/Buttons";
-import { BlueLogo } from "@/components/LogoAzul/LogoAzul";
+import { BlueLogo } from "@/components/LogoAzul/logoAzul";
 import { PasswordInput } from "@/components/PasswordInput/PasswordInput";
 import { SocialMedia } from "@/components/SocialMedia/SocialMedia";
 import { TextInput } from "@/components/TextInput/TextInput";

@@ -12,9 +12,8 @@ import { Zen_Maru_Gothic } from "next/font/google";
 const zen_500 = Zen_Maru_Gothic({weight: "500", subsets: ["latin"], preload: true })
 
 export default function Home() {
-
-  const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+	const [email, setEmail] = useState("")
+	const [password, setPassword] = useState("")
 
   return (
     <div className="flex">

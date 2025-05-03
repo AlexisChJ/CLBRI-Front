@@ -6,7 +6,7 @@ import { Input, type InputProps } from '../ui/input'
 import { cn } from '@/lib/utils'
 import { Zen_Maru_Gothic } from 'next/font/google'
 
-const zen_700 = Zen_Maru_Gothic({weight: "700", subsets: ["latin"], preload: true })
+const zen_700 = Zen_Maru_Gothic({weight: "700", subsets: ['latin'], preload: true,})
 
 const TextInput = React.forwardRef<HTMLInputElement, InputProps>(({ className, ...props }, ref) => {
     return(

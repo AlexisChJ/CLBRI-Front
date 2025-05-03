@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { WhiteLogo } from './LogoBlanco'; // Adjust path if needed
 
 const meta: Meta<typeof WhiteLogo> = {
-  title: 'Components/BlueLogo',
+  title: 'Components/WhiteLogo',
   component: WhiteLogo,
   tags: ['autodocs'],
 };

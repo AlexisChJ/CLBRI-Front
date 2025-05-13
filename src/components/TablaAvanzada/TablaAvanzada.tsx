@@ -26,7 +26,7 @@ const TablaAvanzada = () => {
                 <Table className="w-full">
                     <TableCaption>Faltan datos por deslegar de CLBRI.</TableCaption>
                     <TableHeader>
-                        <TableRow className="bg-blue-200 text-blue-800">
+                        <TableRow className="bg-blue-200 text-blue-800 hover:bg-blue-200">
                             <TableHead className="w-[100px]">Datos1</TableHead>
                             <TableHead>Datos2</TableHead>
                             <TableHead>Datos3</TableHead>

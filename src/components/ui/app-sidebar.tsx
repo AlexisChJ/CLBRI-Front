@@ -26,7 +26,7 @@ export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false)
 
   return (
-    <Sidebar className={clsx("transition-all duration-300", collapsed ? "w-[80px]" : "w-[240px]")}>
+    <Sidebar collapsible={"none"} className={clsx("transition-all duration-300 min-h-screen", collapsed ? "w-[80px]" : "w-[240px]")}>
       <SidebarContent className="flex flex-col justify-between h-full bg-black text-white">
       <SidebarGroup className="flex flex-col items-center justify-center gap-6 py-4 flex-1">
           <div className="h-[300px] flex items-center justify-center">

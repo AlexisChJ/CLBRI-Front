@@ -9,14 +9,14 @@ const prompt_300 = Prompt({ weight: "300", subsets: ["latin"], preload: true })
 const prompt_500 = Prompt({ weight: "500", subsets: ["latin"], preload: true })
 
 
-interface Notification {
+export interface Notification {
     description: string,
     title?: string,
     creationDate?: Date,
 }
 
 
-interface NotificationIconProps {
+export interface NotificationIconProps {
     notifications: Notification[]
 }
 
@@ -74,7 +74,7 @@ interface NavBarProps {
     onValueChange: (index: number) => void,
 }
 
-const NavBar = ({ title = "", 
+export const NavBar = ({ title = "", 
                   opts = [], 
                   selected = 0,
                   notificaciones = [], 
@@ -105,5 +105,3 @@ const NavBar = ({ title = "",
         </div>
     )
 }
-
-export default NavBar;

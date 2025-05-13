@@ -21,7 +21,7 @@ import {
 
 const TablaAvanzada = () => {
     return (
-        <div className="flex flex-col items-center space-y-2">
+        <div className="flex flex-col items-center space-y-2 h-full">
             <div className="w-full max-w-4xl rounded-lg overflow-hidden shadow-sm border">
                 <Table className="w-full">
                     <TableCaption>Faltan datos por deslegar de CLBRI.</TableCaption>
@@ -50,7 +50,9 @@ const TablaAvanzada = () => {
                 </Table>
             </div>
 
-            <Pagination>
+            <div className="grow"></div>
+
+            <Pagination className="grow-0 pb-15">
                 <PaginationContent>
                     <PaginationItem>
                         <PaginationPrevious href="#" />

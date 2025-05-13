@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 import clsx from "clsx"
-import { LayoutDashboard, CircleUser, PanelLeftClose, PanelRightClose,  Network, Menu } from "lucide-react"
+import { LayoutDashboard, CircleUser, PanelLeftClose, PanelRightClose, Network, Menu } from "lucide-react"
 import { BlueLogo } from "../LogoAzul/logoAzul"
 
 import {
@@ -26,9 +26,9 @@ export function AppSidebar() {
   const [collapsed, setCollapsed] = useState(false)
 
   return (
-    <Sidebar collapsible={"none"} className={clsx("transition-all duration-300 min-h-screen", collapsed ? "w-[80px]" : "w-[240px]")}>
+    <Sidebar collapsible={"none"} className={clsx("transition-all duration-300 h-full", collapsed ? "w-[80px]" : "w-[240px]")}>
       <SidebarContent className="flex flex-col justify-between h-full bg-black text-white">
-      <SidebarGroup className="flex flex-col items-center justify-center gap-6 py-4 flex-1">
+        <SidebarGroup className="flex flex-col items-center justify-center gap-6 py-4 flex-1">
           <div className="h-[300px] flex items-center justify-center">
             {!collapsed && <BlueLogo />}
           </div>

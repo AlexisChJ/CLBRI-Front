@@ -15,11 +15,9 @@ export interface Notification {
     creationDate?: Date,
 }
 
-
 export interface NotificationIconProps {
     notifications: Notification[]
 }
-
 
 const NotificationIcon = ({ notifications = [] } : NotificationIconProps) => {
     const [seen, setSeen] = useState<boolean>(false);
@@ -67,41 +65,57 @@ const NotificationIcon = ({ notifications = [] } : NotificationIconProps) => {
 
 
 interface NavBarProps {
-    title?: string,
-    opts: string[],
-    selected: number,
-    notificaciones: Notification[]
-    onValueChange: (index: number) => void,
+  title: string
+  opts: any[]
+  selected: number
+  notificaciones: Notification[]
+  onValueChange: (index: number) => void
+  center?: React.ReactNode 
 }
 
-export const NavBar = ({ title = "", 
-                  opts = [], 
-                  selected = 0,
-                  notificaciones = [], 
-                  onValueChange = () => {} } : NavBarProps) => {
+
+export const NavBar = ({ 
+            title = "", 
+            opts = [], 
+            selected = 0,
+            notificaciones = [], 
+            onValueChange = () => {}, 
+            center
+            }: NavBarProps) => {
+
     const [current, setCurrent] = useState<number>(selected);
 
     return (
-        <div className={`flex flex-row border-b-[1px] border-b-blue-800 pb-1`}>
-            <span className={`${prompt_300.className} text-3xl`}>{title}</span>
-            <div className="flex pl-15 gap-x-8 items-end">
+        <div className="flex flex-row border-b-[1px] border-b-blue-800 pb-1 w-full items-center justify-between">
+
+            <div className="flex gap-8 items-center">
+                <span className={`${prompt_300.className} text-3xl`}>{title}</span>
+                <div className="flex gap-x-4">
                 {
                     opts.map((value, index) => (
-                        <button 
-                            className={`${prompt_500.className} ${ current == index ? "text-[#3A70C3]" : "text-gray-600" } cursor-pointer`}
-                            key={index}
-                            onClick={(e) => {
-                                onValueChange(index);
-                                setCurrent(index);
-                            }}
-                        >
-                            {value}
-                        </button>
+                    <button 
+                        className={`${prompt_500.className} ${ current === index ? "text-[#3A70C3]" : "text-gray-600" } cursor-pointer`}
+                        key={index}
+                        onClick={() => {
+                            onValueChange(index);
+                            setCurrent(index);
+                        }}
+                    >
+                        {value}
+                    </button>
                     ))
                 }
+                </div>
             </div>
-            <div className="spacer flex-1/3"></div>
-            <NotificationIcon notifications={notificaciones} />
-        </div>
+
+            <div className="flex justify-center items-center">
+                {center}
+            </div>
+
+            <div className="flex justify-end items-center gap-6">
+                <NotificationIcon notifications={notificaciones} />
+            </div>
+
+            </div>
     )
 }

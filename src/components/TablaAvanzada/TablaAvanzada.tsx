@@ -31,7 +31,7 @@ const TablaAvanzada = () => {
     <div className="flex flex-col items-center space-y-2 h-full">
       <div className="w-full max-w-4xl rounded-lg overflow-hidden shadow-sm border">
         <Table className="w-full">
-          <TableCaption>Faltan datos por deslegar de CLBRI.</TableCaption>
+          <TableCaption>Datos del Inventario de CLBRI</TableCaption>
           <TableHeader>
             <TableRow className="bg-blue-200 text-blue-800 hover:bg-blue-200">
               <TableHead className={`w-[100px] ${redHat.className}`}>Nombre</TableHead>

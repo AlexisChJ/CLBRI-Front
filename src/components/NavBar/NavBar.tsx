@@ -91,24 +91,22 @@ export const NavBar = ({
             <div className="flex gap-8 items-center">
                 <span className={`${prompt_300.className} text-3xl`}>{title}</span>
                 <div className="flex gap-x-4">
-                {
-                    opts.map((value, index) => (
+                {opts.map((value, index) => (
                     <button 
-                        className={`${prompt_500.className} ${ current === index ? "text-[#3A70C3]" : "text-gray-600" } cursor-pointer`}
-                        key={index}
-                        onClick={() => {
-                            onValueChange(index);
-                            setCurrent(index);
-                        }}
+                    className={`${prompt_500.className} ${ current === index ? "text-[#3A70C3]" : "text-gray-600" } cursor-pointer`}
+                    key={index}
+                    onClick={() => {
+                        onValueChange(index);
+                        setCurrent(index);
+                    }}
                     >
-                        {value}
+                    {value}
                     </button>
-                    ))
-                }
+                ))}
                 </div>
             </div>
 
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center">
                 {center}
             </div>
 

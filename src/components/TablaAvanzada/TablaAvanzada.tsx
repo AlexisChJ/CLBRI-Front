@@ -34,10 +34,10 @@ const TablaAvanzada = () => {
           <TableCaption>Faltan datos por deslegar de CLBRI.</TableCaption>
           <TableHeader>
             <TableRow className="bg-blue-200 text-blue-800 hover:bg-blue-200">
-              <TableHead className={`w-[100px] ${redHat.className}`}>Datos1</TableHead>
-              <TableHead className={redHat.className}>Datos2</TableHead>
-              <TableHead className={redHat.className}>Datos3</TableHead>
-              <TableHead className={redHat.className}>Datos4</TableHead>
+              <TableHead className={`w-[100px] ${redHat.className}`}>Nombre</TableHead>
+              <TableHead className={redHat.className}>Clasificación</TableHead>
+              <TableHead className={redHat.className}>Unidad</TableHead>
+              <TableHead className={redHat.className}>Cantidad</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

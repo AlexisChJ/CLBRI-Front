@@ -18,9 +18,16 @@ export default function vistaMapa() {
                     notificaciones={notificaciones}
                     onValueChange={() => {}}
                     center={
-                        <div className="flex gap-6 text-blue-600 text-lg font-semibold">
-                        <a href="https://ejemplo.com/link1" target="_blank" rel="noopener noreferrer">Distribución</a>
-                        <a href="https://ejemplo.com/link2" target="_blank" rel="noopener noreferrer">Locaciones</a>
+                        <div className="flex gap-6 text-lg font-semibold">
+                            <a 
+                                href="http://localhost:3000/distribucionUsuarios" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="text-blue-600"
+                            >
+                                Distribución
+                            </a>
+                            <span className="text-black dark:text-white">Locaciones</span>
                         </div>
                     }
                 />

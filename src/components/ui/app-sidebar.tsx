@@ -27,10 +27,10 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible={"none"} className={clsx("transition-all duration-300 h-full", collapsed ? "w-[80px]" : "w-[240px]")}>
-      <SidebarContent className="flex flex-col justify-between h-full bg-black text-white">
-        <SidebarGroup className="flex flex-col items-center justify-center gap-6 py-4 flex-1">
-          <div className="h-[300px] flex items-center justify-center">
-            {!collapsed && <BlueLogo />}
+      <SidebarContent className="flex flex-col items-center justify-center h-full bg-black text-white">
+        <SidebarGroup className="flex flex-col items-center justify-center gap-6 py-4">
+          <div className="h-[200px] flex items-center justify-center transition-all duration-300">
+            <BlueLogo className={collapsed ? "w-10" : "w-36"} />
           </div>
           <SidebarGroupContent className="flex-1 w-full">
             <SidebarMenu className="flex flex-col">
@@ -55,12 +55,15 @@ export function AppSidebar() {
                 )
               })}
             </SidebarMenu>
-          </SidebarGroupContent>
-          <button onClick={() => setCollapsed(!collapsed)} className="text-white p-2 hover:text-blue-500">
-            {collapsed ? <PanelRightClose /> : <PanelLeftClose />}
-          </button>
+          </SidebarGroupContent> 
         </SidebarGroup>
+        <div className="h-[80px] flex items-center justify-center w-full">
+            <button onClick={() => setCollapsed(!collapsed)} className="text-white p-2 hover:text-blue-500">
+              {collapsed ? <PanelRightClose /> : <PanelLeftClose />}
+            </button>
+        </div>
       </SidebarContent>
     </Sidebar>
+    
   )
 }

@@ -63,7 +63,6 @@ const NotificationIcon = ({ notifications = [] } : NotificationIconProps) => {
     )
 }
 
-
 interface NavBarProps {
   title: string
   opts: any[]
@@ -73,47 +72,46 @@ interface NavBarProps {
   center?: React.ReactNode 
 }
 
-
 export const NavBar = ({ 
-            title = "", 
-            opts = [], 
-            selected = 0,
-            notificaciones = [], 
-            onValueChange = () => {}, 
-            center
-            }: NavBarProps) => {
-
+    title = "", 
+    opts = [], 
+    selected = 0,
+    notificaciones = [], 
+    onValueChange = () => {}, 
+    center
+}: NavBarProps) => {
     const [current, setCurrent] = useState<number>(selected);
 
     return (
-        <div className="flex flex-row border-b-[1px] border-b-blue-800 pb-1 w-full items-center justify-between">
+        <div className="relative flex flex-row border-b-[1px] border-b-blue-800 pb-1 w-full items-center h-12 px-4">
 
             <div className="flex gap-8 items-center">
                 <span className={`${prompt_300.className} text-3xl`}>{title}</span>
                 <div className="flex gap-x-4">
-                {opts.map((value, index) => (
-                    <button 
-                    className={`${prompt_500.className} ${ current === index ? "text-[#3A70C3]" : "text-gray-600" } cursor-pointer`}
-                    key={index}
-                    onClick={() => {
-                        onValueChange(index);
-                        setCurrent(index);
-                    }}
-                    >
-                    {value}
-                    </button>
-                ))}
+                    {opts.map((value, index) => (
+                        <button 
+                            className={`${prompt_500.className} ${ current === index ? "text-[#3A70C3]" : "text-gray-600" } cursor-pointer`}
+                            key={index}
+                            onClick={() => {
+                                onValueChange(index);
+                                setCurrent(index);
+                            }}
+                        >
+                            {value}
+                        </button>
+                    ))}
                 </div>
             </div>
 
-            <div className="flex justify-center">
+            <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 {center}
             </div>
 
-            <div className="flex justify-end items-center gap-6">
+            <div className="ml-auto flex items-center gap-6">
                 <NotificationIcon notifications={notificaciones} />
             </div>
-
-            </div>
+        </div>
     )
 }
+
+export default NavBar;

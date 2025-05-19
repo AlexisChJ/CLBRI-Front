@@ -77,7 +77,7 @@ const LocationsMap: React.FC<Props> = ({ adminLocation, userLocations }) => {
     initMap()
   }, [adminLocation, userLocations])
 
-  return <div ref={mapRef} className="w-150 h-200 rounded-3xl" />
+  return <div ref={mapRef} className="w-full lg:w-[500px] h-[500px] shrink-0 overflow-hidden rounded-lg border shadow-md mx-auto lg:mx-0" />
 }
 
 export default LocationsMap

@@ -33,29 +33,29 @@ export default function vistaMapa() {
                             </a>
                             <span className="text-black dark:text-white">Locaciones</span>
                         </div>
-                        }
+                    }/>
 
-                />
-                <div className="flex gap-10"> 
-                    <div className="w-1/2 flex flex-col gap-6"> 
-                        <SearchBar />
-                        <TablaAvanzada />
-                    </div>
-                    <div className="w-[500px] h-[500px] shrink-0 overflow-hidden rounded-lg border shadow-md">
-                    <div className="w-full h-full">
-                        <LocationsMap
-                        adminLocation={{
-                            lat: 19.284056,
-                            lng: -99.135333,
-                            title: undefined,
-                        }}
-                        userLocations={[]}
-                        />
+                    <div className="flex flex-col lg:flex-row gap-6">
+                        <div className="w-full lg:w-1/2 flex flex-col gap-6">
+                            <SearchBar />
+                            <TablaAvanzada />
+                        </div>
+
+                        <div className="w-full lg:w-[500px] h-[500px] shrink-0 overflow-hidden rounded-lg border shadow-md">
+                            <div className="w-full h-full">
+                            <LocationsMap
+                                adminLocation={{
+                                lat: 19.284056,
+                                lng: -99.135333,
+                                title: undefined,
+                                }}
+                                userLocations={[]}
+                            />
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                </div>
-            </div>
+           
         </Sidebar>
     )
 }

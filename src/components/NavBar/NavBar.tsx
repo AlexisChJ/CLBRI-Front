@@ -8,7 +8,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 const prompt_300 = Prompt({ weight: "300", subsets: ["latin"], preload: true })
 const prompt_500 = Prompt({ weight: "500", subsets: ["latin"], preload: true })
 
-
 export interface Notification {
     description: string,
     title?: string,

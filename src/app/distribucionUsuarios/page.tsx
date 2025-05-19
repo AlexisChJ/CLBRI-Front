@@ -14,7 +14,7 @@ export default function vistaMapa() {
     const notificaciones: Notification[] = [{ description: "S" }]
         return (
                 <Sidebar>
-                <div id="tesss" className="p-5 flex flex-col gap-5 w-full h-full pb-0">            
+                <div id="tesss" className="p-5 flex flex-col gap-5 w-full min-h-screen overflow-y-auto">            
                 <NavBar
                     title="Usuarios"
                     opts={[]}

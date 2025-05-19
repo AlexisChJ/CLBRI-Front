@@ -38,9 +38,9 @@ export function AppSidebar() {
         "transition-all duration-500 ease-in-out h-full",
         collapsed ? "w-[80px]" : "w-[240px]"
       )}>
-      <SidebarContent className="relative flex flex-col h-full bg-black text-white transition-all duration-500 ease-in-out">
+      <SidebarContent className="relative flex flex-col h-full bg-black text-white transition-all duration-500 ease-in-out overflow-y-auto">
 
-        {/* Logo (altura fija) */}
+  
         <div
           className={clsx(
             "flex items-center justify-center transition-all duration-500 ease-in-out overflow-hidden",

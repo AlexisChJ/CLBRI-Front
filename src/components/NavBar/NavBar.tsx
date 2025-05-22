@@ -80,37 +80,48 @@ export const NavBar = ({
     const [current, setCurrent] = useState<number>(selected);
 
     return (
-        <div className="relative flex flex-col sm:flex-row sm:justify-between border-b-[1px] border-b-blue-800 pb-2 w-full items-center px-4 gap-2 sm:gap-0 h-auto sm:h-16">
-            
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-8 items-center w-full sm:w-auto">
-                <span className={`${prompt_300.className} text-2xl sm:text-3xl text-center sm:text-left`}>{title}</span>
-                <div className="flex flex-wrap justify-center sm:justify-start gap-x-4">
-                    {opts.map((value, index) => (
-                        <button 
-                            className={`${prompt_500.className} ${ current === index ? "text-[#3A70C3]" : "text-gray-600" } cursor-pointer`}
-                            key={index}
-                            onClick={() => {
-                                onValueChange(index);
-                                setCurrent(index);
-                            }}
-                        >
-                            {value}
-                        </button>
-                    ))}
+        <div className="w-full border-b border-blue-800 px-4 py-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-y-2 sm:gap-y-0">
+                
+                {/* Título y opciones */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8 min-w-0">
+                    <span className={`${prompt_300.className} text-2xl sm:text-3xl truncate`}>
+                        {title}
+                    </span>
+                    <div className="flex flex-wrap gap-x-4">
+                        {opts.map((value, index) => (
+                            <button 
+                                key={index}
+                                className={`${prompt_500.className} ${current === index ? "text-[#3A70C3]" : "text-gray-600"} whitespace-nowrap`}
+                                onClick={() => {
+                                    onValueChange(index);
+                                    setCurrent(index);
+                                }}
+                            >
+                                {value}
+                            </button>
+                        ))}
+                    </div>
                 </div>
-            </div>
 
-            {center && (
-                <div className="order-last sm:order-none sm:absolute left-1/2 top-1/2 transform sm:-translate-x-1/2 sm:-translate-y-1/2 mt-2 sm:mt-0">
+                {/* Centro */}
+                <div className="hidden sm:flex justify-center">
                     {center}
                 </div>
-            )}
 
-            <div className="ml-auto sm:ml-0 flex items-center">
-                <NotificationIcon notifications={notificaciones} />
+                {/* Notificaciones */}
+                <div className="flex justify-end">
+                    <NotificationIcon notifications={notificaciones} />
+                </div>
+            </div>
+
+            {/* Centro para pantallas pequeñas (debajo del título y opciones) */}
+            <div className="sm:hidden mt-2 flex justify-center">
+                {center}
             </div>
         </div>
-    )
+    );
 }
+
 
 export default NavBar;

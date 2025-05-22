@@ -73,16 +73,22 @@ export function AppSidebar() {
                       href={item.url}
                       className={clsx(
                         "group flex items-center gap-3 px-4 py-2 transition-all duration-300 ease-in-out",
-                        "hover:text-blue-500",
                         collapsed ? "justify-center" : "justify-start",
-                        collapsed ? "w-full" : "w-auto"
+                        collapsed ? "w-full" : "w-auto",
+                        isActive ? "text-blue-500" : "text-white hover:text-blue-500"
                       )}
                     >
-                      <item.icon className="w-6 h-6 stroke-current transition-all duration-300" />
+                      <item.icon
+                        className={clsx(
+                          "w-6 h-6 stroke-current transition-all duration-300",
+                          isActive ? "text-blue-500" : "text-white group-hover:text-blue-500"
+                        )}
+                      />
                       <span
                         className={clsx(
                           "text-base font-medium transition-all duration-300 ease-in-out",
-                          collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100 w-auto"
+                          collapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100 w-auto",
+                          isActive ? "text-blue-500" : "text-white group-hover:text-blue-500"
                         )}
                       >
                         {item.title}
@@ -91,6 +97,7 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 )
               })}
+
             </SidebarMenu>
           </SidebarGroupContent>
         </div>
@@ -98,7 +105,7 @@ export function AppSidebar() {
         <div className="absolute bottom-0 left-0 w-full h-[80px] flex items-center justify-center transition-all duration-500">
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="text-white p-2 hover:text-blue-500 transition-all duration-300"
+            className="text-white p-2 hover:text-blue-500 transition-all duration-100"
           >
             {collapsed ? <PanelRightClose /> : <PanelLeftClose />}
           </button>

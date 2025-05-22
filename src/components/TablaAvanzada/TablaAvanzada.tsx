@@ -28,9 +28,9 @@ const zenMaru = Zen_Maru_Gothic({ weight: ["500"], subsets: ["latin"], preload: 
 
 const TablaAvanzada = () => {
   return (
-    <div className="flex flex-col items-center space-y-2 h-full">
-      <div className="w-full max-w-4xl rounded-lg overflow-hidden shadow-sm border">
-        <Table className="w-full">
+    <div className="flex flex-col space-y-2 h-full w-full">
+      <div className="w-full rounded-lg overflow-hidden shadow-sm border">
+        <Table className="min-w-full table-auto">
           <TableCaption>Datos del Inventario de CLBRI</TableCaption>
           <TableHeader>
             <TableRow className="bg-blue-200 text-blue-800 hover:bg-blue-200">
@@ -78,5 +78,6 @@ const TablaAvanzada = () => {
     </div>
   );
 };
+
 
 export default TablaAvanzada;

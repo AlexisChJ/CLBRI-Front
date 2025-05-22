@@ -6,11 +6,11 @@ const SideBar = ({ children }: { children: React.ReactNode }) => {
     <SidebarProvider>
       <div className="flex h-screen overflow-hidden">
         <AppSidebar />
-        <main className="flex-1 h-full overflow-y-auto">
+      </div>
+      <main className="flex-1 h-full overflow-y-auto">
           <SidebarTrigger />
           {children}
         </main>
-      </div>
     </SidebarProvider>
   );
 };

@@ -1,5 +1,5 @@
 "use client"
-
+import { usePathname } from "next/navigation"
 import { NavBar, Notification } from "@/components/NavBar/NavBar"
 import Sidebar from "@/components/SideBar/SideBar"
 import { SearchBar } from "@/components/SearchBar/SearchBar"
@@ -11,6 +11,9 @@ const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true })
 
 
 export default function vistaMapa() {
+    const pathname = usePathname()
+    const isDistribucion = pathname === "/distribucionUsuarios"
+    const isLocaciones = pathname === "/locaciones"
     const notificaciones: Notification[] = [{ description: "S" }]
         return (
                 <Sidebar>
@@ -23,15 +26,27 @@ export default function vistaMapa() {
                     onValueChange={() => {}}
                     center={
                         <div className={`flex gap-6 text-lg font-semibold ${prompt.className}`}>
-                            <a 
-                            href="http://localhost:3000/distribucionUsuarios" 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="text-blue-600"
-                            >
+                        <a
+                            href="/distribucionUsuarios"
+                            className={`transition-transform duration-200 ${
+                            isDistribucion
+                                ? "text-blue-600 scale-110"
+                                : "text-gray-500 hover:text-blue-600 hover:scale-110"
+                            }`}
+                        >
                             Distribución
-                            </a>
-                            <span className="text-gray-500 dark:text-white">Locaciones</span>
+                        </a>
+
+                        <a
+                            href="/locaciones"
+                            className={`transition-transform duration-200 ${
+                            isLocaciones
+                                ? "text-blue-600 scale-110"
+                                : "text-gray-500 hover:text-gray-500 hover:scale-105"
+                            }`}
+                        >
+                            Locaciones
+                        </a>
                         </div>
                     }/>
 

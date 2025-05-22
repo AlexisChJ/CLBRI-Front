@@ -82,7 +82,6 @@ export const NavBar = ({
     return (
         <div className="relative flex flex-col sm:flex-row sm:justify-between border-b-[1px] border-b-blue-800 pb-2 w-full items-center px-4 gap-2 sm:gap-0 h-auto sm:h-16">
             
-            {/* Título y opciones */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-8 items-center w-full sm:w-auto">
                 <span className={`${prompt_300.className} text-2xl sm:text-3xl text-center sm:text-left`}>{title}</span>
                 <div className="flex flex-wrap justify-center sm:justify-start gap-x-4">
@@ -101,14 +100,12 @@ export const NavBar = ({
                 </div>
             </div>
 
-            {/* Centro (opcional) */}
             {center && (
                 <div className="order-last sm:order-none sm:absolute left-1/2 top-1/2 transform sm:-translate-x-1/2 sm:-translate-y-1/2 mt-2 sm:mt-0">
                     {center}
                 </div>
             )}
 
-            {/* Notificaciones */}
             <div className="ml-auto sm:ml-0 flex items-center">
                 <NotificationIcon notifications={notificaciones} />
             </div>

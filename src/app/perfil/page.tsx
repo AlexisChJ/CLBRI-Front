@@ -4,11 +4,17 @@ import { SearchBar } from "@/components/SearchBar/SearchBar"
 import Sidebar from "@/components/SideBar/SideBar"
 import { Prompt } from "next/font/google"
 import ProfileContainer from "@/components/ProfileContainer/ProfileContainer"
+import { useRouter } from "next/navigation"
+import Buttons from "@/components/Buttons/Buttons"
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true })
 
 export default function Perfil() {
     const notificaciones: Notification[] = [{ description: "S" }]
+    const router = useRouter()
+    const handleLogout = () => {
+        router.push("/")
+    }
     return (
         <Sidebar>
             <div className="flex flex-1 flex-col p-5 gap-5 h-screen overflow-y-auto">
@@ -32,10 +38,12 @@ export default function Perfil() {
                         onSave={(data) => {
                             console.log("Datos guardados:", data)
                         }}
-                        />
+                    />
+                </div>
+                <div className="w-full flex justify-center mt-10 mb-4">
+                    <Buttons text="Logout" color="login" onClick={handleLogout} className="max-w-xs" />
                 </div>
             </div>
         </Sidebar>
     )
-
 }

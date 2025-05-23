@@ -58,6 +58,9 @@ export default function Home() {
           <a href="https://www.dummies.com/book/technology/programming-web-design/general-programming-web-design/beginning-programming-all-in-one-for-dummies-2nd-edition-292091/" className={`${ zen_500.className } underline text-[#9B9B9B] hover:text-[#3A70C3]`}>¿Olvidaste tu contraseña?</a>
           <Buttons className="" text={"Iniciar Sesión"} color="login" onClick={handleLogin}/>
           <p className={`${ zen_500.className } text-[#9B9B9B]`}>¿No tienes una cuenta?</p>
+          {/* Switch for admin just above the register button */}
+          <div className="flex justify-center">
+          </div>
           <Buttons text={"Registrarse"} color="register" onClick={handleSignUp}/>
         </div>
       </div>

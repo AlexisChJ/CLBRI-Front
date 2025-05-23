@@ -1,6 +1,7 @@
 "use client"
 
 import Buttons from "@/components/Buttons/Buttons"
+import { SwitchDemo } from "@/components/Switch/Switch"
 import { CountryCombobox } from "@/components/CountryCombobox/CountryCombobox"
 import { WhiteLogo } from "@/components/LogoBlanco/LogoBlanco"
 import { PasswordInput } from "@/components/PasswordInput/PasswordInput"
@@ -22,6 +23,8 @@ const SignUpPage = () => {
     const [city, setCity] = useState("")
     const [state, setState] = useState("")
     const [postalCode, setPostalCode] = useState("")
+    const [adminToken, setAdminToken] = useState("")
+    const [isAdmin, setIsAdmin] = useState(false) // Add state for switch
     const router = useRouter()
     const handleLogin = () => {
     //validación de correo y contraseña que después contectaremos al back
@@ -105,6 +108,17 @@ const SignUpPage = () => {
                         onChange={(e) => setPostalCode(e.target.value)}
                     />
                     <CountryCombobox />
+                </div>
+
+                <div className="flex gap-4">
+                    {/* Pass checked and onCheckedChange to SwitchDemo */}
+                    <SwitchDemo checked={isAdmin} onCheckedChange={setIsAdmin} />
+                    <TextInput
+                        placeholder="Token de Administrador"
+                        value={adminToken}
+                        onChange={(e) => setAdminToken(e.target.value)}
+                        disabled={isAdmin} // Disable input if switch is ON
+                    />
                 </div>
 
                 <Buttons

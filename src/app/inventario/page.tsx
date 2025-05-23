@@ -20,8 +20,10 @@ export default function SitioTabla() {
                     selected={0}
                     notificaciones={notificaciones}
                     onValueChange={() => {}}
-                    center={""}
-                />
+                    center={
+                    <div className={`flex gap-6 text-lg font-semibold ${prompt.className}`}>
+                    </div>
+                }/>
                 <SearchBar />
                 <div className="w-full overflow-auto">
                     <TablaAvanzada />

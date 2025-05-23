@@ -10,8 +10,6 @@ const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true })
 export default function Dashboard() {
     const pathname = usePathname()
     const isGeneral = pathname === "/dashboard"
-    const isInventario = pathname === "/inventario"
-    const isUsuarios = pathname === "/usuarios"
     const isReportes = pathname === "/reportes"
     const notificaciones: Notification[] = [{ description: "S" }]
     return (
@@ -34,26 +32,6 @@ export default function Dashboard() {
                             }`}
                         >
                             General
-                        </a>
-                        <a
-                            href="/inventario"
-                            className={`transition-transform duration-200 ${
-                            isInventario
-                                ? "text-blue-600 scale-110"
-                                : "text-gray-500 hover:text-gray-500 hover:scale-105"
-                            }`}
-                        >
-                            Inventario
-                        </a>
-                        <a
-                            href="/usuarios"
-                            className={`transition-transform duration-200 ${
-                            isUsuarios
-                                ? "text-blue-600 scale-110"
-                                : "text-gray-500 hover:text-gray-500 hover:scale-105"
-                            }`}
-                        >
-                            Usuarios
                         </a>
                         <a
                             href="/reportes"

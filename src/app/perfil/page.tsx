@@ -41,7 +41,7 @@ export default function Perfil() {
                     />
                 </div>
                 <div className="w-full flex justify-center mt-10 mb-4">
-                    <Buttons text="Logout" color="login" onClick={handleLogout} className="max-w-xs" />
+                    <Buttons text="Log Out" color="login" onClick={handleLogout} className="max-w-md w-[200px]" />
                 </div>
             </div>
         </Sidebar>

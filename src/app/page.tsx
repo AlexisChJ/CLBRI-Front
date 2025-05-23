@@ -6,6 +6,8 @@ import { PasswordInput } from "@/components/PasswordInput/PasswordInput";
 import { SocialMedia } from "@/components/SocialMedia/SocialMedia";
 import { TextInput } from "@/components/TextInput/TextInput";
 import { useState } from "react"
+import { useRouter } from "next/navigation";
+
 
 import { Zen_Maru_Gothic } from "next/font/google";
 
@@ -14,6 +16,11 @@ const zen_500 = Zen_Maru_Gothic({weight: "500", subsets: ["latin"], preload: tru
 export default function Home() {
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
+  const router = useRouter()
+  const handleLogin = () => {
+    //validación de correo y contraseña que después contectaremos al back
+    router.push("/dashboard")
+  }
 
   return (
     <div className="flex">
@@ -45,7 +52,7 @@ export default function Home() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <a href="https://www.dummies.com/book/technology/programming-web-design/general-programming-web-design/beginning-programming-all-in-one-for-dummies-2nd-edition-292091/" className={`${ zen_500.className } underline text-[#9B9B9B] hover:text-[#3A70C3]`}>¿Olvidaste tu contraseña?</a>
-          <Buttons className="" text={"Iniciar Sesión"} color="login"/>
+          <Buttons className="" text={"Iniciar Sesión"} color="login" onClick={handleLogin}/>
           <p className={`${ zen_500.className } text-[#9B9B9B]`}>¿No tienes una cuenta?</p>
           <Buttons text={"Registrarse"} color="register"/>
         </div>

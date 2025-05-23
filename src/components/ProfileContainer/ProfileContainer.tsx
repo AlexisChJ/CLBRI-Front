@@ -70,7 +70,7 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
   return (
     <div>
       <div className="flex flex-col items-center justify-center">
-        <Avatar className="h-24 w-24 mx-auto -mb-11 -top-3 z-10">
+        <Avatar className="h-24 w-24 mx-auto -mb-11 -top-1 z-10">
           {avatarSrc ? (
             <AvatarImage src={avatarSrc} alt={formState.name} />
           ) : (

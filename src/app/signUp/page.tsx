@@ -7,8 +7,9 @@ import { PasswordInput } from "@/components/PasswordInput/PasswordInput"
 import { TextInput } from "@/components/TextInput/TextInput"
 import { Red_Hat_Display } from "next/font/google"
 import React, { useState } from "react"
+import { useRouter } from "next/navigation";
 
-// Carga de fuente desde next/font con preload
+
 const redhat_700 = Red_Hat_Display({ weight: "700", subsets: ['latin'], preload: true })
 
 const SignUpPage = () => {
@@ -21,6 +22,11 @@ const SignUpPage = () => {
     const [city, setCity] = useState("")
     const [state, setState] = useState("")
     const [postalCode, setPostalCode] = useState("")
+    const router = useRouter()
+    const handleLogin = () => {
+    //validación de correo y contraseña que después contectaremos al back
+      router.push("/dashboard")
+    }
   
 
     return (
@@ -104,6 +110,7 @@ const SignUpPage = () => {
                 <Buttons
                     color="login"
                     text="Registrarse"
+                    onClick={handleLogin}
                 />
             </div>
         </div>

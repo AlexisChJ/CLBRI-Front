@@ -8,7 +8,7 @@ const SideBar = ({ children }: { children: React.ReactNode }) => {
         <AppSidebar />
       </div>
       <main className="flex-1 h-full overflow-y-auto">
-          <SidebarTrigger />
+          {/* <SidebarTrigger /> */}
           {children}
         </main>
     </SidebarProvider>

@@ -25,12 +25,18 @@ import {
   ChartLegendContent,
 } from "@/components/ui/chart"
 const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+  { month: "Ene.", desktop: 186, mobile: 80 },
+  { month: "Feb.", desktop: 305, mobile: 200 },
+  { month: "Mar.", desktop: 237, mobile: 120 },
+  { month: "Abr.", desktop: 73, mobile: 190 },
+  { month: "May.", desktop: 209, mobile: 130 },
+  { month: "Jun.", desktop: 214, mobile: 140 },
+  { month: "Jul.", desktop: 200, mobile: 180 },
+  { month: "Ago.", desktop: 156, mobile: 210 },
+  { month: "Sep.", desktop: 123, mobile: 150 },
+  { month: "Oct.", desktop: 204, mobile: 110 },
+  { month: "Nov.", desktop: 310, mobile: 100 },
+  { month: "Dic.", desktop: 192, mobile: 250 },
 ]
 
 const chartConfig = {
@@ -46,12 +52,14 @@ const chartConfig = {
 
 export function LineChartComp() {
   return (
-    <Card>
-      <CardHeader>
+    <Card className="">
+
+      {/* <CardHeader>
         <CardTitle className={ `${ redhat_700.className } text-[#5B5B5B]` }>Pérdida de alimento</CardTitle>
-      </CardHeader>
+      </CardHeader> */}
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="max-h-[200px] w-full">
+
           <LineChart
             accessibilityLayer
             data={chartData}
@@ -76,6 +84,7 @@ export function LineChartComp() {
               stroke="var(--color-desktop)"
               strokeWidth={3}
               dot={false}
+              
             />
             <Line
               dataKey="mobile"

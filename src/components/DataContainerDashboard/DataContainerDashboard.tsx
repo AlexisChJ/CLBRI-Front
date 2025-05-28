@@ -14,7 +14,7 @@ const adventPro = Advent_Pro({ subsets: ["latin"], weight: ["400", "700"], prelo
 
 const DataContainerDashboard = () => {
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 w-full justify-between my-2">
       <Card className="w-[170px] bg-blue-300 text-white">
         <CardHeader>
           <CardTitle className={`text-5xl ${adventPro.className}`}>171K</CardTitle>

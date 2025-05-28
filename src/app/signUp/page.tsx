@@ -30,7 +30,6 @@ const SignUpPage = () => {
     //validación de correo y contraseña que después contectaremos al back
       router.push("/dashboard")
     }
-  
 
     return (
         <div className="flex min-h-screen">

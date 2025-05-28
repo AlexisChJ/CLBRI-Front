@@ -10,6 +10,7 @@ import { Red_Hat_Display } from "next/font/google"
 import React, { useState } from "react"
 import { useRouter } from "next/navigation";
 
+import Image from "next/image"
 
 const redhat_700 = Red_Hat_Display({ weight: "700", subsets: ['latin'], preload: true })
 
@@ -35,10 +36,14 @@ const SignUpPage = () => {
         <div className="flex min-h-screen">
             {/* Imagen de fondo */}
             <div className="relative flex w-1/2 min-h-screen">
-                <img       
+                <Image
                     className="w-full h-full object-cover"
                     src="https://cdn1.matadornetwork.com/blogs/2/2018/12/colibri-Jiri-Hrebicek-shutterstock_1178773135.jpg"
                     alt="CLBRI"
+                    fill
+                    priority
+                    sizes="50vw"
+                    style={{ objectFit: "cover" }}
                 />
                 <div className="absolute inset-0 bg-[#3A70C3] opacity-55 z-10" />
                 <div className="absolute bottom-[100px] w-full flex justify-center z-20">

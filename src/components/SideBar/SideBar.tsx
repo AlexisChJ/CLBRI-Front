@@ -1,6 +1,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 
+
 const SideBar = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
@@ -16,3 +17,4 @@ const SideBar = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default SideBar;
+

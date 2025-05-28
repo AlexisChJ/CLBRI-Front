@@ -20,7 +20,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-
 import { Red_Hat_Display, Zen_Maru_Gothic } from "next/font/google"
 import { Trash2, Pencil } from "lucide-react"
 
@@ -40,12 +39,24 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
   const [selectedUserIndex, setSelectedUserIndex] = useState<number | null>(null)
   const [editLugarTrabajo, setEditLugarTrabajo] = useState("")
 
+  // Paginación
+  const rowsPerPage = 10
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPages = Math.ceil(usuariosList.length / rowsPerPage)
+  const startIndex = (currentPage - 1) * rowsPerPage
+  const currentUsers = usuariosList.slice(startIndex, startIndex + rowsPerPage)
+
   const handleEliminar = () => {
     if (selectedUserIndex !== null) {
       const nuevaLista = [...usuariosList]
       nuevaLista.splice(selectedUserIndex, 1)
       setUsuariosList(nuevaLista)
       setPopupDeleteOpen(false)
+
+      // Asegura que la página no quede vacía tras eliminar
+      if ((nuevaLista.length <= startIndex) && currentPage > 1) {
+        setCurrentPage(currentPage - 1)
+      }
     }
   }
 
@@ -71,37 +82,40 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {usuariosList.map((usuario, idx) => (
-              <TableRow className={zenMaru.className} key={idx}>
-                <TableCell className="font-medium">{usuario.id}</TableCell>
-                <TableCell>{usuario.lugarTrabajo}</TableCell>
-                <TableCell className="flex justify-end items-center gap-4 pr-4">
-                  <motion.button
-                    onClick={() => {
-                      setSelectedUserIndex(idx)
-                      setEditLugarTrabajo(usuario.lugarTrabajo)
-                      setPopupEditOpen(true)
-                    }}
-                    whileTap={{ scale: 0.9 }}
-                    whileHover={{ scale: 1.3 }}
-                    className="text-blue-600 hover:text-blue-800 transition duration-200"
-                  >
-                    <Pencil className="w-4 h-4" />
-                  </motion.button>
-                  <motion.button
-                    onClick={() => {
-                      setSelectedUserIndex(idx)
-                      setPopupDeleteOpen(true)
-                    }}
-                    whileTap={{ scale: 0.9 }}
-                    whileHover={{ scale: 1.3 }}
-                    className="text-red-600 hover:text-red-800 transition duration-200"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </motion.button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {currentUsers.map((usuario, idx) => {
+              const realIndex = startIndex + idx
+              return (
+                <TableRow className={zenMaru.className} key={usuario.id}>
+                  <TableCell className="font-medium">{usuario.id}</TableCell>
+                  <TableCell>{usuario.lugarTrabajo}</TableCell>
+                  <TableCell className="flex justify-end items-center gap-4 pr-4">
+                    <motion.button
+                      onClick={() => {
+                        setSelectedUserIndex(realIndex)
+                        setEditLugarTrabajo(usuario.lugarTrabajo)
+                        setPopupEditOpen(true)
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                      whileHover={{ scale: 1.3 }}
+                      className="text-blue-600 hover:text-blue-800 transition duration-200"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </motion.button>
+                    <motion.button
+                      onClick={() => {
+                        setSelectedUserIndex(realIndex)
+                        setPopupDeleteOpen(true)
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                      whileHover={{ scale: 1.3 }}
+                      className="text-red-600 hover:text-red-800 transition duration-200"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </motion.button>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </div>
@@ -115,16 +129,10 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
           onChange={(e) => setEditLugarTrabajo(e.target.value)}
         />
         <div className="flex justify-end gap-2">
-          <button
-            className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded"
-            onClick={() => setPopupEditOpen(false)}
-          >
+          <button className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded" onClick={() => setPopupEditOpen(false)}>
             Cancelar
           </button>
-          <button
-            className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded"
-            onClick={handleEditar}
-          >
+          <button className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded" onClick={handleEditar}>
             Guardar
           </button>
         </div>
@@ -135,36 +143,51 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
         <h2 className="text-xl mb-4">¿Eliminar este usuario?</h2>
         <p className="mb-4">Esta acción no se puede deshacer.</p>
         <div className="flex justify-end gap-2">
-          <button
-            className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded"
-            onClick={() => setPopupDeleteOpen(false)}
-          >
+          <button className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded" onClick={() => setPopupDeleteOpen(false)}>
             Cancelar
           </button>
-          <button
-            className="bg-red-600 text-white hover:bg-red-700 px-4 py-2 rounded"
-            onClick={handleEliminar}
-          >
+          <button className="bg-red-600 text-white hover:bg-red-700 px-4 py-2 rounded" onClick={handleEliminar}>
             Eliminar
           </button>
         </div>
       </PopUpWindow>
 
-      <Pagination className="pb-4">
+      {/* Paginación dinámica */}
+      <Pagination className={`pb-4 ${redHat.className}`}>
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious href="#" />
+            <PaginationPrevious
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+            />
           </PaginationItem>
+
+          {Array.from({ length: totalPages }, (_, i) => (
+            <PaginationItem key={i}>
+              <PaginationLink
+                onClick={() => setCurrentPage(i + 1)}
+                className={`cursor-pointer ${
+                  currentPage === i + 1
+                    ? "bg-blue-600 text-white"
+                    : "hover:bg-blue-100"
+                } ${redHat.className}`}
+              >
+                {i + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+
+          {totalPages > 5 && currentPage < totalPages - 2 && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
+
           <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
-            <PaginationLink href="#">2</PaginationLink>
-            <PaginationLink href="#">3</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
+            <PaginationNext
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+            />
           </PaginationItem>
         </PaginationContent>
       </Pagination>

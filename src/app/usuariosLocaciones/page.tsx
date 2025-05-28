@@ -37,6 +37,24 @@ const usuariosDB = [
 const usuariosPrueba = [
   { id: "001", lugarTrabajo: "Av. Reforma 123, CDMX", nombre: "Juan Pérez" },
   { id: "002", lugarTrabajo: "Calle 10 #45, CDMX", nombre: "Ana López" },
+  { id: "003", lugarTrabajo: "Blvd. Constituyentes 50, Querétaro", nombre: "Carlos García" },
+  { id: "004", lugarTrabajo: "Prol. Montejo 200, Mérida", nombre: "Sofía Rodríguez" },
+  { id: "005", lugarTrabajo: "Av. Insurgentes Sur 800, CDMX", nombre: "Luis Hernández" },
+  { id: "006", lugarTrabajo: "Miguel Alemán 30, Monterrey", nombre: "Valeria Díaz" },
+  { id: "007", lugarTrabajo: "Paseo de la Reforma 250, CDMX", nombre: "Ricardo Torres" },
+  { id: "008", lugarTrabajo: "Av. Juárez 15, Guadalajara", nombre: "Gabriela Castro" },
+  { id: "009", lugarTrabajo: "Calle 5 de Mayo 100, Puebla", nombre: "Fernando Vargas" },
+  { id: "010", lugarTrabajo: "Av. Universidad 600, CDMX", nombre: "Elena Morales" },
+  { id: "011", lugarTrabajo: "Bosque de Ciruelos 160, CDMX", nombre: "Pablo Ruiz" },
+  { id: "012", lugarTrabajo: "Calzada del Valle 120, Monterrey", nombre: "Andrea Salazar" },
+  { id: "013", lugarTrabajo: "Av. Patria 900, Guadalajara", nombre: "Diego Jiménez" },
+  { id: "014", lugarTrabajo: "Calle Madero 45, San Luis Potosí", nombre: "Mariana Rojas" },
+  { id: "015", lugarTrabajo: "Vasco de Quiroga 300, CDMX", nombre: "Jorge Guzmán" },
+  { id: "016", lugarTrabajo: "Circuito Interior 70, CDMX", nombre: "Claudia Blanco" },
+  { id: "017", lugarTrabajo: "Benito Juárez 500, Cancún", nombre: "Roberto Flores" },
+  { id: "018", lugarTrabajo: "Av. Tecnológico 10, Querétaro", nombre: "Isabel Núñez" },
+  { id: "019", lugarTrabajo: "Santa Fe 100, CDMX", nombre: "Héctor Maldonado" },
+  { id: "020", lugarTrabajo: "Periférico Sur 400, CDMX", nombre: "Laura Soto" },
 ];
 
 export default function AdministerUsers() {
@@ -126,7 +144,7 @@ export default function AdministerUsers() {
                 />
 
                     <div className="flex flex-col lg:flex-row gap-15 w-full items-stretch justify-center">
-                        <div className="w-full lg:w-1/2 flex flex-col gap-2 h-[500px] overflow-y-auto">
+                        <div className="w-full lg:w-1/2 flex flex-col gap-2 h-[900px] overflow-y-auto">
                             <div className="flex gap-5 items-center mb-4">
                             <div className="flex-1 basis-3/4 rounded-full">
                                 <Input

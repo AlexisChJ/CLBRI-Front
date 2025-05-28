@@ -113,11 +113,8 @@ const TablaAvanzada = ({
     const matchesSearch = searchText === "all" || Object.values(row).some(val =>
       val.toLowerCase().includes(searchText.toLowerCase())
     )
-
     const matchesClasificacion = filterClasificacion === "" || filterClasificacion === "all" || row.clasificacion === filterClasificacion
-
     const matchesPrioridad = filterPrioridad === "" || filterPrioridad === "all" || row.prioridad === filterPrioridad
-
     return matchesSearch && matchesClasificacion && matchesPrioridad
   })
 
@@ -311,8 +308,6 @@ const TablaAvanzada = ({
           </motion.button>
         </div>
       </PopUpWindow>
-
-
 
       <PopUpWindow open={editIndex !== null} onClose={() => setEditIndex(null)}>
         <h2 className="text-lg font-bold mb-4">Editar Elemento</h2>

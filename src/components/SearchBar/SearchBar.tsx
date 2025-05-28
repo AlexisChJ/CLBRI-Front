@@ -23,26 +23,24 @@ export function SearchBar() {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Unidades</SelectLabel>
-          <SelectItem value="Kg">Kilograms</SelectItem>
-          <SelectItem value="L">Liters</SelectItem>
-          <SelectItem value="g">Grams</SelectItem>
-          <SelectItem value="mL">Mililiters</SelectItem>
+          <SelectLabel>Clasificación</SelectLabel>
+          <SelectItem value="embotellado">Embotellado</SelectItem>
+          <SelectItem value="enlatado">Enlatado</SelectItem>
+          <SelectItem value="perecederos">Perecederos</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
 
     <Select>
       <SelectTrigger className="w-[180px] bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md">
-        <SelectValue placeholder="Clasificación" />
+        <SelectValue placeholder="Prioridad" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Clasificaciones</SelectLabel>
-          <SelectItem value="empaquetado">Empaquetado</SelectItem>
-          <SelectItem value="enlatado">Enlatado</SelectItem>
-          <SelectItem value="embotellado">Embotellado</SelectItem>
-          <SelectItem value="tetraPack">TetraPack</SelectItem>
+          <SelectLabel>Prioridad</SelectLabel>
+          <SelectItem value="alta">Alta</SelectItem>
+          <SelectItem value="media">Media</SelectItem>
+          <SelectItem value="baja">Baja</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

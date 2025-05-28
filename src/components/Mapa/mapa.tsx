@@ -8,15 +8,12 @@ type Location = { lat: number; lng: number; title?: string }
 type Props = {
   adminLocation: Location
   userLocations: Location[]
-
 }
-
 
 const adminSvg = `
 <svg xmlns="http://www.w3.org/2000/svg" fill="#3b82f6" viewBox="0 0 24 24" stroke="none" width="24" height="24">
   <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
 </svg>`.trim()
-
 
 const userSvg = `
 <svg xmlns="http://www.w3.org/2000/svg" fill="#ef4444" viewBox="0 0 24 24" stroke="none" width="24" height="24">
@@ -30,7 +27,6 @@ const LocationsMap: React.FC<Props> = ({ adminLocation, userLocations }) => {
   const mapRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    
     const initMap = async () => {
       const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY as string,
@@ -45,7 +41,6 @@ const LocationsMap: React.FC<Props> = ({ adminLocation, userLocations }) => {
         zoom: 12,
       })
 
-      
       new google.maps.Marker({
         position: adminLocation,
         map,
@@ -57,7 +52,6 @@ const LocationsMap: React.FC<Props> = ({ adminLocation, userLocations }) => {
           anchor: new google.maps.Point(24, 24),
         },
       })
-
 
       userLocations.forEach((loc) => {
         new google.maps.Marker({

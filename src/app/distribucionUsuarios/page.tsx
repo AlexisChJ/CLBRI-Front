@@ -11,9 +11,10 @@ const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true })
 
 
 export default function vistaMapa() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const pathname = usePathname()
     const isDistribucion = pathname === "/distribucionUsuarios"
-    const isLocaciones = pathname === "/locaciones"
+    const isLocaciones = pathname === "/usuariosLocaciones"
     const notificaciones: Notification[] = [{ description: "S" }]
         return (
                 <Sidebar>
@@ -38,7 +39,7 @@ export default function vistaMapa() {
                         </a>
 
                         <a
-                            href="/locaciones"
+                            href="/usuariosLocaciones"
                             className={`transition-transform duration-200 ${
                             isLocaciones
                                 ? "text-blue-600 scale-110"
@@ -50,7 +51,7 @@ export default function vistaMapa() {
                         </div>
                     }/>
 
-                    <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="flex flex-col lg:flex-row gap-15 w-full items-stretch justify-center">
                         <div className="w-full lg:w-1/2 flex flex-col gap-6">
                             <SearchBar />
                             <TablaAvanzada />

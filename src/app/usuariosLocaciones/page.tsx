@@ -8,12 +8,11 @@ import LocationsMap from "@/components/Mapa/mapa";
 import { Input } from "@/components/ui/input";
 import Buttons from "@/components/Buttons/Buttons";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
-import { Red_Hat_Display } from "next/font/google";
+import { Prompt } from "next/font/google";
 import { getLatLngFromAddress } from "@/lib/geocode";
 
-const redhat_700 = Red_Hat_Display({ weight: "700", subsets: ['latin'], preload: true })
+const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true })
 
-// Usuarios de ejemplo tipo "base de datos"
 const usuariosDB = [
   {
     id: "003",
@@ -35,7 +34,6 @@ const usuariosDB = [
   }
 ];
 
-// Usuarios ya agregados a la tabla
 const usuariosPrueba = [
   { id: "001", lugarTrabajo: "Av. Reforma 123, CDMX", nombre: "Juan Pérez" },
   { id: "002", lugarTrabajo: "Calle 10 #45, CDMX", nombre: "Ana López" },
@@ -63,6 +61,7 @@ export default function AdministerUsers() {
         }
         return t;
     }
+
     const filteredUsuarios = usuarios.filter(
         (u) =>
             u.nombre?.toLowerCase().includes(search.toLowerCase()) ||
@@ -70,7 +69,6 @@ export default function AdministerUsers() {
             u.id.includes(search)
     );
 
-    // Agrega usuario seleccionado de la lista
     const handleAdd = async () => {
         const user = usuariosDB.find(u => u.id === selectedUserId);
         if (!user) return;
@@ -78,14 +76,12 @@ export default function AdministerUsers() {
         const fullAddress = `${user.address}, ${user.city}, ${user.state}, ${user.country}, ${user.postalCode}`;
         const coords = await getLatLngFromAddress(fullAddress);
 
-        // Agrega a la tabla
         setUsuarios([...usuarios, {
             id: user.id,
             nombre: user.nombre,
             lugarTrabajo: fullAddress
         }]);
 
-        // Agrega al mapa si hay coordenadas
         if (coords) {
             setUserLocations([...userLocations, { lat: coords.lat, lng: coords.lng, title: user.nombre }]);
         }
@@ -104,7 +100,7 @@ export default function AdministerUsers() {
                     notificaciones={notificaciones}
                     onValueChange={() => {}}
                     center={
-                        <div className={`flex gap-6 text-lg font-semibold`}>
+                        <div className={`flex gap-6 text-lg font-semibold ${prompt.className}`}>
                             <a
                                 href="/distribucionUsuarios"
                                 className={`transition-transform duration-200 ${
@@ -129,59 +125,56 @@ export default function AdministerUsers() {
                     }
                 />
 
-                <div className="flex flex-col lg:flex-row gap-15 w-full items-stretch justify-center">
-                    <div className="w-full lg:w-1/2 flex flex-col gap-6">
-                        <div className="flex gap-4 items-center">
-                            {/* Botón para abrir el popup de token */}
-                            <div className="flex-1 basis-2/4 rounded-full">
+                    <div className="flex flex-col lg:flex-row gap-15 w-full items-stretch justify-center">
+                        <div className="w-full lg:w-1/2 flex flex-col gap-2 h-[500px] overflow-y-auto">
+                            <div className="flex gap-5 items-center mb-4">
+                            <div className="flex-1 basis-3/4 rounded-full">
                                 <Input
-                                    type="search"
-                                    placeholder="Buscar"
-                                    className="bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md w-full"
-                                    value={search}
-                                    onChange={e => setSearch(e.target.value)}
+                                type="search"
+                                placeholder="Buscar"
+                                className="bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md w-full"
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
                                 />
                             </div>
                             <div className="basis-1/4">
                                 <Buttons
-                                    color="register"
-                                    text="Generar Token"
-                                    className="w-full my-5"
-                                    onClick={() => setTokenPopupOpen(true)}
-                                />
-                            </div>
-                            {/* Botón para abrir el popup de agregar usuario */}
-                            <div className="basis-1/4">
-                                <Buttons
-                                    color="login"
-                                    text="Agregar Usuario"
-                                    className="w-full"
-                                    onClick={() => setPopupOpen(true)}
-                                />
-                            </div>
-                            
-                        </div>
-                        <TablaUsuarios usuarios={filteredUsuarios} />
-                    </div>
-
-                    <div className="w-full lg:w-[500px] h-[500px] shrink-0 overflow-hidden rounded-lg border shadow-md">
-                        <div className="w-full h-full">
-                            <LocationsMap
-                                adminLocation={{
-                                    lat: 19.284056,
-                                    lng: -99.135333,
-                                    title: undefined,
+                                color="register"
+                                text="Generar Token"
+                                className="w-full"
+                                onClick={() => {
+                                    setToken(generateToken());
+                                    setTokenPopupOpen(true);
                                 }}
-                                userLocations={userLocations}
+                                />
+                            </div>
+                            <div className="basis-1/4">
+                                <Buttons
+                                color="login"
+                                text="Agregar Usuario"
+                                className="w-full"
+                                onClick={() => setPopupOpen(true)}
+                                />
+                            </div>
+                            </div>
+                            <TablaUsuarios usuarios={filteredUsuarios} />
+                        </div>
+
+                        <div className="w-full lg:w-[500px] h-[500px] shrink-0 overflow-hidden rounded-lg border shadow-md">
+                            <LocationsMap
+                            adminLocation={{
+                                lat: 19.284056,
+                                lng: -99.135333,
+                                title: undefined,
+                            }}
+                            userLocations={userLocations}
                             />
                         </div>
                     </div>
-                </div>
 
-                {/* PopUpWindow para agregar usuario desde la lista */}
                 <PopUpWindow open={popupOpen} onClose={() => setPopupOpen(false)}>
                     <div className="m-5">
-                        <h3 className={`${redhat_700.className} text-[#3A70C3] text-center text-4xl m-5`}>
+                        <h3 className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}>
                             Agregar usuario
                         </h3>
                         <select
@@ -206,27 +199,17 @@ export default function AdministerUsers() {
                     </div>
                 </PopUpWindow>
 
-                {/* PopUpWindow para generar token */}
                 <PopUpWindow open={tokenPopupOpen} onClose={() => setTokenPopupOpen(false)}>
                     <div className="m-5">
-                        <h3 className={`${redhat_700.className} text-[#3A70C3] text-center text-4xl m-5`}>
-                            Generar Token
+                        <h3 className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}>
+                            Token Generado
                         </h3>
-                        <p className="text-center mb-4">
-                            Genera un token para autenticar a los usuarios en la aplicación.
-                        </p>
-                        <Input
-                            type="text"
-                            placeholder="Token generado"
-                            className="w-full mb-4"
-                            value={token}
-                            readOnly
-                        />
+                        <p className="text-center text-lg">{token}</p>
                         <Buttons
                             color="register"
-                            text="Generar Token"
-                            className="w-full"
-                            onClick={() => setToken(generateToken())}
+                            text="Cerrar"
+                            className="w-full mt-4"
+                            onClick={() => setTokenPopupOpen(false)}
                         />
                     </div>
                 </PopUpWindow>

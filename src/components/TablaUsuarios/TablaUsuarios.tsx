@@ -1,5 +1,7 @@
 "use client"
-
+import PopUpWindow from "@/components/PopUpWindow/PopupWindow"
+import { useState } from "react"
+import { motion } from "framer-motion"
 import {
   Table,
   TableBody,
@@ -9,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-
 import {
   Pagination,
   PaginationContent,
@@ -21,21 +22,10 @@ import {
 } from "@/components/ui/pagination"
 
 import { Red_Hat_Display, Zen_Maru_Gothic } from "next/font/google"
+import { Trash2, Pencil } from "lucide-react"
 
 const redHat = Red_Hat_Display({ weight: ["800"], subsets: ["latin"], preload: true })
 const zenMaru = Zen_Maru_Gothic({ weight: ["500"], subsets: ["latin"], preload: true })
-
-const EditIcon = () => (
-  <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-    <path d="M16.862 3.487a2.5 2.5 0 0 1 3.535 3.535l-11.01 11.01a2 2 0 0 1-.707.44l-4.01 1.337a.5.5 0 0 1-.632-.632l1.337-4.01a2 2 0 0 1 .44-.707l11.01-11.01Zm2.121 2.121-1.414-1.414-11.01 11.01-1.01 3.03 3.03-1.01 11.01-11.01Z" fill="#3b82f6"/>
-  </svg>
-)
-
-const DeleteIcon = () => (
-  <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-    <path d="M6 7h12M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V7h12Z" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-)
 
 type Usuario = {
   id: string;
@@ -44,42 +34,121 @@ type Usuario = {
 };
 
 const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
+  const [usuariosList, setUsuariosList] = useState<Usuario[]>(usuarios)
+  const [popupEditOpen, setPopupEditOpen] = useState(false)
+  const [popupDeleteOpen, setPopupDeleteOpen] = useState(false)
+  const [selectedUserIndex, setSelectedUserIndex] = useState<number | null>(null)
+  const [editLugarTrabajo, setEditLugarTrabajo] = useState("")
+
+  const handleEliminar = () => {
+    if (selectedUserIndex !== null) {
+      const nuevaLista = [...usuariosList]
+      nuevaLista.splice(selectedUserIndex, 1)
+      setUsuariosList(nuevaLista)
+      setPopupDeleteOpen(false)
+    }
+  }
+
+  const handleEditar = () => {
+    if (selectedUserIndex !== null) {
+      const nuevaLista = [...usuariosList]
+      nuevaLista[selectedUserIndex].lugarTrabajo = editLugarTrabajo
+      setUsuariosList(nuevaLista)
+      setPopupEditOpen(false)
+    }
+  }
+
   return (
     <div className="flex flex-col space-y-2 h-full w-full">
       <div className="w-full rounded-lg overflow-hidden shadow-sm border">
         <Table className="min-w-full table-auto">
-          <TableCaption>Lista de Usuarios</TableCaption>
+          <TableCaption>Lista de Usuarios de CLBRI</TableCaption>
           <TableHeader>
             <TableRow className="bg-blue-200 text-blue-800 hover:bg-blue-200">
               <TableHead className={`w-[100px] ${redHat.className}`}>ID</TableHead>
-              <TableHead className={`${redHat.className}`}>Lugar de trabajo</TableHead>
-              <TableHead className={`w-[80px] text-right ${redHat.className}`}></TableHead>
+              <TableHead className={redHat.className}>Lugar de trabajo</TableHead>
+              <TableHead className={`w-[80px] text-right ${redHat.className}`}>Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {usuarios.map((usuario, idx) => (
+            {usuariosList.map((usuario, idx) => (
               <TableRow className={zenMaru.className} key={idx}>
                 <TableCell className="font-medium">{usuario.id}</TableCell>
                 <TableCell>{usuario.lugarTrabajo}</TableCell>
-                <TableCell className="flex justify-end space-x-2">
-                  <button
-                    className="p-1 rounded hover:bg-blue-100 transition"
-                    aria-label="Editar"
+                <TableCell className="flex justify-end items-center gap-4 pr-4">
+                  <motion.button
+                    onClick={() => {
+                      setSelectedUserIndex(idx)
+                      setEditLugarTrabajo(usuario.lugarTrabajo)
+                      setPopupEditOpen(true)
+                    }}
+                    whileTap={{ scale: 0.9 }}
+                    whileHover={{ scale: 1.3 }}
+                    className="text-blue-600 hover:text-blue-800 transition duration-200"
                   >
-                    <EditIcon />
-                  </button>
-                  <button
-                    className="p-1 rounded hover:bg-red-100 transition"
-                    aria-label="Borrar"
+                    <Pencil className="w-4 h-4" />
+                  </motion.button>
+                  <motion.button
+                    onClick={() => {
+                      setSelectedUserIndex(idx)
+                      setPopupDeleteOpen(true)
+                    }}
+                    whileTap={{ scale: 0.9 }}
+                    whileHover={{ scale: 1.3 }}
+                    className="text-red-600 hover:text-red-800 transition duration-200"
                   >
-                    <DeleteIcon />
-                  </button>
+                    <Trash2 className="w-5 h-5" />
+                  </motion.button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
+
+      {/* Modal para Editar */}
+      <PopUpWindow open={popupEditOpen} onClose={() => setPopupEditOpen(false)}>
+        <h2 className="text-xl mb-4">Editar Lugar de Trabajo</h2>
+        <input
+          className="w-full border p-2 rounded mb-4"
+          value={editLugarTrabajo}
+          onChange={(e) => setEditLugarTrabajo(e.target.value)}
+        />
+        <div className="flex justify-end gap-2">
+          <button
+            className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded"
+            onClick={() => setPopupEditOpen(false)}
+          >
+            Cancelar
+          </button>
+          <button
+            className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded"
+            onClick={handleEditar}
+          >
+            Guardar
+          </button>
+        </div>
+      </PopUpWindow>
+
+      {/* Modal para Confirmar Eliminación */}
+      <PopUpWindow open={popupDeleteOpen} onClose={() => setPopupDeleteOpen(false)}>
+        <h2 className="text-xl mb-4">¿Eliminar este usuario?</h2>
+        <p className="mb-4">Esta acción no se puede deshacer.</p>
+        <div className="flex justify-end gap-2">
+          <button
+            className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded"
+            onClick={() => setPopupDeleteOpen(false)}
+          >
+            Cancelar
+          </button>
+          <button
+            className="bg-red-600 text-white hover:bg-red-700 px-4 py-2 rounded"
+            onClick={handleEliminar}
+          >
+            Eliminar
+          </button>
+        </div>
+      </PopUpWindow>
 
       <Pagination className="pb-4">
         <PaginationContent>
@@ -100,7 +169,7 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
         </PaginationContent>
       </Pagination>
     </div>
-  );
-};
+  )
+}
 
-export default TablaUsuarios;
+export default TablaUsuarios

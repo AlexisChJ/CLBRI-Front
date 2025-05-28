@@ -1,6 +1,5 @@
 import { Input } from "@/components/ui/input"
 import * as React from "react"
- 
 import {
   Select,
   SelectContent,
@@ -10,40 +9,71 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
- 
-export function SearchBar() {
+
+interface SearchBarProps {
+  searchText: string
+  onSearchTextChange: (val: string) => void
+  filterClasificacion: string
+  onFilterClasificacionChange: (val: string) => void
+  filterPrioridad: string
+  onFilterPrioridadChange: (val: string) => void
+}
+
+export function SearchBar({
+  searchText,
+  onSearchTextChange,
+  filterClasificacion,
+  onFilterClasificacionChange,
+  filterPrioridad,
+  onFilterPrioridadChange,
+}: SearchBarProps) {
   return (
     <div className="flex gap-4">
-      <Input type="search" placeholder="Buscar" 
-      className="bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md"/>
+      <Input 
+        type="search" 
+        placeholder="Buscar" 
+        className="bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md"
+        value={searchText}
+        onChange={e => onSearchTextChange(e.target.value)}
+      />
 
-      <Select>
-      <SelectTrigger className="w-[180px] bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md">
-        <SelectValue placeholder="Unidad" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Clasificación</SelectLabel>
-          <SelectItem value="embotellado">Embotellado</SelectItem>
-          <SelectItem value="enlatado">Enlatado</SelectItem>
-          <SelectItem value="perecederos">Perecederos</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+      <Select
+        value={filterClasificacion}
+        onValueChange={onFilterClasificacionChange}
+      >
+        <SelectTrigger className="w-[180px] bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md">
+          <SelectValue placeholder="Unidad" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Clasificación</SelectLabel>
+            <SelectItem value="all">Todas</SelectItem> 
+            <SelectItem value="PH">PH</SelectItem>
+            <SelectItem value="Sal">Sal</SelectItem>
+            <SelectItem value="embotellado">Embotellado</SelectItem>
+            <SelectItem value="enlatado">Enlatado</SelectItem>
+            <SelectItem value="perecederos">Perecederos</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
 
-    <Select>
-      <SelectTrigger className="w-[180px] bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md">
-        <SelectValue placeholder="Prioridad" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Prioridad</SelectLabel>
-          <SelectItem value="alta">Alta</SelectItem>
-          <SelectItem value="media">Media</SelectItem>
-          <SelectItem value="baja">Baja</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+      <Select
+        value={filterPrioridad}
+        onValueChange={onFilterPrioridadChange}
+      >
+        <SelectTrigger className="w-[180px] bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md">
+          <SelectValue placeholder="Prioridad" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Prioridad</SelectLabel>
+            <SelectItem value="all">Todas</SelectItem>
+            <SelectItem value="Alta">Alta</SelectItem>
+            <SelectItem value="Media">Media</SelectItem>
+            <SelectItem value="Baja">Baja</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </div>
-)
+  )
 }

@@ -6,12 +6,16 @@ import { SearchBar } from "@/components/SearchBar/SearchBar"
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada"
 import LocationsMap from "@/components/Mapa/mapa"
 import { Prompt } from "next/font/google"
+import { useState } from "react"
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true })
 
 
 export default function vistaMapa() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [searchText, setSearchText] = useState("")
+    const [filterClasificacion, setFilterClasificacion] = useState("")
+    const [filterPrioridad, setFilterPrioridad] = useState("")
     const pathname = usePathname()
     const isDistribucion = pathname === "/distribucionUsuarios"
     const isLocaciones = pathname === "/usuariosLocaciones"
@@ -53,8 +57,19 @@ export default function vistaMapa() {
 
                     <div className="flex flex-col lg:flex-row gap-15 w-full items-stretch justify-center">
                         <div className="w-full lg:w-1/2 flex flex-col gap-6">
-                            <SearchBar />
-                            <TablaAvanzada />
+                            <SearchBar
+                                searchText={searchText}
+                                onSearchTextChange={setSearchText}
+                                filterClasificacion={filterClasificacion}
+                                onFilterClasificacionChange={setFilterClasificacion}
+                                filterPrioridad={filterPrioridad}
+                                onFilterPrioridadChange={setFilterPrioridad}
+                                />
+                            <TablaAvanzada
+                                searchText={searchText}
+                                filterClasificacion={filterClasificacion}
+                                filterPrioridad={filterPrioridad}
+                            />
                         </div>
 
                         <div className="w-full lg:w-[500px] h-[500px] shrink-0 overflow-hidden rounded-lg border shadow-md">

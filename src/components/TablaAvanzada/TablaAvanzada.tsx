@@ -194,12 +194,12 @@ const TablaAvanzada = ({
           </TableCaption>
           <TableHeader>
             <TableRow className="bg-blue-200 text-blue-800 hover:bg-blue-200">
-              <TableHead className={`justify-center w-[15%] ${redHat.className}`}>Nombre</TableHead>
-              <TableHead className={redHat.className}>Clasificación</TableHead>
-              <TableHead className={redHat.className}>Fecha de llegada</TableHead>
-              <TableHead className={redHat.className}>Caducidad</TableHead>
-              <TableHead className={redHat.className}>Prioridad</TableHead>
-              <TableHead className={`justify-center w-[7%] ${redHat.className}`}>Acciones</TableHead>
+              <TableHead className={`justify-center w-[17%] ${redHat.className}`}>Nombre</TableHead>
+              <TableHead className={`justify-center w-[15%] ${redHat.className}`}>Clasificación</TableHead>
+              <TableHead className={`justify-center w-[22%] ${redHat.className}`}>Fecha de llegada</TableHead>
+              <TableHead className={`justify-center w-[22%] ${redHat.className}`}>Caducidad</TableHead>
+              <TableHead className={`justify-center w-[16%] ${redHat.className}`}>Prioridad</TableHead>
+              <TableHead className={`justify-center w-[8%] ${redHat.className}`}>Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <AnimatePresence mode="wait">
@@ -212,11 +212,11 @@ const TablaAvanzada = ({
             >
               {currentPageData.map((row, index) => (
                 <TableRow key={index}>
-                  <TableCell>{row.nombre}</TableCell>
-                  <TableCell>{row.clasificacion}</TableCell>
-                  <TableCell>{row.entrada}</TableCell>
-                  <TableCell>{row.caducidad}</TableCell>
-                  <TableCell>{row.prioridad}</TableCell>
+                  <TableCell className="whitespace-normal break-words">{row.nombre}</TableCell>
+                  <TableCell className="whitespace-normal break-words">{row.clasificacion}</TableCell>
+                  <TableCell className="whitespace-normal break-words">{row.entrada}</TableCell>
+                  <TableCell className="whitespace-normal break-words">{row.caducidad}</TableCell>
+                  <TableCell className="whitespace-normal break-words">{row.prioridad}</TableCell>
                   <TableCell className="flex justify-end items-center gap-4 pr-4">
                     <motion.button
                       onClick={() => iniciarEdicion(getOriginalIndex(index))}
@@ -261,7 +261,7 @@ const TablaAvanzada = ({
                   onClick={() => goToPage(pageNum)}
                   className={`cursor-pointer ${
                     currentPage === pageNum 
-                      ? "bg-blue-600 text-black" 
+                      ? "bg-blue-600 text-white hover:bg-blue-700" 
                       : "hover:bg-blue-100"
                   } ${redHat.className}`}
                 >

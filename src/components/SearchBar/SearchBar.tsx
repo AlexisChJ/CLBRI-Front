@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Zen_Maru_Gothic } from "next/font/google"
 
 interface SearchBarProps {
   searchText: string
@@ -18,6 +19,8 @@ interface SearchBarProps {
   filterPrioridad: string
   onFilterPrioridadChange: (val: string) => void
 }
+
+const zen_700 = Zen_Maru_Gothic({weight: "700", subsets: ['latin'], preload: true,})
 
 export function SearchBar({
   searchText,
@@ -32,7 +35,7 @@ export function SearchBar({
       <Input 
         type="search" 
         placeholder="Buscar" 
-        className="bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md"
+        className={`${ zen_700.className} bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-full`}
         value={searchText}
         onChange={e => onSearchTextChange(e.target.value)}
       />
@@ -41,7 +44,7 @@ export function SearchBar({
         value={filterClasificacion}
         onValueChange={onFilterClasificacionChange}
       >
-        <SelectTrigger className="w-[180px] bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md">
+        <SelectTrigger className={`${ zen_700.className} bg-white dark:bg-gray-800 border border-gray-600 rounded-full`}>
           <SelectValue placeholder="Unidad" />
         </SelectTrigger>
         <SelectContent>
@@ -61,7 +64,7 @@ export function SearchBar({
         value={filterPrioridad}
         onValueChange={onFilterPrioridadChange}
       >
-        <SelectTrigger className="w-[180px] bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md">
+        <SelectTrigger className={`${ zen_700.className} bg-white dark:bg-gray-800 border border-gray-600 rounded-full`}>
           <SelectValue placeholder="Prioridad" />
         </SelectTrigger>
         <SelectContent>

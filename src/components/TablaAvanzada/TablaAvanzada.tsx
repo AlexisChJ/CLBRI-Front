@@ -188,18 +188,18 @@ const TablaAvanzada = ({
       {/* Tabla */}
       <div className="w-full rounded-lg overflow-hidden shadow-sm border">
         <Table className="min-w-full table-auto">
-          <TableCaption>
+          {/* <TableCaption>
             Datos del Inventario de CLBRI - Página {currentPage} de {totalPages} 
             ({filteredRows.length} elementos total)
-          </TableCaption>
+          </TableCaption> */}
           <TableHeader>
-            <TableRow className="bg-blue-200 text-blue-800 hover:bg-blue-200">
-              <TableHead className={`justify-center w-[17%] ${redHat.className}`}>Nombre</TableHead>
-              <TableHead className={`justify-center w-[15%] ${redHat.className}`}>Clasificación</TableHead>
-              <TableHead className={`justify-center w-[22%] ${redHat.className}`}>Fecha de llegada</TableHead>
-              <TableHead className={`justify-center w-[22%] ${redHat.className}`}>Caducidad</TableHead>
-              <TableHead className={`justify-center w-[16%] ${redHat.className}`}>Prioridad</TableHead>
-              <TableHead className={`justify-center w-[8%] ${redHat.className}`}>Acciones</TableHead>
+            <TableRow className="bg-[#3A70C3] hover:bg-[#3A70C3]">
+              <TableHead className={`justify-center w-[17%] ${redHat.className} text-white`}>Nombre</TableHead>
+              <TableHead className={`justify-center w-[15%] ${redHat.className} text-white`}>Clasificación</TableHead>
+              <TableHead className={`justify-center w-[22%] ${redHat.className} text-white`}>Fecha de llegada</TableHead>
+              <TableHead className={`justify-center w-[22%] ${redHat.className} text-white`}>Caducidad</TableHead>
+              <TableHead className={`justify-center w-[16%] ${redHat.className} text-white`}>Prioridad</TableHead>
+              <TableHead className={`justify-center w-[8%] ${redHat.className} text-white`}>Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <AnimatePresence mode="wait">
@@ -211,7 +211,7 @@ const TablaAvanzada = ({
               transition={{ duration: 0.25 }}
             >
               {currentPageData.map((row, index) => (
-                <TableRow key={index}>
+                <TableRow className={zenMaru.className} key={index}>
                   <TableCell className="whitespace-normal break-words">{row.nombre}</TableCell>
                   <TableCell className="whitespace-normal break-words">{row.clasificacion}</TableCell>
                   <TableCell className="whitespace-normal break-words">{row.entrada}</TableCell>
@@ -221,8 +221,8 @@ const TablaAvanzada = ({
                     <motion.button
                       onClick={() => iniciarEdicion(getOriginalIndex(index))}
                       whileTap={{ scale: 0.9 }}
-                      whileHover={{ scale: 1.3 }}
-                      className="text-blue-600 hover:text-blue-800 transition duration-200"
+                      whileHover={{ scale: 1.5 }}
+                      className="text-black hover:text-[#3A70C3] transition-colors duration-200"
                     >
                       <Pencil className="w-4 h-4" />
                     </motion.button>
@@ -230,7 +230,7 @@ const TablaAvanzada = ({
                       onClick={() => iniciarEliminar(getOriginalIndex(index))}
                       whileTap={{ scale: 0.9 }}
                       whileHover={{ scale: 1.3 }}
-                      className="text-red-600 hover:text-red-800 transition duration-200"
+                      className="text-black hover:text-[#E30004] transition-colors duration-200"
                     >
                       <Trash2 className="w-5 h-5" />
                     </motion.button>
@@ -261,7 +261,7 @@ const TablaAvanzada = ({
                   onClick={() => goToPage(pageNum)}
                   className={`cursor-pointer ${
                     currentPage === pageNum 
-                      ? "bg-blue-600 text-white hover:bg-blue-700" 
+                      ? "bg-[#3A70C3] text-white hover:bg-[#3A70C3] hover:text-white" 
                       : "hover:bg-blue-100"
                   } ${redHat.className}`}
                 >

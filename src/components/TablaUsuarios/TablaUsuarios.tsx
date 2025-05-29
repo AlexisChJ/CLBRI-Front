@@ -73,12 +73,11 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
     <div className="flex flex-col space-y-2 h-full w-full">
       <div className="w-full rounded-lg overflow-hidden shadow-sm border">
         <Table className="min-w-full table-auto">
-          <TableCaption>Lista de Usuarios de CLBRI</TableCaption>
           <TableHeader>
-            <TableRow className="bg-blue-200 text-blue-800 hover:bg-blue-200">
-              <TableHead className={`w-[100px] ${redHat.className}`}>ID</TableHead>
-              <TableHead className={redHat.className}>Lugar de trabajo</TableHead>
-              <TableHead className={`w-[80px] text-right ${redHat.className}`}>Acciones</TableHead>
+            <TableRow className="bg-[#3A70C3] hover:bg-[#3A70C3]">
+              <TableHead className={`w-[10%] ${redHat.className} text-white`}>ID</TableHead>
+              <TableHead className={`w-[82%] ${redHat.className} text-white`}>Lugar de trabajo</TableHead>
+              <TableHead className={`w-[8%] ${redHat.className} text-white`}>Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -96,8 +95,8 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
                         setPopupEditOpen(true)
                       }}
                       whileTap={{ scale: 0.9 }}
-                      whileHover={{ scale: 1.3 }}
-                      className="text-blue-600 hover:text-blue-800 transition duration-200"
+                      whileHover={{ scale: 1.5 }}
+                      className="text-black hover:text-[#3A70C3] transition-colors duration-200"
                     >
                       <Pencil className="w-4 h-4" />
                     </motion.button>
@@ -108,7 +107,7 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
                       }}
                       whileTap={{ scale: 0.9 }}
                       whileHover={{ scale: 1.3 }}
-                      className="text-red-600 hover:text-red-800 transition duration-200"
+                      className="text-black hover:text-[#E30004] transition-colors duration-200"
                     >
                       <Trash2 className="w-5 h-5" />
                     </motion.button>
@@ -132,7 +131,7 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
           <button className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded" onClick={() => setPopupEditOpen(false)}>
             Cancelar
           </button>
-          <button className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded" onClick={handleEditar}>
+          <button className="bg-[#3A70C3] text-white hover:bg-[#3A70C3] px-4 py-2 rounded" onClick={handleEditar}>
             Guardar
           </button>
         </div>
@@ -168,7 +167,7 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
                 onClick={() => setCurrentPage(i + 1)}
                 className={`cursor-pointer ${
                   currentPage === i + 1
-                    ? "bg-blue-600 text-white"
+                    ? "bg-[#3A70C3] text-white hover:bg-[#3A70C3] hover:text-white"
                     : "hover:bg-blue-100"
                 } ${redHat.className}`}
               >

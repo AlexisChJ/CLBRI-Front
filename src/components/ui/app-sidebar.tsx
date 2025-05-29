@@ -8,6 +8,7 @@ import {
   PanelLeftClose,
   PanelRightClose,
   Network,
+  Route,
   Menu,
 } from "lucide-react"
 import { BlueLogo } from "../LogoAzul/logoAzul"
@@ -23,7 +24,8 @@ import {
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Inventario", url: "/inventario", icon: Menu },
-  { title: "Usuarios", url: "/distribucionUsuarios", icon: Network },
+  { title: "Distribución", url: "/distribucionUsuarios", icon: Network },
+  { title: "Locaciones", url: "/usuariosLocaciones", icon: Route },
   { title: "Perfil", url: "/perfil", icon: CircleUser },
 ]
 

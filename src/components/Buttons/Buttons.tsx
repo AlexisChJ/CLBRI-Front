@@ -12,7 +12,7 @@ type ButtonsProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const styleMap: Record<NonNullable<ButtonsProps["color"]>, string> = {
   login:    "bg-[#3A70C3] text-white hover:bg-[#21357C]",
-  register: "border border-[#3A70C3] border-2 bg-white text-[#3A70C3] hover:bg-[#E9EBEA]",
+  register: "border border-[#3A70C3] border-2 bg-white text-[#3A70C3] hover:bg-blue-100",
 }
 
 const zen_700 = Zen_Maru_Gothic({weight: "700", subsets: ["latin"], preload: true })

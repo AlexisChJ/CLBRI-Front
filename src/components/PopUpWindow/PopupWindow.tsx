@@ -12,9 +12,10 @@ type PopupWindowProps = {
   open: boolean
   onClose: () => void
   children: React.ReactNode
+  width?: string
 }
 
-export default function PopUpWindow({ open, onClose, children }: PopupWindowProps) {
+export default function PopUpWindow({ open, onClose, children, width }: PopupWindowProps) {
   return (
     <AnimatePresence>
       {open && (
@@ -41,7 +42,7 @@ export default function PopUpWindow({ open, onClose, children }: PopupWindowProp
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            className={`${redHat.className} relative bg-white rounded-lg shadow-lg z-10 w-full max-w-md mx-auto p-6`}
+            className={`${redHat.className} relative bg-white rounded-lg shadow-lg z-10 w-full ${width ?? "max-w-md"} mx-auto p-6`}
           >
             {/* Botón cerrar */}
             <button
@@ -59,7 +60,6 @@ export default function PopUpWindow({ open, onClose, children }: PopupWindowProp
                 />
               </svg>
             </button>
-
             {children}
           </motion.div>
         </motion.div>

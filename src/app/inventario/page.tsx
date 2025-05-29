@@ -1,20 +1,25 @@
 "use client"
 
 import { useState } from "react"
-import { NavBar, Notification } from "@/components/NavBar/NavBar"
+import { NavBar } from "@/components/NavBar/NavBar"
 import { SearchBar } from "@/components/SearchBar/SearchBar"
 import Sidebar from "@/components/SideBar/SideBar"
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada"
 import { Prompt } from "next/font/google"
+import { Notification } from "@/types/Notification"
+import { useAuth } from "@/providers/AuthProvider"
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true })
 
 export default function SitioTabla() {
+  const { user } = useAuth();
   const [searchText, setSearchText] = useState("")
   const [filterClasificacion, setFilterClasificacion] = useState("")
   const [filterPrioridad, setFilterPrioridad] = useState("")
 
   const notificaciones: Notification[] = [{ description: "S" }]
+
+  if (!user) return null;
 
   return (
     <Sidebar>

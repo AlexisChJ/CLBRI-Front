@@ -51,11 +51,10 @@ export function SearchBar({
           <SelectGroup>
             <SelectLabel>Clasificación</SelectLabel>
             <SelectItem value="all">Todas</SelectItem> 
-            <SelectItem value="PH">PH</SelectItem>
-            <SelectItem value="Sal">Sal</SelectItem>
-            <SelectItem value="embotellado">Embotellado</SelectItem>
-            <SelectItem value="enlatado">Enlatado</SelectItem>
-            <SelectItem value="perecederos">Perecederos</SelectItem>
+            <SelectItem value="Embotellado">Embotellado</SelectItem>
+            <SelectItem value="Enlatado">Enlatado</SelectItem>
+            <SelectItem value="Perecederos">Perecederos</SelectItem>
+            <SelectItem value="Otros">Otros</SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>

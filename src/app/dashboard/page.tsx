@@ -2,11 +2,10 @@
 import Carrusel from "@/components/Carrusel/Carrusel";
 import { LineChartComp } from "@/components/Chart/LineChart";
 import DataContainerDashboard from "@/components/DataContainerDashboard/DataContainerDashboard";
-import { NavBar, Notification } from "@/components/NavBar/NavBar";
+import { NavBar } from "@/components/NavBar/NavBar";
 import Sidebar from "@/components/SideBar/SideBar";
 import { TablaBasica } from "@/components/TablaBasica/TablaBasica";
-import { is } from "date-fns/locale";
-import { Prompt, Red_Hat_Display } from "next/font/google";
+import { Red_Hat_Display, Prompt } from "next/font/google";
 import { usePathname } from "next/navigation";
 import { months } from "@/lib/months";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
@@ -20,7 +19,9 @@ const redhat_700 = Red_Hat_Display({
 });
 
 export default function Dashboard() {
+  const { user } = useAuth();
   const pathname = usePathname();
+
   const isGeneral = pathname === "/dashboard";
   const isReportes = pathname === "/reportes";
   const notificaciones: Notification[] = [{ description: "S" }];
@@ -59,6 +60,7 @@ export default function Dashboard() {
                 Alimento Neto
               </h2>
               <DataContainerDashboard />
+              <Carrusel data={months} />
               <Carrusel data={months} />
             </div>
             <div className="">

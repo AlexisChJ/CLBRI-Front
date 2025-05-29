@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { NavBar, Notification } from "@/components/NavBar/NavBar";
+import { NavBar } from "@/components/NavBar/NavBar";
 import Sidebar from "@/components/SideBar/SideBar";
 import TablaUsuarios from "@/components/TablaUsuarios/TablaUsuarios";
 import LocationsMap from "@/components/Mapa/mapa";
@@ -10,7 +10,8 @@ import Buttons from "@/components/Buttons/Buttons";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
 import { Prompt } from "next/font/google";
 import { getLatLngFromAddress } from "@/lib/geocode";
-import { Zen_Maru_Gothic } from "next/font/google";
+import { Notification } from "@/types/Notification";
+import { useAuth } from "@/providers/AuthProvider";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 const zen_700 = Zen_Maru_Gothic({
@@ -128,15 +129,14 @@ const usuariosPrueba = [
 ];
 
 export default function AdministerUsers() {
-  const [popupOpen, setPopupOpen] = useState(false);
-  const [usuarios, setUsuarios] = useState(usuariosPrueba);
-  const [userLocations, setUserLocations] = useState<
-    { lat: number; lng: number; title: string }[]
-  >([]);
-  const [selectedUserId, setSelectedUserId] = useState("");
-  const [tokenPopupOpen, setTokenPopupOpen] = useState(false);
-  const [token, setToken] = useState("");
-  const [search, setSearch] = useState("");
+    const { user } = useAuth();
+    const [popupOpen, setPopupOpen] = useState(false);
+    const [usuarios, setUsuarios] = useState(usuariosPrueba);
+    const [userLocations, setUserLocations] = useState<{ lat: number; lng: number; title: string }[]>([]);
+    const [selectedUserId, setSelectedUserId] = useState("");
+    const [tokenPopupOpen, setTokenPopupOpen] = useState(false);
+    const [token, setToken] = useState("");
+    const [search, setSearch] = useState("");
 
   const pathname = usePathname();
   const isDistribucion = pathname === "/distribucionUsuarios";
@@ -183,9 +183,11 @@ export default function AdministerUsers() {
       ]);
     }
 
-    setPopupOpen(false);
-    setSelectedUserId("");
-  };
+        setPopupOpen(false);
+        setSelectedUserId("");
+    };
+
+    if (!user) return null;
 
   return (
     <Sidebar>

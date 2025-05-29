@@ -12,6 +12,7 @@ import { Prompt } from "next/font/google";
 import { getLatLngFromAddress } from "@/lib/geocode";
 import { Notification } from "@/types/Notification";
 import { useAuth } from "@/providers/AuthProvider";
+import { Zen_Maru_Gothic } from "next/font/google";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 const zen_700 = Zen_Maru_Gothic({

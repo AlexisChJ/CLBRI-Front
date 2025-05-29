@@ -10,6 +10,11 @@ import { usePathname } from "next/navigation";
 import { months } from "@/lib/months";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import { useState } from "react";
+import { useAuth } from "@/providers/AuthProvider";
+import { Notification } from "@/types/Notification";
+import { CalendarClock, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { parse, differenceInDays } from "date-fns";
+import { es } from "date-fns/locale";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 const redhat_700 = Red_Hat_Display({
@@ -18,6 +23,57 @@ const redhat_700 = Red_Hat_Display({
   preload: true,
 });
 
+const distribuciones = [
+  {
+    usuario: "Ana Chávez",
+    fecha: "24 de Abril, 2025",
+  },
+  {
+    usuario: "Adrián Gonzalez",
+    fecha: "23 de Abril, 2025",
+  },
+  {
+    usuario: "Rosa Pérez",
+    fecha: "23 de Abril, 2025",
+  },
+  {
+    usuario: "Axel Torres",
+    fecha: "22 de Abril, 2025",
+  },
+  {
+    usuario: "Luis Fernández",
+    fecha: "20 de Abril, 2025",
+  },
+];
+
+const menoresPerdidas = [
+  {
+    usuario: "Ana García",
+    icon: "down",
+    kg: "2,3 kg",
+  },
+  {
+    usuario: "Carlos López",
+    icon: "up",
+    kg: "3,1 kg",
+  },
+  {
+    usuario: "María Rodríguez",
+    icon: "up",
+    kg: "3,8 kg",
+  },
+  {
+    usuario: "Juan Pérez",
+    icon: "down",
+    kg: "4,2 kg",
+  },
+  {
+    usuario: "Sofia Martínez",
+    icon: "up",
+    kg: "4,7 kg",
+  },
+];
+
 export default function Dashboard() {
   const { user } = useAuth();
   const pathname = usePathname();
@@ -25,6 +81,14 @@ export default function Dashboard() {
   const isGeneral = pathname === "/dashboard";
   const isReportes = pathname === "/reportes";
   const notificaciones: Notification[] = [{ description: "S" }];
+
+  const getTendenciaIcon = (valor: string) => {
+    return valor === "up" ? (
+      <ArrowUpRight className="text-green-500 w-5 h-5" />
+    ) : (
+      <ArrowDownRight className="text-red-500 w-5 h-5" />
+    );
+  };
 
   const [searchText, setSearchText] = useState("");
   const [filterClasificacion, setFilterClasificacion] = useState("");
@@ -61,7 +125,6 @@ export default function Dashboard() {
               </h2>
               <DataContainerDashboard />
               <Carrusel data={months} />
-              <Carrusel data={months} />
             </div>
             <div className="">
               <h2
@@ -73,8 +136,29 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="w-2/5 h-auto px-5">
-            <TablaBasica />
-            <TablaBasica />
+            <TablaBasica
+              titulo="Menor Pérdida por Usuario"
+              encabezados={[
+                { label: "Usuario", key: "usuario", align: "left" },
+                {
+                  label: "",
+                  key: "icon",
+                  icono: (_valor, fila) => getTendenciaIcon(fila.icon),
+                  align: "center",
+                },
+                { label: "Pérdida", key: "kg", align: "right" },
+              ]}
+              datos={menoresPerdidas}
+            />
+
+            <TablaBasica
+              titulo="Distribución Reciente"
+              encabezados={[
+                { label: "Usuario", key: "usuario" },
+                { label: "Fecha", key: "fecha", align: "right" },
+              ]}
+              datos={distribuciones}
+            />
           </div>
         </div>
       </div>

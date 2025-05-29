@@ -32,7 +32,14 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   }, [user, loading, pathname, router]);
 
   // Está linea causa que cambiar entre pantallas haya una pequeña "espera".
-  if (loading) return <div>Cargando...</div>;
+  if (loading) {
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
+}
+
 
   return <>{children}</>;
 }

@@ -95,10 +95,6 @@ export function TablaBasica({
                       )}
                       {!icono && <span>{valor}</span>}
                     </div>
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
                   </TableCell>
                 );
               })}

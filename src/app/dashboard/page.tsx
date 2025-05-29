@@ -8,9 +8,7 @@ import { TablaBasica } from "@/components/TablaBasica/TablaBasica";
 import { Red_Hat_Display, Prompt } from "next/font/google";
 import { usePathname } from "next/navigation";
 import { months } from "@/lib/months";
-import { CalendarClock, ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { parse, differenceInDays } from "date-fns";
-import { es } from "date-fns/locale";
+import {ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { Notification } from "@/types/Notification";
 import { useAuth } from "@/providers/AuthProvider";
 

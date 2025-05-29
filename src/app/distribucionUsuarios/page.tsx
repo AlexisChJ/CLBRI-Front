@@ -1,6 +1,6 @@
-"use client"
+"use client";
 import { usePathname } from "next/navigation"
-import { NavBar, Notification } from "@/components/NavBar/NavBar"
+import { NavBar } from "@/components/NavBar/NavBar"
 import Sidebar from "@/components/SideBar/SideBar"
 import { SearchBar } from "@/components/SearchBar/SearchBar"
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada"
@@ -8,18 +8,25 @@ import LocationsMap from "@/components/Mapa/mapa"
 import { Prompt } from "next/font/google"
 import { useState } from "react"
 import Buttons from "@/components/Buttons/Buttons"
+import { Notification } from "@/types/Notification"
+import { useAuth } from "@/providers/AuthProvider";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true })
 
-export default function vistaMapa() {
+export default function VistaMapa() {
+    const { user } = useAuth();
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [searchText, setSearchText] = useState("")
-    const [filterClasificacion, setFilterClasificacion] = useState("")
-    const [filterPrioridad, setFilterPrioridad] = useState("")
-    const pathname = usePathname()
+    const [searchText, setSearchText] = useState("");
+    const [filterClasificacion, setFilterClasificacion] = useState("");
+    const [filterPrioridad, setFilterPrioridad] = useState("");
+    const pathname = usePathname();
+
     const isDistribucion = pathname === "/distribucionUsuarios"
     const isLocaciones = pathname === "/usuariosLocaciones"
     const notificaciones: Notification[] = [{ description: "S" }]
+
+    if (!user) return null;
+
         return (
                 <Sidebar>
                 <div id="tesss" className="p-5 flex flex-col gap-5 w-full min-h-screen overflow-y-auto">            

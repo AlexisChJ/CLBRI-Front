@@ -2,17 +2,12 @@
 
 import { Prompt } from "next/font/google";
 import NotificationSVG from "@/assets/notification.svg";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { Notification } from "@/types/Notification";
 
 const prompt_300 = Prompt({ weight: "300", subsets: ["latin"], preload: true })
 const prompt_500 = Prompt({ weight: "500", subsets: ["latin"], preload: true })
-
-export interface Notification {
-    description: string,
-    title?: string,
-    creationDate?: Date,
-}
 
 export interface NotificationIconProps {
     notifications: Notification[]

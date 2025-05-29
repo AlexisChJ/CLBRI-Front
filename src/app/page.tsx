@@ -5,10 +5,13 @@ import { BlueLogo } from "@/components/LogoAzul/logoAzul";
 import { PasswordInput } from "@/components/PasswordInput/PasswordInput";
 import { SocialMedia } from "@/components/SocialMedia/SocialMedia";
 import { TextInput } from "@/components/TextInput/TextInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Zen_Maru_Gothic } from "next/font/google";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { useAuth } from "@/providers/AuthProvider";
 
 const zen_500 = Zen_Maru_Gothic({
   weight: "500",
@@ -16,18 +19,37 @@ const zen_500 = Zen_Maru_Gothic({
   preload: true,
 });
 
-export default function Home() {
+export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const handleLogin = () => {
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.push("/dashboard");
+    }
+  }, [user, loading, router]);
+
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+
+  const handleLogin = async (e: React.FormEvent) => {
     //validación de correo y contraseña que después contectaremos al back
-    router.push("/dashboard");
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/dashboard");
+    } catch (err) {
+      setError("Credenciales Incorrectas");
+      console.error("Credenciales incorrectas.", err);
+    }
   };
 
   const handleSignUp = () => {
     router.push("/signUp");
   };
+
+  if (user || loading) return <div>Loading...</div>;
 
   return (
     <div className="flex">
@@ -60,6 +82,7 @@ export default function Home() {
             className=""
             onChange={(e) => setPassword(e.target.value)}
           />
+          {error && <p className="text-red-500">{error}</p>}
           <a
             href="https://www.dummies.com/book/technology/programming-web-design/general-programming-web-design/beginning-programming-all-in-one-for-dummies-2nd-edition-292091/"
             className={`${zen_500.className} underline text-[#9B9B9B] hover:text-[#3A70C3]`}

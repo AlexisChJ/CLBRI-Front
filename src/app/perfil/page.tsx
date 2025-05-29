@@ -1,20 +1,31 @@
 "use client"
-import { NavBar, Notification } from "@/components/NavBar/NavBar"
+import { NavBar } from "@/components/NavBar/NavBar"
 import { SearchBar } from "@/components/SearchBar/SearchBar"
 import Sidebar from "@/components/SideBar/SideBar"
 import { Prompt } from "next/font/google"
 import ProfileContainer from "@/components/ProfileContainer/ProfileContainer"
 import { useRouter } from "next/navigation"
 import Buttons from "@/components/Buttons/Buttons"
+import { signOut } from "firebase/auth"
+import { auth } from "@/lib/firebase"
+import { Notification } from "@/types/Notification"
+import { useAuth } from "@/providers/AuthProvider"
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true })
 
 export default function Perfil() {
-    const notificaciones: Notification[] = [{ description: "S" }]
-    const router = useRouter()
+    const { user } = useAuth();
+    const router = useRouter();
+
+    const notificaciones: Notification[] = [{ description: "S" }];
+
     const handleLogout = () => {
-        router.push("/")
-    }
+        signOut(auth);
+        router.push("/");
+    };
+
+    if (!user) return null;
+
     return (
         <Sidebar>
             <div className="flex flex-1 flex-col p-5 gap-5 h-screen overflow-y-auto">

@@ -2,22 +2,29 @@
 import Carrusel from "@/components/Carrusel/Carrusel";
 import { LineChartComp } from "@/components/Chart/LineChart";
 import DataContainerDashboard from "@/components/DataContainerDashboard/DataContainerDashboard";
-import { NavBar, Notification } from "@/components/NavBar/NavBar";
+import { NavBar } from "@/components/NavBar/NavBar";
 import Sidebar from "@/components/SideBar/SideBar";
 import { TablaBasica } from "@/components/TablaBasica/TablaBasica";
 import { is } from "date-fns/locale";
 import { Prompt, Red_Hat_Display } from "next/font/google";
 import { usePathname } from "next/navigation";
 import { months } from "@/lib/months";
+import { Notification } from "@/types/Notification";
+import { useAuth } from "@/providers/AuthProvider";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 const redhat_700 = Red_Hat_Display({weight: "700", subsets: ['latin'], preload: true,})
 
 export default function Dashboard() {
+  const { user } = useAuth();
   const pathname = usePathname();
+
   const isGeneral = pathname === "/dashboard";
   const isReportes = pathname === "/reportes";
   const notificaciones: Notification[] = [{ description: "S" }];
+
+  if (!user) return null;
+
   return (
     <Sidebar>
       <div

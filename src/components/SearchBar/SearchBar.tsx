@@ -42,17 +42,16 @@ export function SearchBar({
         onValueChange={onFilterClasificacionChange}
       >
         <SelectTrigger className="w-[180px] bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-md">
-          <SelectValue placeholder="Unidad" />
+          <SelectValue placeholder="Clasificación" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Clasificación</SelectLabel>
             <SelectItem value="all">Todas</SelectItem> 
-            <SelectItem value="PH">PH</SelectItem>
-            <SelectItem value="Sal">Sal</SelectItem>
-            <SelectItem value="embotellado">Embotellado</SelectItem>
-            <SelectItem value="enlatado">Enlatado</SelectItem>
-            <SelectItem value="perecederos">Perecederos</SelectItem>
+            <SelectItem value="Embotellado">Embotellado</SelectItem>
+            <SelectItem value="Enlatado">Enlatado</SelectItem>
+            <SelectItem value="Perecederos">Perecederos</SelectItem>
+            <SelectItem value="Otros">Otros</SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>

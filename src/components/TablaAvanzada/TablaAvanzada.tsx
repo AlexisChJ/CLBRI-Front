@@ -43,27 +43,27 @@ const TablaAvanzada = ({
   filterPrioridad,
 }: TablaAvanzadaProps) => {
   const [rows, setRows] = useState([
-    { nombre: "Ácido Clorhídrico", clasificacion: "Ácido", entrada: "10-enero-2024", caducidad: "10-enero-2027", prioridad: "Alta" },
-    { nombre: "Sulfato de Cobre", clasificacion: "Sal", entrada: "05-marzo-2023", caducidad: "05-marzo-2026", prioridad: "Media" },
-    { nombre: "Etanol 96%", clasificacion: "Solvente", entrada: "22-febrero-2025", caducidad: "22-febrero-2028", prioridad: "Alta" },
-    { nombre: "Hidróxido de Sodio", clasificacion: "Base", entrada: "01-abril-2024", caducidad: "01-abril-2027", prioridad: "Alta" },
-    { nombre: "Agua Destilada", clasificacion: "Solvente", entrada: "15-junio-2023", caducidad: "15-junio-2026", prioridad: "Baja" },
-    { nombre: "Permanganato de Potasio", clasificacion: "Reactivo", entrada: "28-septiembre-2024", caducidad: "28-septiembre-2027", prioridad: "Media" },
-    { nombre: "Glucosa", clasificacion: "Estándar", entrada: "03-julio-2023", caducidad: "03-julio-2026", prioridad: "Media" },
-    { nombre: "Nitrato de Plata", clasificacion: "Sal", entrada: "12-diciembre-2024", caducidad: "12-diciembre-2027", prioridad: "Alta" },
-    { nombre: "Cloruro de Bario", clasificacion: "Reactivo", entrada: "18-noviembre-2023", caducidad: "18-noviembre-2026", prioridad: "Baja" },
-    { nombre: "Buffer pH 7.0", clasificacion: "PH", entrada: "07-octubre-2024", caducidad: "07-octubre-2026", prioridad: "Alta" },
-    { nombre: "Acetona", clasificacion: "Solvente", entrada: "20-mayo-2023", caducidad: "20-mayo-2026", prioridad: "Media" },
-    { nombre: "Ácido Nítrico", clasificacion: "Ácido", entrada: "09-agosto-2024", caducidad: "09-agosto-2027", prioridad: "Alta" },
-    { nombre: "Yoduro de Potasio", clasificacion: "Sal", entrada: "25-enero-2025", caducidad: "25-enero-2028", prioridad: "Media" },
-    { nombre: "Tiosulfato de Sodio", clasificacion: "Reactivo", entrada: "14-marzo-2023", caducidad: "14-marzo-2026", prioridad: "Baja" },
-    { nombre: "Buffer pH 4.0", clasificacion: "PH", entrada: "30-abril-2024", caducidad: "30-abril-2026", prioridad: "Media" },
-    { nombre: "Metanol", clasificacion: "Solvente", entrada: "02-julio-2023", caducidad: "02-julio-2026", prioridad: "Alta" },
-    { nombre: "Fenolftaleína", clasificacion: "Indicador", entrada: "11-septiembre-2024", caducidad: "11-septiembre-2027", prioridad: "Media" },
-    { nombre: "Dicromato de Potasio", clasificacion: "Reactivo", entrada: "06-diciembre-2023", caducidad: "06-diciembre-2026", prioridad: "Baja" },
-    { nombre: "Cloruro de Magnesio", clasificacion: "Sal", entrada: "23-octubre-2024", caducidad: "23-octubre-2027", prioridad: "Media" },
-    { nombre: "Ácido Acético Glacial", clasificacion: "Ácido", entrada: "17-febrero-2025", caducidad: "17-febrero-2028", prioridad: "Alta" }
-  ]);
+    { nombre: "Agua purificada", clasificacion: "Embotellado", entrada: "15-mayo-2025", caducidad: "15-mayo-2027", prioridad: "Baja" },
+    { nombre: "Jugo de naranja", clasificacion: "Embotellado", entrada: "01-abril-2025", caducidad: "01-octubre-2025", prioridad: "Media" },
+    { nombre: "Leche UHT", clasificacion: "Embotellado", entrada: "10-marzo-2025", caducidad: "10-septiembre-2025", prioridad: "Media" },
+    { nombre: "Aceite de oliva", clasificacion: "Embotellado", entrada: "20-enero-2025", caducidad: "20-enero-2027", prioridad: "Baja" },
+    { nombre: "Salsa de tomate", clasificacion: "Embotellado", entrada: "05-febrero-2025", caducidad: "05-febrero-2026", prioridad: "Media" },
+    { nombre: "Atún enlatado", clasificacion: "Enlatado", entrada: "01-julio-2024", caducidad: "01-julio-2027", prioridad: "Media" },
+    { nombre: "Maíz enlatado", clasificacion: "Enlatado", entrada: "10-junio-2024", caducidad: "10-junio-2027", prioridad: "Baja" },
+    { nombre: "Frijoles refritos enlatados", clasificacion: "Enlatado", entrada: "25-marzo-2025", caducidad: "25-marzo-2028", prioridad: "Baja" },
+    { nombre: "Sopa de champiñones enlatada", clasificacion: "Enlatado", entrada: "12-abril-2025", caducidad: "12-abril-2027", prioridad: "Media" },
+    { nombre: "Duraznos en almíbar enlatados", clasificacion: "Enlatado", entrada: "18-enero-2025", caducidad: "18-enero-2028", prioridad: "Baja" },
+    { nombre: "Manzanas", clasificacion: "Perecedero", entrada: "28-mayo-2025", caducidad: "11-junio-2025", prioridad: "Alta" },
+    { nombre: "Pechuga de pollo", clasificacion: "Perecedero", entrada: "28-mayo-2025", caducidad: "31-mayo-2025", prioridad: "Alta" },
+    { nombre: "Lechuga", clasificacion: "Perecedero", entrada: "28-mayo-2025", caducidad: "04-junio-2025", prioridad: "Alta" },
+    { nombre: "Huevos", clasificacion: "Perecedero", entrada: "20-mayo-2025", caducidad: "20-junio-2025", prioridad: "Media" },
+    { nombre: "Yogur", clasificacion: "Perecedero", entrada: "25-mayo-2025", caducidad: "08-junio-2025", prioridad: "Alta" },
+    { nombre: "Pasta seca", clasificacion: "Otro", entrada: "01-enero-2025", caducidad: "01-enero-2028", prioridad: "Baja" },
+    { nombre: "Arroz", clasificacion: "Otro", entrada: "10-febrero-2025", caducidad: "10-febrero-2029", prioridad: "Baja" },
+    { nombre: "Azúcar", clasificacion: "Otro", entrada: "15-marzo-2025", caducidad: "Sin caducidad", prioridad: "Baja" },
+    { nombre: "Café molido", clasificacion: "Otro", entrada: "20-abril-2025", caducidad: "20-octubre-2025", prioridad: "Media" },
+    { nombre: "Galletas", clasificacion: "Otro", entrada: "05-mayo-2025", caducidad: "05-noviembre-2025", prioridad: "Media" }
+]);
 
   const [confirmDeleteIndex, setConfirmDeleteIndex] = useState<number | null>(null)
   const [editIndex, setEditIndex] = useState<number | null>(null)
@@ -261,8 +261,8 @@ const TablaAvanzada = ({
                   onClick={() => goToPage(pageNum)}
                   className={`cursor-pointer ${
                     currentPage === pageNum 
-                      ? "bg-blue-600 text-white hover:bg-blue-700" 
-                      : "hover:bg-blue-100"
+                      ? "bg-blue-200 text-white hover:blue-100" 
+                      : "hover:bg-blue-50"
                   } ${redHat.className}`}
                 >
                   {pageNum}

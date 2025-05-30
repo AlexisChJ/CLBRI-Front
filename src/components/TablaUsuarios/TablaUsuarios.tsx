@@ -1,27 +1,12 @@
 "use client"
-import PopUpWindow from "@/components/PopUpWindow/PopupWindow"
+
 import { useState } from "react"
-import { motion } from "framer-motion"
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
 import { Red_Hat_Display, Zen_Maru_Gothic } from "next/font/google"
-import { Trash2, Pencil } from "lucide-react"
+import PopUpWindow from "@/components/PopUpWindow/PopupWindow"
+import { Pencil, Trash2 } from "lucide-react"
 
 const redHat = Red_Hat_Display({ weight: ["800"], subsets: ["latin"], preload: true })
 const zenMaru = Zen_Maru_Gothic({ weight: ["500"], subsets: ["latin"], preload: true })
@@ -29,43 +14,42 @@ const zenMaru = Zen_Maru_Gothic({ weight: ["500"], subsets: ["latin"], preload: 
 type Usuario = {
   id: string;
   lugarTrabajo: string;
-  nombre?: string;
+  nombre: string;
 };
 
-const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
-  const [usuariosList, setUsuariosList] = useState<Usuario[]>(usuarios)
+type Props = {
+  usuarios: Usuario[];
+  setUsuarios: React.Dispatch<React.SetStateAction<Usuario[]>>;
+  userLocations: { lat: number; lng: number; title: string }[];
+  setUserLocations: React.Dispatch<React.SetStateAction<{ lat: number; lng: number; title: string }[]>>;
+};
+
+const TablaUsuarios = ({ usuarios, setUsuarios, userLocations, setUserLocations }: Props) => {
   const [popupEditOpen, setPopupEditOpen] = useState(false)
   const [popupDeleteOpen, setPopupDeleteOpen] = useState(false)
   const [selectedUserIndex, setSelectedUserIndex] = useState<number | null>(null)
   const [editLugarTrabajo, setEditLugarTrabajo] = useState("")
 
-  // Paginación
-  const rowsPerPage = 10
-  const [currentPage, setCurrentPage] = useState(1)
-  const totalPages = Math.ceil(usuariosList.length / rowsPerPage)
-  const startIndex = (currentPage - 1) * rowsPerPage
-  const currentUsers = usuariosList.slice(startIndex, startIndex + rowsPerPage)
-
   const handleEliminar = () => {
     if (selectedUserIndex !== null) {
-      const nuevaLista = [...usuariosList]
-      nuevaLista.splice(selectedUserIndex, 1)
-      setUsuariosList(nuevaLista)
-      setPopupDeleteOpen(false)
+      const nuevaLista = [...usuarios];
+      const usuarioEliminado = nuevaLista[selectedUserIndex];
 
-      // Asegura que la página no quede vacía tras eliminar
-      if ((nuevaLista.length <= startIndex) && currentPage > 1) {
-        setCurrentPage(currentPage - 1)
-      }
+      nuevaLista.splice(selectedUserIndex, 1);
+      setUsuarios(nuevaLista);
+
+      // Elimina también el marcador del mapa
+      setUserLocations(userLocations.filter(loc => loc.title !== usuarioEliminado.nombre));
+      setPopupDeleteOpen(false);
     }
   }
 
   const handleEditar = () => {
     if (selectedUserIndex !== null) {
-      const nuevaLista = [...usuariosList]
-      nuevaLista[selectedUserIndex].lugarTrabajo = editLugarTrabajo
-      setUsuariosList(nuevaLista)
-      setPopupEditOpen(false)
+      const nuevaLista = [...usuarios];
+      nuevaLista[selectedUserIndex].lugarTrabajo = editLugarTrabajo;
+      setUsuarios(nuevaLista);
+      setPopupEditOpen(false);
     }
   }
 
@@ -73,6 +57,7 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
     <div className="flex flex-col space-y-2 h-full w-full">
       <div className="w-full rounded-lg overflow-hidden shadow-sm border">
         <Table className="min-w-full table-auto">
+          <TableCaption>Lista de Usuarios</TableCaption>
           <TableHeader>
             <TableRow className="bg-[#3A70C3] hover:bg-[#3A70C3]">
               <TableHead className={`w-[10%] ${redHat.className} text-white`}>ID</TableHead>
@@ -81,45 +66,40 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {currentUsers.map((usuario, idx) => {
-              const realIndex = startIndex + idx
-              return (
-                <TableRow className={zenMaru.className} key={usuario.id}>
-                  <TableCell className="font-medium">{usuario.id}</TableCell>
-                  <TableCell>{usuario.lugarTrabajo}</TableCell>
-                  <TableCell className="flex justify-end items-center gap-4 pr-4">
-                    <motion.button
-                      onClick={() => {
-                        setSelectedUserIndex(realIndex)
-                        setEditLugarTrabajo(usuario.lugarTrabajo)
-                        setPopupEditOpen(true)
-                      }}
-                      whileTap={{ scale: 0.9 }}
-                      whileHover={{ scale: 1.5 }}
-                      className="text-black hover:text-[#3A70C3] transition-colors duration-200"
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </motion.button>
-                    <motion.button
-                      onClick={() => {
-                        setSelectedUserIndex(realIndex)
-                        setPopupDeleteOpen(true)
-                      }}
-                      whileTap={{ scale: 0.9 }}
-                      whileHover={{ scale: 1.3 }}
-                      className="text-black hover:text-[#E30004] transition-colors duration-200"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </motion.button>
-                  </TableCell>
-                </TableRow>
-              )
-            })}
+            {usuarios.map((usuario, idx) => (
+              <TableRow className={zenMaru.className} key={usuario.id}>
+                <TableCell className="font-medium">{usuario.id}</TableCell>
+                <TableCell>{usuario.lugarTrabajo}</TableCell>
+                <TableCell className="flex justify-end space-x-2 pr-4">
+                  <button
+                    onClick={() => {
+                      setSelectedUserIndex(idx);
+                      setEditLugarTrabajo(usuario.lugarTrabajo);
+                      setPopupEditOpen(true);
+                    }}
+                    className="text-blue-600 hover:text-blue-800 transition"
+                    aria-label="Editar"
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedUserIndex(idx);
+                      setPopupDeleteOpen(true);
+                    }}
+                    className="text-red-600 hover:text-red-800 transition"
+                    aria-label="Borrar"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>
 
-      {/* Modal para Editar */}
+      {/* Pop-up de Editar */}
       <PopUpWindow open={popupEditOpen} onClose={() => setPopupEditOpen(false)}>
         <h2 className="text-xl mb-4">Editar Lugar de Trabajo</h2>
         <input
@@ -137,7 +117,7 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
         </div>
       </PopUpWindow>
 
-      {/* Modal para Confirmar Eliminación */}
+      {/* Pop-up de Eliminar */}
       <PopUpWindow open={popupDeleteOpen} onClose={() => setPopupDeleteOpen(false)}>
         <h2 className="text-xl mb-4">¿Eliminar este usuario?</h2>
         <p className="mb-4">Esta acción no se puede deshacer.</p>
@@ -150,46 +130,6 @@ const TablaUsuarios = ({ usuarios }: { usuarios: Usuario[] }) => {
           </button>
         </div>
       </PopUpWindow>
-
-      {/* Paginación dinámica */}
-      <Pagination className={`pb-4 ${redHat.className}`}>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-            />
-          </PaginationItem>
-
-          {Array.from({ length: totalPages }, (_, i) => (
-            <PaginationItem key={i}>
-              <PaginationLink
-                onClick={() => setCurrentPage(i + 1)}
-                className={`cursor-pointer ${
-                  currentPage === i + 1
-                    ? "bg-[#3A70C3] text-white hover:bg-[#3A70C3] hover:text-white"
-                    : "hover:bg-blue-100"
-                } ${redHat.className}`}
-              >
-                {i + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-
-          {totalPages > 5 && currentPage < totalPages - 2 && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-          )}
-
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-              className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
     </div>
   )
 }

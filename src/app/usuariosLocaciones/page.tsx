@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { usePathname } from "next/navigation";
 import { NavBar } from "@/components/NavBar/NavBar";
 import Sidebar from "@/components/SideBar/SideBar";
 import TablaUsuarios from "@/components/TablaUsuarios/TablaUsuarios";
@@ -8,11 +7,10 @@ import LocationsMap from "@/components/Mapa/mapa";
 import { Input } from "@/components/ui/input";
 import Buttons from "@/components/Buttons/Buttons";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
-import { Prompt } from "next/font/google";
+import { Prompt, Zen_Maru_Gothic } from "next/font/google";
 import { getLatLngFromAddress } from "@/lib/geocode";
 import { Notification } from "@/types/Notification";
 import { useAuth } from "@/providers/AuthProvider";
-import { Zen_Maru_Gothic } from "next/font/google";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 const zen_700 = Zen_Maru_Gothic({
@@ -40,126 +38,123 @@ const usuariosDB = [
     country: "México",
     postalCode: "44100",
   },
-];
-
-const usuariosPrueba = [
-  { id: "001", lugarTrabajo: "Av. Reforma 123, CDMX", nombre: "Juan Pérez" },
-  { id: "002", lugarTrabajo: "Calle 10 #45, CDMX", nombre: "Ana López" },
-  {
-    id: "003",
-    lugarTrabajo: "Blvd. Constituyentes 50, Querétaro",
-    nombre: "Carlos García",
-  },
-  {
-    id: "004",
-    lugarTrabajo: "Prol. Montejo 200, Mérida",
-    nombre: "Sofía Rodríguez",
-  },
   {
     id: "005",
-    lugarTrabajo: "Av. Insurgentes Sur 800, CDMX",
-    nombre: "Luis Hernández",
+    nombre: "María López",
+    address: "Calle 5 de Mayo 150",
+    city: "Puebla",
+    state: "Puebla",
+    country: "México",
+    postalCode: "72000",
   },
   {
     id: "006",
-    lugarTrabajo: "Miguel Alemán 30, Monterrey",
-    nombre: "Valeria Díaz",
+    nombre: "Juan Pérez",
+    address: "Av. Universidad 300",
+    city: "Monterrey",
+    state: "Nuevo León",
+    country: "México",
+    postalCode: "64000",
   },
   {
     id: "007",
-    lugarTrabajo: "Paseo de la Reforma 250, CDMX",
-    nombre: "Ricardo Torres",
+    nombre: "Ana Hernández",
+    address: "Blvd. Díaz Ordaz 100",
+    city: "Tijuana",
+    state: "Baja California",
+    country: "México",
+    postalCode: "22010",
   },
   {
     id: "008",
-    lugarTrabajo: "Av. Juárez 15, Guadalajara",
-    nombre: "Gabriela Castro",
+    nombre: "Miguel Sánchez",
+    address: "Calle Reforma 250",
+    city: "Mérida",
+    state: "Yucatán",
+    country: "México",
+    postalCode: "97000",
   },
   {
     id: "009",
-    lugarTrabajo: "Calle 5 de Mayo 100, Puebla",
-    nombre: "Fernando Vargas",
+    nombre: "Laura Gómez",
+    address: "Av. Central 400",
+    city: "Toluca",
+    state: "Estado de México",
+    country: "México",
+    postalCode: "50000",
   },
   {
     id: "010",
-    lugarTrabajo: "Av. Universidad 600, CDMX",
-    nombre: "Elena Morales",
+    nombre: "Pedro Castillo",
+    address: "Calle Hidalgo 75",
+    city: "Querétaro",
+    state: "Querétaro",
+    country: "México",
+    postalCode: "76000",
   },
   {
     id: "011",
-    lugarTrabajo: "Bosque de Ciruelos 160, CDMX",
-    nombre: "Pablo Ruiz",
+    nombre: "Sofía Morales",
+    address: "Av. Morelos 180",
+    city: "Cuernavaca",
+    state: "Morelos",
+    country: "México",
+    postalCode: "62000",
   },
   {
     id: "012",
-    lugarTrabajo: "Calzada del Valle 120, Monterrey",
-    nombre: "Andrea Salazar",
+    nombre: "Jorge Ruiz",
+    address: "Calle Independencia 60",
+    city: "León",
+    state: "Guanajuato",
+    country: "México",
+    postalCode: "37000",
   },
   {
     id: "013",
-    lugarTrabajo: "Av. Patria 900, Guadalajara",
-    nombre: "Diego Jiménez",
+    nombre: "Patricia Fernández",
+    address: "Av. Colón 500",
+    city: "Veracruz",
+    state: "Veracruz",
+    country: "México",
+    postalCode: "91700",
   },
   {
     id: "014",
-    lugarTrabajo: "Calle Madero 45, San Luis Potosí",
-    nombre: "Mariana Rojas",
+    nombre: "Ricardo Mendoza",
+    address: "Calle Zaragoza 120",
+    city: "San Luis Potosí",
+    state: "San Luis Potosí",
+    country: "México",
+    postalCode: "78000",
   },
-  {
-    id: "015",
-    lugarTrabajo: "Vasco de Quiroga 300, CDMX",
-    nombre: "Jorge Guzmán",
-  },
-  {
-    id: "016",
-    lugarTrabajo: "Circuito Interior 70, CDMX",
-    nombre: "Claudia Blanco",
-  },
-  {
-    id: "017",
-    lugarTrabajo: "Benito Juárez 500, Cancún",
-    nombre: "Roberto Flores",
-  },
-  {
-    id: "018",
-    lugarTrabajo: "Av. Tecnológico 10, Querétaro",
-    nombre: "Isabel Núñez",
-  },
-  { id: "019", lugarTrabajo: "Santa Fe 100, CDMX", nombre: "Héctor Maldonado" },
-  { id: "020", lugarTrabajo: "Periférico Sur 400, CDMX", nombre: "Laura Soto" },
 ];
 
 export default function AdministerUsers() {
-    const { user } = useAuth();
-    const [popupOpen, setPopupOpen] = useState(false);
-    const [usuarios, setUsuarios] = useState(usuariosPrueba);
-    const [userLocations, setUserLocations] = useState<{ lat: number; lng: number; title: string }[]>([]);
-    const [selectedUserId, setSelectedUserId] = useState("");
-    const [tokenPopupOpen, setTokenPopupOpen] = useState(false);
-    const [token, setToken] = useState("");
-    const [search, setSearch] = useState("");
+  const { user } = useAuth();
+  const [popupOpen, setPopupOpen] = useState(false);
+  const [usuarios, setUsuarios] = useState<{ id: string; nombre: string; lugarTrabajo: string }[]>([]);
+  const [userLocations, setUserLocations] = useState<{ lat: number; lng: number; title: string }[]>([]);
+  const [selectedUserId, setSelectedUserId] = useState("");
+  const [tokenPopupOpen, setTokenPopupOpen] = useState(false);
+  const [token, setToken] = useState("");
+  const [search, setSearch] = useState("");
 
-  const pathname = usePathname();
-  const isDistribucion = pathname === "/distribucionUsuarios";
-  const isLocaciones = pathname === "/usuariosLocaciones";
   const notificaciones: Notification[] = [{ description: "S" }];
 
   function generateToken(length = 12) {
-    const chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let t = "";
-    for (let i = 0; i < length; i++) {
-      t += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return t;
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
   }
 
   const filteredUsuarios = usuarios.filter(
     (u) =>
-      u.nombre?.toLowerCase().includes(search.toLowerCase()) ||
+      u.nombre.toLowerCase().includes(search.toLowerCase()) ||
       u.lugarTrabajo.toLowerCase().includes(search.toLowerCase()) ||
       u.id.includes(search)
   );
+
+  const usuariosDisponibles = usuariosDB.filter(dbUser => !usuarios.some(u => u.id === dbUser.id));
 
   const handleAdd = async () => {
     const user = usuariosDB.find((u) => u.id === selectedUserId);
@@ -184,18 +179,15 @@ export default function AdministerUsers() {
       ]);
     }
 
-        setPopupOpen(false);
-        setSelectedUserId("");
-    };
+    setPopupOpen(false);
+    setSelectedUserId("");
+  };
 
-    if (!user) return null;
+  if (!user) return null;
 
   return (
     <Sidebar>
-      <div
-        id="tesss"
-        className="p-5 flex flex-col gap-5 w-full min-h-screen overflow-y-auto"
-      >
+      <div id="tesss" className="p-5 flex flex-col gap-5 w-full min-h-screen overflow-y-auto">
         <NavBar
           title="Locaciones"
           opts={[]}
@@ -231,7 +223,12 @@ export default function AdministerUsers() {
               onChange={(e) => setSearch(e.target.value)}
             />
             <div className="flex-1 overflow-hidden">
-              <TablaUsuarios usuarios={filteredUsuarios} />
+              <TablaUsuarios
+                usuarios={filteredUsuarios}
+                setUsuarios={setUsuarios}
+                userLocations={userLocations}
+                setUserLocations={setUserLocations}
+              />
             </div>
           </div>
 
@@ -249,9 +246,7 @@ export default function AdministerUsers() {
 
         <PopUpWindow open={popupOpen} onClose={() => setPopupOpen(false)}>
           <div className="m-5">
-            <h3
-              className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}
-            >
+            <h3 className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}>
               Agregar usuario
             </h3>
             <select
@@ -260,7 +255,7 @@ export default function AdministerUsers() {
               onChange={(e) => setSelectedUserId(e.target.value)}
             >
               <option value="">Selecciona un usuario</option>
-              {usuariosDB.map((u) => (
+              {usuariosDisponibles.map((u) => (
                 <option key={u.id} value={u.id}>
                   {u.nombre} - {u.address}, {u.city}
                 </option>
@@ -276,14 +271,9 @@ export default function AdministerUsers() {
           </div>
         </PopUpWindow>
 
-        <PopUpWindow
-          open={tokenPopupOpen}
-          onClose={() => setTokenPopupOpen(false)}
-        >
+        <PopUpWindow open={tokenPopupOpen} onClose={() => setTokenPopupOpen(false)}>
           <div className="m-5">
-            <h3
-              className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}
-            >
+            <h3 className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}>
               Token Generado
             </h3>
             <p className="text-center text-lg">{token}</p>

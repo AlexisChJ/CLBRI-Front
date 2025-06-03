@@ -203,6 +203,29 @@ const SignUpPage = () => {
       return;
     }
 
+    if (!isAdmin) {
+      try {
+        signUpUser({
+          first_name: name,
+          last_name: lastname,
+          email: email,
+          password: password,
+          workplace: "",
+          phone_number: "", // FALTA
+          address: address,
+          city: city,
+          state: state,
+          postal_code: postalCode,
+          country: country,
+          admin_token: adminToken
+        });
+        router.push("/");
+      } catch (err) {
+        console.error(err);
+        // Marcar como erroneo el registro.
+      }
+    }
+
     router.push("/login");
   };
 

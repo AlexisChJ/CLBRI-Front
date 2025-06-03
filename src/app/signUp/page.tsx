@@ -63,36 +63,6 @@ const SignUpPage = () => {
   const [error, setError] = useState<string>("");
   const router = useRouter();
 
-  const handleLogin = () => {
-    // TODO: Falta validación de correo y contraseña
-    // FALTA validación de correo y contraseña
-    // FALTA número telefónico
-    if (!isAdmin) {
-      try {
-          signUpUser({
-            first_name: name,
-            last_name: lastname,
-            email: email,
-            password: password,
-            workplace: "",
-            phone_number: "", // FALTA
-            address: address,
-            city: city,
-            state: state,
-            postal_code: postalCode,
-            country: country,
-            admin_token: adminToken
-          });
-          router.push("/");
-      } catch (err) {
-        console.error(err);
-        // Marcar como erroneo el registro.
-      }
-    } else {
-      console.log("Registro de admin no se ha implementado aun");
-    }
-  };
-
   const onCountryChange = (ctry: string) => {
     setCountry(ctry);
   }

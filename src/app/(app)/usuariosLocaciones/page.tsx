@@ -133,8 +133,12 @@ const usuariosDB = [
 export default function AdministerUsers() {
   const { user } = useAuth();
   const [popupOpen, setPopupOpen] = useState(false);
-  const [usuarios, setUsuarios] = useState<{ id: string; nombre: string; lugarTrabajo: string }[]>([]);
-  const [userLocations, setUserLocations] = useState<{ lat: number; lng: number; title: string }[]>([]);
+  const [usuarios, setUsuarios] = useState<
+    { id: string; nombre: string; lugarTrabajo: string }[]
+  >([]);
+  const [userLocations, setUserLocations] = useState<
+    { lat: number; lng: number; title: string }[]
+  >([]);
   const [selectedUserId, setSelectedUserId] = useState("");
   const [tokenPopupOpen, setTokenPopupOpen] = useState(false);
   const [token, setToken] = useState("");
@@ -143,8 +147,12 @@ export default function AdministerUsers() {
   const notificaciones: Notification[] = [{ description: "S" }];
 
   function generateToken(length = 12) {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    return Array.from(
+      { length },
+      () => chars[Math.floor(Math.random() * chars.length)]
+    ).join("");
   }
 
   const filteredUsuarios = usuarios.filter(
@@ -154,7 +162,9 @@ export default function AdministerUsers() {
       u.id.includes(search)
   );
 
-  const usuariosDisponibles = usuariosDB.filter(dbUser => !usuarios.some(u => u.id === dbUser.id));
+  const usuariosDisponibles = usuariosDB.filter(
+    (dbUser) => !usuarios.some((u) => u.id === dbUser.id)
+  );
 
   const handleAdd = async () => {
     const user = usuariosDB.find((u) => u.id === selectedUserId);
@@ -186,51 +196,54 @@ export default function AdministerUsers() {
   if (!user) return null;
 
   return (
-    <Sidebar>
-      <div id="tesss" className="p-5 flex flex-col gap-5 w-full min-h-screen overflow-y-auto">
-        <NavBar
-          title="Locaciones"
-          opts={[]}
-          selected={0}
-          notificaciones={notificaciones}
-          onValueChange={() => {}}
-        />
+    <div
+      id="tesss"
+      className="p-5 flex flex-col gap-5 overflow-y-auto h-full"
+    >
+      <NavBar
+        title="Locaciones"
+        opts={[]}
+        selected={0}
+        notificaciones={notificaciones}
+        onValueChange={() => {}}
+      />
 
-        <div className="flex flex-row gap-3 h-auto max-h-[625px]">
-          <div className="w-3/5 flex flex-col gap-5">
-            <div className="flex gap-5 items-center">
-              <Buttons
-                color="register"
-                text="Generar Token"
-                className="flex-1"
-                onClick={() => {
-                  setToken(generateToken());
-                  setTokenPopupOpen(true);
-                }}
-              />
-              <Buttons
-                color="login"
-                text="Agregar Usuario"
-                className="flex-1"
-                onClick={() => setPopupOpen(true)}
-              />
-            </div>
-            <Input
-              type="search"
-              placeholder="Buscar"
-              className={`${zen_700.className} bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-full`}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+      <div className="flex flex-row gap-3 h-full">
+        <div className="w-3/5 flex flex-col gap-5 h-auto">
+          <div className="flex gap-5 items-center">
+            <Buttons
+              color="register"
+              text="Generar Token"
+              className="flex-1"
+              buttonSize="default"
+              onClick={() => {
+                setToken(generateToken());
+                setTokenPopupOpen(true);
+              }}
             />
-            <div className="flex-1 overflow-hidden">
-              <TablaUsuarios
-                usuarios={filteredUsuarios}
-                setUsuarios={setUsuarios}
-                userLocations={userLocations}
-                setUserLocations={setUserLocations}
-              />
-            </div>
+            <Buttons
+              color="login"
+              text="Agregar Usuario"
+              className="flex-1"
+              onClick={() => setPopupOpen(true)}
+            />
           </div>
+          <Input
+            type="search"
+            placeholder="Buscar"
+            className={`${zen_700.className} bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-full`}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <div className="flex-1 overflow-hidden">
+            <TablaUsuarios
+              usuarios={filteredUsuarios}
+              setUsuarios={setUsuarios}
+              userLocations={userLocations}
+              setUserLocations={setUserLocations}
+            />
+          </div>
+        </div>
 
         <div className="w-2/5 flex flex-col gap-5 h-auto">
           <LocationsMap
@@ -244,48 +257,54 @@ export default function AdministerUsers() {
         </div>
       </div>
 
-        <PopUpWindow open={popupOpen} onClose={() => setPopupOpen(false)}>
-          <div className="m-5">
-            <h3 className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}>
-              Agregar usuario
-            </h3>
-            <select
-              className="w-full border rounded p-2 mb-4"
-              value={selectedUserId}
-              onChange={(e) => setSelectedUserId(e.target.value)}
-            >
-              <option value="">Selecciona un usuario</option>
-              {usuariosDisponibles.map((u) => (
-                <option key={u.id} value={u.id}>
-                  {u.nombre} - {u.address}, {u.city}
-                </option>
-              ))}
-            </select>
-            <Buttons
-              color="login"
-              text="Agregar"
-              className="w-full"
-              onClick={handleAdd}
-              disabled={!selectedUserId}
-            />
-          </div>
-        </PopUpWindow>
+      <PopUpWindow open={popupOpen} onClose={() => setPopupOpen(false)}>
+        <div className="m-5">
+          <h3
+            className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}
+          >
+            Agregar usuario
+          </h3>
+          <select
+            className="w-full border rounded p-2 mb-4"
+            value={selectedUserId}
+            onChange={(e) => setSelectedUserId(e.target.value)}
+          >
+            <option value="">Selecciona un usuario</option>
+            {usuariosDisponibles.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.nombre} - {u.address}, {u.city}
+              </option>
+            ))}
+          </select>
+          <Buttons
+            color="login"
+            text="Agregar"
+            className="w-full"
+            onClick={handleAdd}
+            disabled={!selectedUserId}
+          />
+        </div>
+      </PopUpWindow>
 
-        <PopUpWindow open={tokenPopupOpen} onClose={() => setTokenPopupOpen(false)}>
-          <div className="m-5">
-            <h3 className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}>
-              Token Generado
-            </h3>
-            <p className="text-center text-lg">{token}</p>
-            <Buttons
-              color="register"
-              text="Cerrar"
-              className="w-full mt-4"
-              onClick={() => setTokenPopupOpen(false)}
-            />
-          </div>
-        </PopUpWindow>
-      </div>
-    </Sidebar>
+      <PopUpWindow
+        open={tokenPopupOpen}
+        onClose={() => setTokenPopupOpen(false)}
+      >
+        <div className="m-5">
+          <h3
+            className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}
+          >
+            Token Generado
+          </h3>
+          <p className="text-center text-lg">{token}</p>
+          <Buttons
+            color="register"
+            text="Cerrar"
+            className="w-full mt-4"
+            onClick={() => setTokenPopupOpen(false)}
+          />
+        </div>
+      </PopUpWindow>
+    </div>
   );
 }

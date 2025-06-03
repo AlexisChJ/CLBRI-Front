@@ -10,6 +10,7 @@ import {
   Network,
   Route,
   Menu,
+  Bird,
 } from "lucide-react"
 import { BlueLogo } from "../LogoAzul/logoAzul"
 
@@ -27,11 +28,12 @@ const items = [
   { title: "Distribución", url: "/distribucionUsuarios", icon: Network },
   { title: "Locaciones", url: "/usuariosLocaciones", icon: Route },
   { title: "Perfil", url: "/perfil", icon: CircleUser },
+  { title: "Usuario", url: "/usuario", icon: Bird },
 ]
 
 export function AppSidebar() {
   const pathname = usePathname()
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
 
   return (
     <Sidebar

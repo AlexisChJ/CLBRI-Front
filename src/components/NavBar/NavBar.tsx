@@ -2,9 +2,13 @@
 
 import { Prompt } from "next/font/google";
 import NotificationSVG from "@/assets/notification.svg";
+import LogOut from "@/assets/log-out.svg"
 import { useEffect, useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Notification } from "@/types/Notification";
+import { useRouter } from "next/navigation";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const prompt_300 = Prompt({ weight: "300", subsets: ["latin"], preload: true })
 const prompt_500 = Prompt({ weight: "500", subsets: ["latin"], preload: true })
@@ -80,6 +84,12 @@ export const NavBar = ({
   center,
 }: NavBarProps) => {
   const [current, setCurrent] = useState<number>(selected);
+  const router = useRouter();
+
+  const handleLogout = () => {
+      signOut(auth);
+      router.push("/login");
+    };
 
   return (
     <div className="w-full border-b border-blue-800 px-4 py-2">
@@ -114,7 +124,14 @@ export const NavBar = ({
 
         {/* Notificaciones */}
         <div className="flex justify-end">
-          <NotificationIcon notifications={notificaciones} />
+          {/* <NotificationIcon notifications={notificaciones} /> */}
+
+          <button
+            className="hover:cursor-pointer"
+            onClick={handleLogout}
+          >
+            <img src={LogOut.src} alt="Salir" />
+          </button>
         </div>
       </div>
 

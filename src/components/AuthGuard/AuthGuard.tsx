@@ -6,11 +6,7 @@ import { protectedRoutes } from "@/utils/protectedRoutes";
 import { useAuth } from "@/providers/AuthProvider";
 import { useEffect } from "react";
 
-
-/* AUN NO se diferencían los roles. */
-
-
-const loginRoute = "/";
+const loginRoute = "/login";
 
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {

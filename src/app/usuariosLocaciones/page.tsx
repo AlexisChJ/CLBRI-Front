@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavBar } from "@/components/NavBar/NavBar";
 import Sidebar from "@/components/SideBar/SideBar";
 import TablaUsuarios from "@/components/TablaUsuarios/TablaUsuarios";
@@ -11,6 +11,10 @@ import { Prompt, Zen_Maru_Gothic } from "next/font/google";
 import { getLatLngFromAddress } from "@/lib/geocode";
 import { Notification } from "@/types/Notification";
 import { useAuth } from "@/providers/AuthProvider";
+import { UserLocation } from "@/types/UserLocation";
+import { getUserLocations } from "@/services/admin/getUserLocations";
+import { useReducedMotion } from "framer-motion";
+import { User } from "firebase/auth";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 const zen_700 = Zen_Maru_Gothic({
@@ -19,6 +23,7 @@ const zen_700 = Zen_Maru_Gothic({
   preload: true,
 });
 
+/*
 const usuariosDB = [
   {
     id: "003",
@@ -129,15 +134,45 @@ const usuariosDB = [
     postalCode: "78000",
   },
 ];
+*/
+
+
+const useUsers = (adminUser: User | null) => {
+  const [usuariosDB, setUsuariosDB] = useState<UserLocation[]>([]);
+
+  useEffect(() => {
+    const fetchUserLocations = async () => {
+      if (!adminUser) return;
+
+      const token = await adminUser.getIdToken();
+      const usersData = await getUserLocations(token);
+      setUsuariosDB(usersData.map(value => ({
+        id: value.id + "",
+        nombre: value.name,
+        address: value.location.address,
+        city: value.location.city,
+        state: value.location.state,
+        country: value.location.country,
+        postalCode: value.location.postalCode,
+      })));
+    }
+    fetchUserLocations();
+  }, [adminUser]);
+
+  return { usuariosDB };
+}
+
 
 export default function AdministerUsers() {
   const { user } = useAuth();
+  const { usuariosDB } = useUsers(user);
   const [popupOpen, setPopupOpen] = useState(false);
   const [usuarios, setUsuarios] = useState<{ id: string; nombre: string; lugarTrabajo: string }[]>([]);
   const [userLocations, setUserLocations] = useState<{ lat: number; lng: number; title: string }[]>([]);
   const [selectedUserId, setSelectedUserId] = useState("");
   const [tokenPopupOpen, setTokenPopupOpen] = useState(false);
   const [token, setToken] = useState("");
+
   const [search, setSearch] = useState("");
 
   const notificaciones: Notification[] = [{ description: "S" }];
@@ -157,7 +192,9 @@ export default function AdministerUsers() {
   const usuariosDisponibles = usuariosDB.filter(dbUser => !usuarios.some(u => u.id === dbUser.id));
 
   const handleAdd = async () => {
+    console.log(usuariosDB)
     const user = usuariosDB.find((u) => u.id === selectedUserId);
+    console.log(user);
     if (!user) return;
 
     const fullAddress = `${user.address}, ${user.city}, ${user.state}, ${user.country}, ${user.postalCode}`;

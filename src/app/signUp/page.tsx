@@ -11,17 +11,21 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { SheetLeft } from "@/components/Eula/Eula";
+import { signUpUser } from "@/services/signUp/signUpUser";
 
 const redhat_700 = Red_Hat_Display({
   weight: "700",
   subsets: ["latin"],
   preload: true,
 });
+
+
 const zen_500 = Zen_Maru_Gothic({
   weight: "500",
   subsets: ["latin"],
   preload: true,
 });
+
 
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
@@ -32,14 +36,45 @@ const SignUpPage = () => {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
+  const [country, setCountry] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [adminToken, setAdminToken] = useState("");
   const [isAdmin, setIsAdmin] = useState(false); // Add state for switch
   const router = useRouter();
+
   const handleLogin = () => {
-    //validación de correo y contraseña que después contectaremos al back
-    router.push("/");
+    // TODO: Falta validación de correo y contraseña
+    // FALTA validación de correo y contraseña
+    // FALTA número telefónico
+    if (!isAdmin) {
+      try {
+          signUpUser({
+            first_name: name,
+            last_name: lastname,
+            email: email,
+            password: password,
+            workplace: "",
+            phone_number: "", // FALTA
+            address: address,
+            city: city,
+            state: state,
+            postal_code: postalCode,
+            country: country,
+            admin_token: adminToken
+          });
+          router.push("/");
+      } catch (err) {
+        console.error(err);
+        // Marcar como erroneo el registro.
+      }
+    } else {
+      console.log("Registro de admin no se ha implementado aun");
+    }
   };
+
+  const onCountryChange = (ctry: string) => {
+    setCountry(ctry);
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -122,7 +157,7 @@ const SignUpPage = () => {
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}
           />
-          <CountryCombobox />
+          <CountryCombobox onCountryChange={onCountryChange} />
         </div>
 
         <div className="flex gap-4">

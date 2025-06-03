@@ -23,9 +23,13 @@ import {
 
 const zen_700 = Zen_Maru_Gothic({weight: "700", subsets: ['latin'], preload: true,})
 
-export function CountryCombobox() {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+interface CountryComboboxProps {
+  onCountryChange: (value: string) => void
+}
+
+export function CountryCombobox({ onCountryChange = () => {} }: CountryComboboxProps) {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -53,6 +57,7 @@ export function CountryCombobox() {
                   key={framework.name}
                   value={framework.name}
                   onSelect={(currentValue) => {
+                    onCountryChange(currentValue);
                     setValue(currentValue === value ? "" : currentValue)
                     setOpen(false)
                   }}

@@ -194,12 +194,12 @@ const TablaAvanzada = ({
           </TableCaption> */}
           <TableHeader>
             <TableRow className="bg-[#3A70C3] hover:bg-[#3A70C3]">
-              <TableHead className={`justify-center w-[17%] ${redHat.className} text-white`}>Nombre</TableHead>
+              <TableHead className={`justify-center w-[25%] ${redHat.className} text-white`}>Nombre</TableHead>
               <TableHead className={`justify-center w-[15%] ${redHat.className} text-white`}>Clasificación</TableHead>
-              <TableHead className={`justify-center w-[22%] ${redHat.className} text-white`}>Fecha de llegada</TableHead>
-              <TableHead className={`justify-center w-[22%] ${redHat.className} text-white`}>Caducidad</TableHead>
-              <TableHead className={`justify-center w-[16%] ${redHat.className} text-white`}>Prioridad</TableHead>
-              <TableHead className={`justify-center w-[8%] ${redHat.className} text-white`}>Acciones</TableHead>
+              <TableHead className={`justify-center w-[20%] ${redHat.className} text-white`}>Fecha de llegada</TableHead>
+              <TableHead className={`justify-center w-[20%] ${redHat.className} text-white`}>Caducidad</TableHead>
+              <TableHead className={`justify-center w-[15%] ${redHat.className} text-white`}>Prioridad</TableHead>
+              <TableHead className={`justify-center w-[5%] ${redHat.className} text-white`}>Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <AnimatePresence mode="wait">

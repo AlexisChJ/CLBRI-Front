@@ -1,4 +1,6 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+"use client"
+
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 
 
@@ -8,8 +10,7 @@ const SideBar = ({ children }: { children: React.ReactNode }) => {
       <div className="flex h-screen overflow-hidden">
         <AppSidebar />
       </div>
-      <main className="flex-1 h-full overflow-y-auto">
-          {/* <SidebarTrigger /> */}
+      <main className="flex-1 h-screen overflow-y-auto">
           {children}
         </main>
     </SidebarProvider>

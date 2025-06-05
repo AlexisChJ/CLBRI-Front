@@ -19,7 +19,6 @@ import {
   isAlphanumeric,
   isAddress,
   isNumeric,
-  isAlphanumericToken,
 } from "@/utils/validators";
 
 const redhat_700 = Red_Hat_Display({
@@ -58,7 +57,6 @@ const SignUpPage = () => {
   const [postalCode, setPostalCode] = useState("");
   const [postalCodeError, setPostalCodeError] = useState<boolean>(false);
   const [adminToken, setAdminToken] = useState("");
-  const [adminTokenError, setAdminTokenError] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState(false); // Add state for switch
   const [error, setError] = useState<string>("");
   const router = useRouter();
@@ -130,12 +128,7 @@ const SignUpPage = () => {
     return valid;
   };
 
-  const validateAdminToken = (value: string): boolean => {
-    const valid = isAlphanumericToken(value);
-    setAdminTokenError(!valid);
-    if (!valid) setError("Credenciales incorrectas.");
-    return valid;
-  };
+  
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -150,7 +143,7 @@ const SignUpPage = () => {
     const isCityValid = validateCity(city);
     const isStateValid = validateState(state);
     const isPostalCodeValid = validatePostalCode(postalCode);
-    const isAdminTokenValid = validateAdminToken(adminToken);
+    //const isAdminTokenValid = validateAdminToken(adminToken);
 
     if (
       !isEmailValid ||
@@ -161,8 +154,8 @@ const SignUpPage = () => {
       !isAddressValid ||
       !isCityValid ||
       !isStateValid ||
-      !isPostalCodeValid ||
-      !isAdminTokenValid
+      !isPostalCodeValid
+      //!isAdminTokenValid
     ) {
       return;
     }
@@ -194,6 +187,8 @@ const SignUpPage = () => {
         console.error(err);
         // Marcar como erroneo el registro.
       }
+    } else {
+      // Aquí puedes manejar el caso de administrador, por ejemplo, enviar el token de administrador
     }
 
     router.push("/login");
@@ -315,7 +310,7 @@ const SignUpPage = () => {
           <TextInput
             value={adminToken}
             placeholder="Token de Administrador"
-            hasError={adminTokenError}
+            
             onChange={(e) => setAdminToken(e.target.value)}
             disabled={isAdmin} // Disable input if switch is ON
           />

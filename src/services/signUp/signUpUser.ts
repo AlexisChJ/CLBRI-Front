@@ -9,7 +9,7 @@ export const signUpUser = async (signUpProps: SignUpProps): Promise<boolean> => 
         password: signUpProps.password,
         workplace: signUpProps.workplace,
         phone_number: signUpProps.phone_number,
-        admin_token: signUpProps.admin_token,
+        token: signUpProps.admin_token,
         location: {
             address: signUpProps.address,
             city: signUpProps.city,
@@ -18,6 +18,6 @@ export const signUpUser = async (signUpProps: SignUpProps): Promise<boolean> => 
             postal_code: signUpProps.postal_code
         }
     };
-    const { data } = await api.post(`/user/register_user`, signUpSend);
+    const { data } = await api.post(`/user/register-by-invitation`, signUpSend);
     return data;
 };

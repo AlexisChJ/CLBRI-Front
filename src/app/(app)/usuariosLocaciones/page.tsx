@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { NavBar } from "@/components/NavBar/NavBar";
-import Sidebar from "@/components/SideBar/SideBar";
 import TablaUsuarios from "@/components/TablaUsuarios/TablaUsuarios";
 import LocationsMap from "@/components/Mapa/mapa";
 import { Input } from "@/components/ui/input";
@@ -13,7 +12,8 @@ import { Notification } from "@/types/Notification";
 import { useAuth } from "@/providers/AuthProvider";
 import { UserLocation } from "@/types/UserLocation";
 import { getUserLocations } from "@/services/admin/getUserLocations";
-import { useReducedMotion } from "framer-motion";
+import { TokenInvitationService } from "@/services/admin/TokenInvitation";
+
 import { User } from "firebase/auth";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
@@ -22,120 +22,6 @@ const zen_700 = Zen_Maru_Gothic({
   subsets: ["latin"],
   preload: true,
 });
-
-/*
-const usuariosDB = [
-  {
-    id: "003",
-    nombre: "Carlos Ramírez",
-    address: "Insurgentes Sur 1234",
-    city: "CDMX",
-    state: "CDMX",
-    country: "México",
-    postalCode: "03100",
-  },
-  {
-    id: "004",
-    nombre: "Lucía Torres",
-    address: "Av. Juárez 200",
-    city: "Guadalajara",
-    state: "Jalisco",
-    country: "México",
-    postalCode: "44100",
-  },
-  {
-    id: "005",
-    nombre: "María López",
-    address: "Calle 5 de Mayo 150",
-    city: "Puebla",
-    state: "Puebla",
-    country: "México",
-    postalCode: "72000",
-  },
-  {
-    id: "006",
-    nombre: "Juan Pérez",
-    address: "Av. Universidad 300",
-    city: "Monterrey",
-    state: "Nuevo León",
-    country: "México",
-    postalCode: "64000",
-  },
-  {
-    id: "007",
-    nombre: "Ana Hernández",
-    address: "Blvd. Díaz Ordaz 100",
-    city: "Tijuana",
-    state: "Baja California",
-    country: "México",
-    postalCode: "22010",
-  },
-  {
-    id: "008",
-    nombre: "Miguel Sánchez",
-    address: "Calle Reforma 250",
-    city: "Mérida",
-    state: "Yucatán",
-    country: "México",
-    postalCode: "97000",
-  },
-  {
-    id: "009",
-    nombre: "Laura Gómez",
-    address: "Av. Central 400",
-    city: "Toluca",
-    state: "Estado de México",
-    country: "México",
-    postalCode: "50000",
-  },
-  {
-    id: "010",
-    nombre: "Pedro Castillo",
-    address: "Calle Hidalgo 75",
-    city: "Querétaro",
-    state: "Querétaro",
-    country: "México",
-    postalCode: "76000",
-  },
-  {
-    id: "011",
-    nombre: "Sofía Morales",
-    address: "Av. Morelos 180",
-    city: "Cuernavaca",
-    state: "Morelos",
-    country: "México",
-    postalCode: "62000",
-  },
-  {
-    id: "012",
-    nombre: "Jorge Ruiz",
-    address: "Calle Independencia 60",
-    city: "León",
-    state: "Guanajuato",
-    country: "México",
-    postalCode: "37000",
-  },
-  {
-    id: "013",
-    nombre: "Patricia Fernández",
-    address: "Av. Colón 500",
-    city: "Veracruz",
-    state: "Veracruz",
-    country: "México",
-    postalCode: "91700",
-  },
-  {
-    id: "014",
-    nombre: "Ricardo Mendoza",
-    address: "Calle Zaragoza 120",
-    city: "San Luis Potosí",
-    state: "San Luis Potosí",
-    country: "México",
-    postalCode: "78000",
-  },
-];
-*/
-
 
 const useUsers = (adminUser: User | null) => {
   const [usuariosDB, setUsuariosDB] = useState<UserLocation[]>([]);
@@ -162,7 +48,6 @@ const useUsers = (adminUser: User | null) => {
   return { usuariosDB };
 }
 
-
 export default function AdministerUsers() {
   const { user } = useAuth();
   const { usuariosDB } = useUsers(user);
@@ -175,20 +60,16 @@ export default function AdministerUsers() {
   >([]);
   const [selectedUserId, setSelectedUserId] = useState("");
   const [tokenPopupOpen, setTokenPopupOpen] = useState(false);
+
+  // Estados para el token por correo
+  const [tokenEmail, setTokenEmail] = useState("");
   const [token, setToken] = useState("");
+  const [tokenLoading, setTokenLoading] = useState(false);
+  const [tokenError, setTokenError] = useState<string | null>(null);
 
   const [search, setSearch] = useState("");
 
   const notificaciones: Notification[] = [{ description: "S" }];
-
-  function generateToken(length = 12) {
-    const chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    return Array.from(
-      { length },
-      () => chars[Math.floor(Math.random() * chars.length)]
-    ).join("");
-  }
 
   const filteredUsuarios = usuarios.filter(
     (u) =>
@@ -202,9 +83,7 @@ export default function AdministerUsers() {
   );
 
   const handleAdd = async () => {
-    console.log(usuariosDB)
     const user = usuariosDB.find((u) => u.id === selectedUserId);
-    console.log(user);
     if (!user) return;
 
     const fullAddress = `${user.address}, ${user.city}, ${user.state}, ${user.country}, ${user.postalCode}`;
@@ -228,6 +107,27 @@ export default function AdministerUsers() {
 
     setPopupOpen(false);
     setSelectedUserId("");
+  };
+
+  // Generar token usando el servicio
+  const handleGenerateToken = async () => {
+    setTokenLoading(true);
+    setTokenError(null);
+    setToken("");
+    try {
+      const result = await TokenInvitationService({ email: tokenEmail });
+      // Ajusta según la respuesta real de tu backend
+      if (typeof result === "string") {
+        setToken(result);
+      } else if (typeof result === "object" && result.token) {
+        setToken(result.token);
+      } else {
+        setTokenError("No se pudo generar el token.");
+      }
+    } catch {
+      setTokenError("Error al generar el token.");
+    }
+    setTokenLoading(false);
   };
 
   if (!user) return null;
@@ -254,8 +154,10 @@ export default function AdministerUsers() {
               className="flex-1"
               buttonSize="default"
               onClick={() => {
-                setToken(generateToken());
                 setTokenPopupOpen(true);
+                setTokenEmail("");
+                setToken("");
+                setTokenError(null);
               }}
             />
             <Buttons
@@ -325,20 +227,52 @@ export default function AdministerUsers() {
 
       <PopUpWindow
         open={tokenPopupOpen}
-        onClose={() => setTokenPopupOpen(false)}
+        onClose={() => {
+          setTokenPopupOpen(false);
+          setTokenEmail("");
+          setToken("");
+          setTokenError(null);
+        }}
       >
-        <div className="m-5">
+        <div className="m-5 flex flex-col gap-4">
           <h3
             className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}
           >
-            Token Generado
+            Generar Token
           </h3>
-          <p className="text-center text-lg">{token}</p>
+          <Input
+            type="email"
+            placeholder="Correo electrónico"
+            className="w-full"
+            value={tokenEmail}
+            onChange={(e) => setTokenEmail(e.target.value)}
+          />
+          <Buttons
+            color="register"
+            text={tokenLoading ? "Generando..." : "Generar Token"}
+            className="w-full"
+            onClick={handleGenerateToken}
+            disabled={!tokenEmail || tokenLoading}
+          />
+          {token && (
+            <div className="text-center mt-4">
+              <span className="font-bold">Token generado:</span>
+              <div className="text-lg break-all">{token}</div>
+            </div>
+          )}
+          {tokenError && (
+            <div className="text-center text-red-500">{tokenError}</div>
+          )}
           <Buttons
             color="register"
             text="Cerrar"
-            className="w-full mt-4"
-            onClick={() => setTokenPopupOpen(false)}
+            className="w-full mt-2"
+            onClick={() => {
+              setTokenPopupOpen(false);
+              setTokenEmail("");
+              setToken("");
+              setTokenError(null);
+            }}
           />
         </div>
       </PopUpWindow>

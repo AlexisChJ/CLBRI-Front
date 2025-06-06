@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { SheetLeft } from "@/components/Eula/Eula";
+import { signUpUser } from "@/services/signUp/signUpUser";
 import Colibri from "@/assets/images/colbri.jpeg"
 
 import {
@@ -19,19 +20,22 @@ import {
   isAlphanumeric,
   isAddress,
   isNumeric,
-  isAlphanumericToken,
 } from "@/utils/validators";
+import { signUpAdmin } from "@/services/signUp/signUpAdmin";
 
 const redhat_700 = Red_Hat_Display({
   weight: "700",
   subsets: ["latin"],
   preload: true,
 });
+
+
 const zen_500 = Zen_Maru_Gothic({
   weight: "500",
   subsets: ["latin"],
   preload: true,
 });
+
 
 const SignUpPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -51,13 +55,17 @@ const SignUpPage = () => {
   const [cityError, setCityError] = useState<boolean>(false);
   const [state, setState] = useState("");
   const [stateError, setStateError] = useState<boolean>(false);
+  const [country, setCountry] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [postalCodeError, setPostalCodeError] = useState<boolean>(false);
   const [adminToken, setAdminToken] = useState("");
-  const [adminTokenError, setAdminTokenError] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState(false); // Add state for switch
   const [error, setError] = useState<string>("");
   const router = useRouter();
+
+  const onCountryChange = (ctry: string) => {
+    setCountry(ctry);
+  }
 
   const validateEmail = (value: string): boolean => {
     const valid = isValidEmail(value);
@@ -122,12 +130,7 @@ const SignUpPage = () => {
     return valid;
   };
 
-  const validateAdminToken = (value: string): boolean => {
-    const valid = isAlphanumericToken(value);
-    setAdminTokenError(!valid);
-    if (!valid) setError("Credenciales incorrectas.");
-    return valid;
-  };
+  
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -142,7 +145,7 @@ const SignUpPage = () => {
     const isCityValid = validateCity(city);
     const isStateValid = validateState(state);
     const isPostalCodeValid = validatePostalCode(postalCode);
-    const isAdminTokenValid = validateAdminToken(adminToken);
+    //const isAdminTokenValid = validateAdminToken(adminToken);
 
     if (
       !isEmailValid ||
@@ -153,8 +156,8 @@ const SignUpPage = () => {
       !isAddressValid ||
       !isCityValid ||
       !isStateValid ||
-      !isPostalCodeValid ||
-      !isAdminTokenValid
+      !isPostalCodeValid
+      //!isAdminTokenValid
     ) {
       return;
     }
@@ -163,6 +166,49 @@ const SignUpPage = () => {
       setConfirmPasswordError(true);
       setError("Las contraseñas no coinciden.");
       return;
+    }
+
+    if (!isAdmin) {
+      try {
+        await signUpUser({
+          first_name: name,
+          last_name: lastname,
+          email: email,
+          password: password,
+          workplace: "",
+          phone_number: "", // FALTA
+          address: address,
+          city: city,
+          state: state,
+          postal_code: postalCode,
+          country: country,
+          admin_token: adminToken
+        });
+        router.push("/");
+      } catch (err) {
+        console.error(err);
+        // Marcar como erroneo el registro.
+      }
+    } else {
+      console.log("Registrando admin...");
+      try { 
+        await signUpAdmin({
+          first_name: name,
+          last_name: lastname,
+          email: email,
+          password: password,
+          workplace: "",
+          phone_number: "", // FALTA
+          address: address,
+          city: city,
+          state: state,
+          postal_code: postalCode,
+          country: country,
+        });
+        router.push("/login");
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     router.push("/login");
@@ -274,7 +320,7 @@ const SignUpPage = () => {
             hasError={postalCodeError}
             onChange={(e) => setPostalCode(e.target.value)}
           />
-          <CountryCombobox />
+          <CountryCombobox onCountryChange={onCountryChange} />
         </div>
 
         <div className="flex gap-4">
@@ -283,7 +329,7 @@ const SignUpPage = () => {
           <TextInput
             value={adminToken}
             placeholder="Token de Administrador"
-            hasError={adminTokenError}
+            
             onChange={(e) => setAdminToken(e.target.value)}
             disabled={isAdmin} // Disable input if switch is ON
           />

@@ -20,6 +20,7 @@ import {
   isAddress,
   isNumeric,
 } from "@/utils/validators";
+import { signUpAdmin } from "@/services/signUp/signUpAdmin";
 
 const redhat_700 = Red_Hat_Display({
   weight: "700",
@@ -168,7 +169,7 @@ const SignUpPage = () => {
 
     if (!isAdmin) {
       try {
-        signUpUser({
+        await signUpUser({
           first_name: name,
           last_name: lastname,
           email: email,
@@ -188,7 +189,25 @@ const SignUpPage = () => {
         // Marcar como erroneo el registro.
       }
     } else {
-      // Aquí puedes manejar el caso de administrador, por ejemplo, enviar el token de administrador
+      console.log("Registrando admin...");
+      try { 
+        await signUpAdmin({
+          first_name: name,
+          last_name: lastname,
+          email: email,
+          password: password,
+          workplace: "",
+          phone_number: "", // FALTA
+          address: address,
+          city: city,
+          state: state,
+          postal_code: postalCode,
+          country: country,
+        });
+        router.push("/login");
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     router.push("/login");

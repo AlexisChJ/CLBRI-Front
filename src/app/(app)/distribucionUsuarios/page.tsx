@@ -1,18 +1,17 @@
 "use client";
-import { usePathname } from "next/navigation";
+
 import { NavBar } from "@/components/NavBar/NavBar";
-import Sidebar from "@/components/SideBar/SideBar";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
 import LocationsMap from "@/components/Mapa/mapa";
 import { Prompt } from "next/font/google";
 import { useState } from "react";
 import Buttons from "@/components/Buttons/Buttons";
-import { Notification } from "@/types/Notification";
 import { useAuth } from "@/providers/AuthProvider";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow"; // Add this import
 import { motion } from "framer-motion"; // Add this import if not already imported
 import { Download, ChevronDown } from "lucide-react"; // Add this import for the download icon
+import { products } from "@/lib/products";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 
@@ -104,150 +103,6 @@ const usuariosPrueba = [
   { id: "020", lugarTrabajo: "Periférico Sur 400, CDMX", nombre: "Laura Soto" },
 ];
 
-// Sample products data - replace with your actual products
-const productosDistribucion = [
-  {
-    nombre: "Agua purificada",
-    clasificacion: "Embotellado",
-    entrada: "15-mayo-2025",
-    caducidad: "15-mayo-2027",
-    prioridad: "Baja",
-  },
-  {
-    nombre: "Jugo de naranja",
-    clasificacion: "Embotellado",
-    entrada: "01-abril-2025",
-    caducidad: "01-octubre-2025",
-    prioridad: "Media",
-  },
-  {
-    nombre: "Leche UHT",
-    clasificacion: "Embotellado",
-    entrada: "10-marzo-2025",
-    caducidad: "10-septiembre-2025",
-    prioridad: "Media",
-  },
-  {
-    nombre: "Aceite de oliva",
-    clasificacion: "Embotellado",
-    entrada: "20-enero-2025",
-    caducidad: "20-enero-2027",
-    prioridad: "Baja",
-  },
-  {
-    nombre: "Salsa de tomate",
-    clasificacion: "Embotellado",
-    entrada: "05-febrero-2025",
-    caducidad: "05-febrero-2026",
-    prioridad: "Media",
-  },
-  {
-    nombre: "Atún enlatado",
-    clasificacion: "Enlatado",
-    entrada: "01-julio-2024",
-    caducidad: "01-julio-2027",
-    prioridad: "Media",
-  },
-  {
-    nombre: "Maíz enlatado",
-    clasificacion: "Enlatado",
-    entrada: "10-junio-2024",
-    caducidad: "10-junio-2027",
-    prioridad: "Baja",
-  },
-  {
-    nombre: "Frijoles refritos enlatados",
-    clasificacion: "Enlatado",
-    entrada: "25-marzo-2025",
-    caducidad: "25-marzo-2028",
-    prioridad: "Baja",
-  },
-  {
-    nombre: "Sopa de champiñones enlatada",
-    clasificacion: "Enlatado",
-    entrada: "12-abril-2025",
-    caducidad: "12-abril-2027",
-    prioridad: "Media",
-  },
-  {
-    nombre: "Duraznos en almíbar enlatados",
-    clasificacion: "Enlatado",
-    entrada: "18-enero-2025",
-    caducidad: "18-enero-2028",
-    prioridad: "Baja",
-  },
-  {
-    nombre: "Manzanas",
-    clasificacion: "Perecedero",
-    entrada: "28-mayo-2025",
-    caducidad: "11-junio-2025",
-    prioridad: "Alta",
-  },
-  {
-    nombre: "Pechuga de pollo",
-    clasificacion: "Perecedero",
-    entrada: "28-mayo-2025",
-    caducidad: "31-mayo-2025",
-    prioridad: "Alta",
-  },
-  {
-    nombre: "Lechuga",
-    clasificacion: "Perecedero",
-    entrada: "28-mayo-2025",
-    caducidad: "04-junio-2025",
-    prioridad: "Alta",
-  },
-  {
-    nombre: "Huevos",
-    clasificacion: "Perecedero",
-    entrada: "20-mayo-2025",
-    caducidad: "20-junio-2025",
-    prioridad: "Media",
-  },
-  {
-    nombre: "Yogur",
-    clasificacion: "Perecedero",
-    entrada: "25-mayo-2025",
-    caducidad: "08-junio-2025",
-    prioridad: "Alta",
-  },
-  {
-    nombre: "Pasta seca",
-    clasificacion: "Otro",
-    entrada: "01-enero-2025",
-    caducidad: "01-enero-2028",
-    prioridad: "Baja",
-  },
-  {
-    nombre: "Arroz",
-    clasificacion: "Otro",
-    entrada: "10-febrero-2025",
-    caducidad: "10-febrero-2029",
-    prioridad: "Baja",
-  },
-  {
-    nombre: "Azúcar",
-    clasificacion: "Otro",
-    entrada: "15-marzo-2025",
-    caducidad: "Sin caducidad",
-    prioridad: "Baja",
-  },
-  {
-    nombre: "Café molido",
-    clasificacion: "Otro",
-    entrada: "20-abril-2025",
-    caducidad: "20-octubre-2025",
-    prioridad: "Media",
-  },
-  {
-    nombre: "Galletas",
-    clasificacion: "Otro",
-    entrada: "05-mayo-2025",
-    caducidad: "05-noviembre-2025",
-    prioridad: "Media",
-  },
-];
-
 export default function VistaMapa() {
   const { user } = useAuth();
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -260,13 +115,8 @@ export default function VistaMapa() {
   const [showDownloadPopup, setShowDownloadPopup] = useState(false);
   const [currentDistributionType, setCurrentDistributionType] = useState(null);
   const [productDistributions, setProductDistributions] = useState({});
-  const pathname = usePathname();
+  const [rows, setRows] = useState(products);
 
-  const isDistribucion = pathname === "/distribucionUsuarios";
-  const isLocaciones = pathname === "/usuariosLocaciones";
-  const notificaciones: Notification[] = [{ description: "S" }];
-
-  // Handle distribution button clicks
   const handleDistributionClick = (type: "manual" | "automatico" | null) => {
     setDistributionType(type);
   };
@@ -316,7 +166,6 @@ export default function VistaMapa() {
         title="Distribución"
         opts={[]}
         selected={0}
-        notificaciones={notificaciones}
         onValueChange={() => {}}
       />
 
@@ -334,6 +183,8 @@ export default function VistaMapa() {
             searchText={searchText}
             filterClasificacion={filterClasificacion}
             filterPrioridad={filterPrioridad}
+            rows={rows}
+            setRows={setRows}
           />
         </div>
 
@@ -440,7 +291,7 @@ export default function VistaMapa() {
                 </tr>
               </thead>
               <tbody>
-                {productosDistribucion.map((producto, index) => (
+                {products.map((producto, index) => (
                   <tr
                     key={producto.id || index}
                     className="hover:bg-gray-50 transition-colors duration-150"

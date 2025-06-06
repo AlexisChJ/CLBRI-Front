@@ -5,13 +5,10 @@ import DataContainerDashboard from "@/components/DataContainerDashboard/DataCont
 import { NavBar } from "@/components/NavBar/NavBar";
 import { TablaBasica } from "@/components/TablaBasica/TablaBasica";
 import { Red_Hat_Display, Prompt } from "next/font/google";
-import { usePathname } from "next/navigation";
 import { months } from "@/lib/months";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import { useState } from "react";
-import { useAuth } from "@/providers/AuthProvider";
-import { Notification } from "@/types/Notification";
-import { CalendarClock, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { parse, differenceInDays } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -74,11 +71,6 @@ const menoresPerdidas = [
 ];
 
 export default function Dashboard() {
-  const { user } = useAuth();
-  const pathname = usePathname();
-
-  const notificaciones: Notification[] = [{ description: "S" }];
-
   const getTendenciaIcon = (valor: string) => {
     return valor === "up" ? (
       <ArrowUpRight className="text-green-500 w-5 h-5" />
@@ -100,7 +92,6 @@ export default function Dashboard() {
         title="Dashboard"
         opts={[]}
         selected={0}
-        notificaciones={notificaciones}
         onValueChange={() => {}}
       />
       <div className="flex gap-3">

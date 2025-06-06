@@ -13,6 +13,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useAuth } from "@/providers/AuthProvider";
 import { isValidEmail, isValidPassword } from "@/utils/validators";
+import Colibri from "@/assets/images/colbri.jpeg";
+import Image from "next/image";
 
 const zen_500 = Zen_Maru_Gothic({
   weight: "500",
@@ -83,15 +85,17 @@ export default function LoginPage() {
     );
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <div className="relative flex w-1/2 h-auto">
-        <img
-          className="h-screen object-cover"
-          // @/assets/images/
-          src="https://cdn1.matadornetwork.com/blogs/2/2018/12/colibri-Jiri-Hrebicek-shutterstock_1178773135.jpg"
+        <Image
+          className="w-full h-full object-cover"
+          src={Colibri}
           alt="CLBRI"
+          fill
+          priority
+          sizes="50vw"
+          style={{ objectFit: "cover" }}
         />
-        <div className="absolute inset-0 bg-[#3A70C3] opacity-55 z-10" />
         <div className="absolute flex bottom-[25px] w-full justify-center z-20">
           <SocialMedia />
         </div>
@@ -107,20 +111,14 @@ export default function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
           />
           <PasswordInput
-              id="password"
-              value={password}
-              placeholder="Contraseña"
-              hasError={passwordError}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            id="password"
+            value={password}
+            placeholder="Contraseña"
+            hasError={passwordError}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           {error && <p className="text-red-500">{error}</p>}
-          <a
-            href="https://www.dummies.com/book/technology/programming-web-design/general-programming-web-design/beginning-programming-all-in-one-for-dummies-2nd-edition-292091/"
-            className={`${zen_500.className} underline text-[#9B9B9B] hover:text-[#3A70C3]`}
-          >
-            ¿Olvidaste tu contraseña?
-          </a>
           <Buttons
             className=""
             text={"Iniciar Sesión"}

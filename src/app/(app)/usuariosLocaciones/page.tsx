@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { NavBar } from "@/components/NavBar/NavBar";
-import Sidebar from "@/components/SideBar/SideBar";
 import TablaUsuarios from "@/components/TablaUsuarios/TablaUsuarios";
 import LocationsMap from "@/components/Mapa/mapa";
 import { Input } from "@/components/ui/input";
@@ -9,7 +8,6 @@ import Buttons from "@/components/Buttons/Buttons";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
 import { Prompt, Zen_Maru_Gothic } from "next/font/google";
 import { getLatLngFromAddress } from "@/lib/geocode";
-import { Notification } from "@/types/Notification";
 import { useAuth } from "@/providers/AuthProvider";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
@@ -144,8 +142,6 @@ export default function AdministerUsers() {
   const [token, setToken] = useState("");
   const [search, setSearch] = useState("");
 
-  const notificaciones: Notification[] = [{ description: "S" }];
-
   function generateToken(length = 12) {
     const chars =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -204,7 +200,6 @@ export default function AdministerUsers() {
         title="Locaciones"
         opts={[]}
         selected={0}
-        notificaciones={notificaciones}
         onValueChange={() => {}}
       />
 

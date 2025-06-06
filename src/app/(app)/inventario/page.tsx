@@ -7,7 +7,13 @@ import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
 import { Prompt } from "next/font/google";
 import { Notification } from "@/types/Notification";
 import { useAuth } from "@/providers/AuthProvider";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 import Buttons from "@/components/Buttons/Buttons";
+import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
+import { TextInput } from "@/components/TextInput/TextInput";
+import { DatePicker } from "@/components/DatePicker/DatePicker";
+import { products } from "@/lib/products";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 
@@ -16,10 +22,53 @@ export default function SitioTabla() {
   const [searchText, setSearchText] = useState("");
   const [filterClasificacion, setFilterClasificacion] = useState("");
   const [filterPrioridad, setFilterPrioridad] = useState("");
+  const [agregarDescripcion, setAgregarDescripcion] = useState("");
+  const [agregarClasificacion, setAgregarClasificacion] = useState("");
+  const [agregarPrioridad, setAgregarPrioridad] = useState("");
+  const [agregarFechaEntrega, setAgregarFechaEntrega] = useState<
+    Date | undefined
+  >(undefined);
+  const [agregarFechaExpiracion, setAgregarFechaExpiracion] = useState<
+    Date | undefined
+  >(undefined);
+  const [rows, setRows] = useState(products);
+
+  const [popupOpen, setPopupOpen] = useState(false);
 
   const notificaciones: Notification[] = [{ description: "S" }];
 
   if (!user) return null;
+
+  const agregarProducto = () => {
+    if (
+      !agregarDescripcion ||
+      !agregarClasificacion ||
+      !agregarFechaEntrega ||
+      !agregarFechaExpiracion ||
+      !agregarPrioridad
+    ) {
+      alert("Por favor llena todos los campos");
+      return;
+    }
+
+    const nuevoProducto = {
+      nombre: agregarDescripcion,
+      clasificacion: agregarClasificacion,
+      entrada: format(agregarFechaEntrega, "dd-MMMM-yyyy", { locale: es }),
+      caducidad: format(agregarFechaExpiracion, "dd-MMMM-yyyy", { locale: es }),
+      prioridad: agregarPrioridad,
+    };
+
+    setRows((prev) => [...prev, nuevoProducto]);
+
+    // Limpiar y cerrar
+    setAgregarDescripcion("");
+    setAgregarClasificacion("");
+    setAgregarFechaEntrega(undefined);
+    setAgregarFechaExpiracion(undefined);
+    setAgregarPrioridad("");
+    setPopupOpen(false);
+  };
 
   return (
     // No height??
@@ -28,7 +77,6 @@ export default function SitioTabla() {
         title="Inventario"
         opts={[]}
         selected={0}
-        notificaciones={notificaciones}
         onValueChange={() => {}}
         center={
           <div
@@ -52,13 +100,88 @@ export default function SitioTabla() {
           color="login"
           className="w-auto px-6"
           buttonSize="default"
+          onClick={() => setPopupOpen(true)}
         />
       </div>
       <TablaAvanzada
         searchText={searchText}
         filterClasificacion={filterClasificacion}
         filterPrioridad={filterPrioridad}
+        rows={rows}
+        setRows={setRows}
       />
+
+      <PopUpWindow open={popupOpen} onClose={() => setPopupOpen(false)}>
+        <div className="m-5 flex flex-col gap-4">
+          <h3
+            className={`${prompt.className} text-[#3A70C3] text-center text-4xl mb-4`}
+          >
+            Agregar Producto
+          </h3>
+
+          {/* Nombre */}
+          <TextInput
+            placeholder="Nombre del producto"
+            value={agregarDescripcion}
+            onChange={(e) => setAgregarDescripcion(e.target.value)}
+          />
+
+          {/* Clasificación */}
+          <select
+            className="w-full border rounded p-2 bg-[#E9EBEA] text-[#5B5B5B]"
+            value={agregarClasificacion}
+            onChange={(e) => setAgregarClasificacion(e.target.value)}
+          >
+            <option value="">Selecciona una clasificación</option>
+            <option value="Enbotellado">Enbotellado</option>
+            <option value="Enlatado">Enlatado</option>
+            <option value="Perecederos">Perecederos</option>
+            <option value="Otros">Otros</option>
+          </select>
+
+          {/* Fecha de llegada */}
+          <div>
+            <label className="text-sm text-gray-700 mb-1 block">
+              Fecha de llegada
+            </label>
+            <DatePicker
+              date={agregarFechaEntrega}
+              onDateChange={setAgregarFechaEntrega}
+            />
+          </div>
+
+          {/* Fecha de caducidad */}
+          <div>
+            <label className="text-sm text-gray-700 mb-1 block">
+              Fecha de caducidad
+            </label>
+            <DatePicker
+              date={agregarFechaExpiracion}
+              onDateChange={setAgregarFechaExpiracion}
+            />
+          </div>
+
+          {/* Prioridad */}
+          <select
+            className="w-full border rounded p-2 bg-[#E9EBEA] text-[#5B5B5B]"
+            value={agregarPrioridad}
+            onChange={(e) => setAgregarPrioridad(e.target.value)}
+          >
+            <option value="">Selecciona una prioridad</option>
+            <option value="Alta">Alta</option>
+            <option value="Media">Media</option>
+            <option value="Baja">Baja</option>
+          </select>
+
+          {/* Botón de guardar */}
+          <button
+            onClick={agregarProducto}
+            className="bg-blue-600 text-white py-2 px-4 rounded mt-4"
+          >
+            Guardar
+          </button>
+        </div>
+      </PopUpWindow>
     </div>
   );
 }

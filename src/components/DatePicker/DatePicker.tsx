@@ -16,31 +16,36 @@ import {
 
 const zen_700 = Zen_Maru_Gothic({weight: "700", subsets: ['latin'], preload: true,})
 
-export function DatePicker() {
-  const [date, setDate] = React.useState<Date>()
-
+export function DatePicker({
+  date,
+  onDateChange,
+}: {
+  date?: Date;
+  onDateChange: (date: Date | undefined) => void;
+}) {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
-            `${ zen_700.className } w-[240px] justify-start rounded-2xl text-left font-normal text-[#5B5B5B] bg-[#E9EBEA]`,
+            `${ zen_700.className } w-full justify-start rounded-2xl text-left font-normal text-[#5B5B5B] bg-[#E9EBEA]`,
             !date && "text-muted-foreground"
           )}
         >
           <CalendarIcon />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? format(date, "PPP") : <span>Selecciona una fecha</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={onDateChange}
           initialFocus
         />
       </PopoverContent>
     </Popover>
-  )
+  );
 }
+

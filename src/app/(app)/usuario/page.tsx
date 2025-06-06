@@ -4,7 +4,6 @@ import { useState } from "react";
 import { NavBar } from "@/components/NavBar/NavBar";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import { Prompt } from "next/font/google";
-import { Notification } from "@/types/Notification";
 import { useAuth } from "@/providers/AuthProvider";
 import TablaMerma from "@/components/TablaMerma/TablaMerma";
 import Buttons from "@/components/Buttons/Buttons";
@@ -17,18 +16,14 @@ export default function SitioTabla() {
   const [filterClasificacion, setFilterClasificacion] = useState("");
   const [filterPrioridad, setFilterPrioridad] = useState("");
 
-  const notificaciones: Notification[] = [{ description: "S" }];
-
   if (!user) return null;
 
   return (
-    // No height??
-    <div className="flex flex-col p-5 gap-5 overflow-y-auto">
+    <div className="flex flex-col p-5 gap-5 overflow-y-auto h-full">
       <NavBar
         title="Usuarios"
         opts={[]}
         selected={0}
-        notificaciones={notificaciones}
         onValueChange={() => {}}
         center={
           <div

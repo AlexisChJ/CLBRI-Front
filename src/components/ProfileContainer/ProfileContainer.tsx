@@ -1,36 +1,37 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { cn } from "@/lib/utils"
-import { Card, CardContent } from "@/components/ui/card"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Pencil, Check } from "lucide-react"
-import { AnimatePresence, motion } from "framer-motion"
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Pencil, Check } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 type ProfileContainerProps = React.ComponentProps<typeof Card> & {
-  avatarSrc?: string
-  name: string
-  organization: string
-  phone: string
-  email: string
-  passwordMask: string
-  address: string
+  avatarSrc?: string;
+  name: string;
+  organization: string;
+  phone: string;
+  email: string;
+  passwordMask: string;
+  address: string;
   onSave?: (data: {
-    name: string
-    organization: string
-    phone: string
-    email: string
-    passwordMask: string
-    address: string
-  }) => void
-}
+    avatarSrc?: string;
+    name: string;
+    organization: string;
+    phone: string;
+    email: string;
+    passwordMask: string;
+    address: string;
+  }) => void;
+};
 
 const fadeVariants = {
   hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -10 },
-}
+};
 
 const ProfileContainer: React.FC<ProfileContainerProps> = ({
   className,
@@ -44,7 +45,7 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
   onSave,
   ...props
 }) => {
-  const [isEditing, setIsEditing] = React.useState(false)
+  const [isEditing, setIsEditing] = React.useState(false);
   const [formState, setFormState] = React.useState({
     name,
     organization,
@@ -52,36 +53,64 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
     email,
     passwordMask,
     address,
-  })
+    avatarSrc: avatarSrc || "",
+  });
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null);
 
-  const handleChange = (field: keyof typeof formState) => (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setFormState({ ...formState, [field]: e.target.value })
-  }
+  const handleChange =
+    (field: keyof typeof formState) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormState({ ...formState, [field]: e.target.value });
+    };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormState((prev) => ({
+          ...prev,
+          avatarSrc: reader.result as string,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAvatarClick = () => {
+    if (isEditing && fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
   const toggleEdit = () => {
     if (isEditing && onSave) {
-      onSave(formState)
+      onSave(formState);
     }
-    setIsEditing(!isEditing)
-  }
+    setIsEditing(!isEditing);
+  };
 
   return (
     <div>
       <div className="flex flex-col items-center justify-center">
-        <Avatar className="h-24 w-24 mx-auto -mb-11 -top-1 z-10">
-          {avatarSrc ? (
-            <AvatarImage src={avatarSrc} alt={formState.name} />
+        <Avatar
+          onClick={handleAvatarClick}
+          className="h-24 w-24 mx-auto -mb-11 -top-1 z-10 cursor-pointer hover:opacity-80 transition"
+        >
+          {formState.avatarSrc ? (
+            <AvatarImage src={formState.avatarSrc} alt={formState.name} />
           ) : (
             <AvatarFallback>{formState.name[0]}</AvatarFallback>
           )}
         </Avatar>
 
-        <Card className={cn("w-[380px] pt-14 overflow-visible relative", className)} {...props}>
+        <Card
+          className={cn("w-[380px] pt-14 overflow-visible relative", className)}
+          {...props}
+        >
           <Button
             className="absolute pt-1 right-1 transition-all duration-300 ease-in-out transform"
-            style={{ top: isEditing ? '4px' : '8px' }}
+            style={{ top: isEditing ? "4px" : "8px" }}
             variant="ghost"
             onClick={toggleEdit}
           >
@@ -99,12 +128,55 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
                   variants={fadeVariants}
                   transition={{ duration: 0.3 }}
                 >
-                  <input type="text" value={formState.name} onChange={handleChange("name")} className="w-full border rounded px-2 py-1 mb-2" placeholder="Nombre" />
-                  <input type="text" value={formState.organization} onChange={handleChange("organization")} className="w-full border rounded px-2 py-1 mb-2" placeholder="Organización" />
-                  <input type="tel" value={formState.phone} onChange={handleChange("phone")} className="w-full border rounded px-2 py-1 mb-2" placeholder="Teléfono" />
-                  <input type="email" value={formState.email} onChange={handleChange("email")} className="w-full border rounded px-2 py-1 mb-2" placeholder="Correo" />
-                  <input type="text" value={formState.passwordMask} onChange={handleChange("passwordMask")} className="w-full border rounded px-2 py-1 mb-2" placeholder="Contraseña" />
-                  <input type="text" value={formState.address} onChange={handleChange("address")} className="w-full border rounded px-2 py-1" placeholder="Dirección" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={handleImageChange}
+                    style={{ display: "none" }}
+                  />
+                  <input
+                    type="text"
+                    value={formState.name}
+                    onChange={handleChange("name")}
+                    className="w-full border rounded px-2 py-1 mb-2"
+                    placeholder="Nombre"
+                  />
+                  <input
+                    type="text"
+                    value={formState.organization}
+                    onChange={handleChange("organization")}
+                    className="w-full border rounded px-2 py-1 mb-2"
+                    placeholder="Organización"
+                  />
+                  <input
+                    type="tel"
+                    value={formState.phone}
+                    onChange={handleChange("phone")}
+                    className="w-full border rounded px-2 py-1 mb-2"
+                    placeholder="Teléfono"
+                  />
+                  <input
+                    type="email"
+                    value={formState.email}
+                    onChange={handleChange("email")}
+                    className="w-full border rounded px-2 py-1 mb-2"
+                    placeholder="Correo"
+                  />
+                  <input
+                    type="text"
+                    value={formState.passwordMask}
+                    onChange={handleChange("passwordMask")}
+                    className="w-full border rounded px-2 py-1 mb-2"
+                    placeholder="Contraseña"
+                  />
+                  <input
+                    type="text"
+                    value={formState.address}
+                    onChange={handleChange("address")}
+                    className="w-full border rounded px-2 py-1"
+                    placeholder="Dirección"
+                  />
                 </motion.div>
               ) : (
                 <motion.div
@@ -116,11 +188,21 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
                   transition={{ duration: 0.3 }}
                 >
                   <h2 className="text-xl font-semibold">{formState.name}</h2>
-                  <p className="text-sm text-muted-foreground">{formState.organization}</p>
-                  <p className="text-sm text-muted-foreground">{formState.phone}</p>
-                  <p className="text-sm text-muted-foreground">{formState.email}</p>
-                  <p className="text-sm text-muted-foreground">{formState.passwordMask}</p>
-                  <p className="text-sm text-muted-foreground">{formState.address}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {formState.organization}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {formState.phone}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {formState.email}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {formState.passwordMask}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {formState.address}
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -128,7 +210,7 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
         </Card>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProfileContainer
+export default ProfileContainer;

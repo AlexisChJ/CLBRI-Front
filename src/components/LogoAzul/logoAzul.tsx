@@ -1,7 +1,14 @@
+import Image from "next/image";
+import LogoAzul from "@/assets/images/logo_azul.png";
+
 export function BlueLogo({ className = "" }: { className?: string }) {
   return (
     <div className="relative w-fit mx-auto">
-      <img src="/logo_serch_azul.png" alt="Blue Logo" className={`h-auto ${className}`} />
+      <Image
+        src={LogoAzul}
+        alt={"Logo Azul"}
+        className={`h-auto ${className}`}
+      />
     </div>
-  )
+  );
 }

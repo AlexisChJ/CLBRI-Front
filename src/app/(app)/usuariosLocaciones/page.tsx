@@ -68,17 +68,6 @@ export default function AdministerUsers() {
 
   const [search, setSearch] = useState("");
 
-  const notificaciones: Notification[] = [{ description: "S" }];
-
-  function generateToken(length = 12) {
-    const chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    return Array.from(
-      { length },
-      () => chars[Math.floor(Math.random() * chars.length)]
-    ).join("");
-  }
-
   const filteredUsuarios = usuarios.filter(
     (u) =>
       u.nombre.toLowerCase().includes(search.toLowerCase()) ||

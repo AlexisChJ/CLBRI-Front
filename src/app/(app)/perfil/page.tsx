@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { NavBar } from "@/components/NavBar/NavBar";
 import { Prompt } from "next/font/google";
 import ProfileContainer from "@/components/ProfileContainer/ProfileContainer";
@@ -8,12 +9,27 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useAuth } from "@/providers/AuthProvider";
 import { editUserData } from "@/services/user/editUserData";
+import { getUserData } from "@/services/user/showData";
+import { UserShowData } from "@/types/ShowUserData";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 
 export default function Perfil() {
   const { user } = useAuth();
   const router = useRouter();
+
+  const [userData, setUserData] = useState<UserShowData | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user) return;
+      const token = await user.getIdToken();
+      const data = await getUserData(token);
+      setUserData(data);
+    };
+
+    fetchData();
+  }, [user]);
 
   const handleLogout = () => {
     signOut(auth);
@@ -63,7 +79,13 @@ export default function Perfil() {
   };
 
 
-  if (!user) return null;
+  if (!user || !userData) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p className="text-gray-500">Saliendo de la cuenta</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-1 flex-col p-5 gap-5 h-full overflow-y-auto">
@@ -77,15 +99,15 @@ export default function Perfil() {
       <div className="w-full flex justify-center mt-[10px]">
         <ProfileContainer
           avatarSrc="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
-          name="Juan Pérez"
-          workplace="Skilliket Inc."
-          phone="555-123-4567"
-          email="juan@example.com"
-          address="Av. Siempre Viva 742"
-          city="Springfield"
-          state="IL"
-          country="USA"
-          postal_code="62704"
+          name={userData?.name || ""}
+          workplace={userData?.workplace || ""}
+          phone={userData?.phoneNumber || ""}
+          email={userData?.email || ""}
+          address={userData?.location?.address || ""}
+          city={userData?.location?.city || ""}
+          state={userData?.location?.state || ""}
+          country={userData?.location?.country || ""}
+          postal_code={userData?.location?.postalCode || ""}
           onSave={handleSaveChanges}
         />
       </div>

@@ -16,6 +16,7 @@ import { DatePicker } from "@/components/DatePicker/DatePicker";
 import { products } from "@/lib/products";
 import { getBatches} from "@/services/batches/getBatches";
 import { Batch } from "@/types/Batch";
+import { addBatch } from "@/services/batches/addBatch";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 
@@ -30,10 +31,9 @@ export default function SitioTabla() {
   const [agregarFechaEntrega, setAgregarFechaEntrega] = useState<Date | undefined>(undefined);
   const [agregarFechaExpiracion, setAgregarFechaExpiracion] = useState<Date | undefined>(undefined);
 
-  // ✅ AGREGAR EL ID AL TIPO
   const [rows, setRows] = useState<
     {
-      id: number; // ✅ Agregar el ID aquí
+      id: number;
       nombre: string;
       clasificacion: string;
       entrada: string;
@@ -53,9 +53,8 @@ export default function SitioTabla() {
         const token = await user.getIdToken();
         const batches: Batch[] = await getBatches(token);
 
-        // ✅ INCLUIR EL ID EN EL MAPEO
         const mappedRows = batches.map((batch) => ({
-          id: batch.id, // ✅ INCLUIR EL ID DEL BATCH ORIGINAL
+          id: batch.id, 
           nombre: batch.description,
           clasificacion: batch.classification?.name || "Sin clasificación",
           entrada: format(parseISO(batch.entryDate), "dd-MMMM-yyyy", { locale: es }),
@@ -74,7 +73,7 @@ export default function SitioTabla() {
 
   if (!user) return null;
 
-  const agregarProducto = () => {
+  const agregarProducto = async () => {
     if (
       !agregarDescripcion ||
       !agregarClasificacion ||
@@ -86,26 +85,28 @@ export default function SitioTabla() {
       return;
     }
 
-    // ✅ NOTA: Los productos agregados localmente no tendrán ID real
-    // hasta que se guarden en el servidor
-    const nuevoProducto = {
-      id: Date.now(), // ✅ ID temporal para productos nuevos
-      nombre: agregarDescripcion,
-      clasificacion: agregarClasificacion,
-      entrada: format(agregarFechaEntrega, "dd-MMMM-yyyy", { locale: es }),
-      caducidad: format(agregarFechaExpiracion, "dd-MMMM-yyyy", { locale: es }),
-      prioridad: agregarPrioridad,
-    };
+    if (!user) return;
+    const token = await user.getIdToken();
 
-    setRows((prev) => [...prev, nuevoProducto]);
+    try {
+      await addBatch(
+        {
+          sku: "10001A", // Puedes usar un SKU dinámico si lo tienes
+          description: agregarDescripcion,
+          entryDate: format(agregarFechaEntrega, "yyyy-MM-dd"),
+          expirationDate: format(agregarFechaExpiracion, "yyyy-MM-dd"),
+          priority: agregarPrioridad,
+          location_id: 1, // Cambia según tu lógica
+          classification_id: 1, // Cambia según tu lógica
+        },
+        token
+      );
 
-    // Limpiar y cerrar
-    setAgregarDescripcion("");
-    setAgregarClasificacion("");
-    setAgregarFechaEntrega(undefined);
-    setAgregarFechaExpiracion(undefined);
-    setAgregarPrioridad("");
-    setPopupOpen(false);
+      setPopupOpen(false);
+    } catch (error) {
+      console.error("Error al agregar producto:", error);
+      alert("Error al agregar producto");
+    }
   };
 
   return (

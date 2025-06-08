@@ -1,19 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavBar } from "@/components/NavBar/NavBar";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
 import { Prompt } from "next/font/google";
 import { Notification } from "@/types/Notification";
 import { useAuth } from "@/providers/AuthProvider";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
 import Buttons from "@/components/Buttons/Buttons";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
 import { TextInput } from "@/components/TextInput/TextInput";
 import { DatePicker } from "@/components/DatePicker/DatePicker";
 import { products } from "@/lib/products";
+import { getBatches} from "@/services/batches/getBatches";
+import { Batch } from "@/types/Batch";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 
@@ -25,17 +27,46 @@ export default function SitioTabla() {
   const [agregarDescripcion, setAgregarDescripcion] = useState("");
   const [agregarClasificacion, setAgregarClasificacion] = useState("");
   const [agregarPrioridad, setAgregarPrioridad] = useState("");
-  const [agregarFechaEntrega, setAgregarFechaEntrega] = useState<
-    Date | undefined
-  >(undefined);
-  const [agregarFechaExpiracion, setAgregarFechaExpiracion] = useState<
-    Date | undefined
-  >(undefined);
-  const [rows, setRows] = useState(products);
+  const [agregarFechaEntrega, setAgregarFechaEntrega] = useState<Date | undefined>(undefined);
+  const [agregarFechaExpiracion, setAgregarFechaExpiracion] = useState<Date | undefined>(undefined);
+
+  const [rows, setRows] = useState<
+    {
+      nombre: string;
+      clasificacion: string;
+      entrada: string;
+      caducidad: string;
+      prioridad: string;
+    }[]
+  >([]);
 
   const [popupOpen, setPopupOpen] = useState(false);
 
   const notificaciones: Notification[] = [{ description: "S" }];
+
+  useEffect(() => {
+    async function fetchBatches() {
+      if (!user) return;
+      try {
+        const token = await user.getIdToken();
+        const batches: Batch[] = await getBatches(token);
+
+        const mappedRows = batches.map((batch) => ({
+          nombre: batch.description,
+          clasificacion: batch.classification?.name || "Sin clasificación",
+          entrada: format(parseISO(batch.entryDate), "dd-MMMM-yyyy", { locale: es }),
+          caducidad: format(parseISO(batch.expirationDate), "dd-MMMM-yyyy", { locale: es }),
+          prioridad: batch.priority,
+        }));
+
+        setRows(mappedRows);
+      } catch (error) {
+        console.error("Error cargando batches:", error);
+      }
+    }
+
+    fetchBatches();
+  }, [user]);
 
   if (!user) return null;
 
@@ -168,9 +199,9 @@ export default function SitioTabla() {
             onChange={(e) => setAgregarPrioridad(e.target.value)}
           >
             <option value="">Selecciona una prioridad</option>
-            <option value="Alta">Alta</option>
-            <option value="Media">Media</option>
-            <option value="Baja">Baja</option>
+            <option value="HIGH">Alta</option>
+            <option value="MID">Media</option>
+            <option value="LOW">Baja</option>
           </select>
 
           {/* Botón de guardar */}

@@ -70,9 +70,9 @@ export function SearchBar({
           <SelectGroup>
             <SelectLabel>Prioridad</SelectLabel>
             <SelectItem value="all">Todas</SelectItem>
-            <SelectItem value="Alta">Alta</SelectItem>
-            <SelectItem value="Media">Media</SelectItem>
-            <SelectItem value="Baja">Baja</SelectItem>
+            <SelectItem value="HIGH">Alta</SelectItem>
+            <SelectItem value="MID">Media</SelectItem>
+            <SelectItem value="LOW">Baja</SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>

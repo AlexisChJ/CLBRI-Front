@@ -7,6 +7,7 @@ import Buttons from "@/components/Buttons/Buttons";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useAuth } from "@/providers/AuthProvider";
+import { editUserData } from "@/services/user/editUserData";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 
@@ -18,6 +19,49 @@ export default function Perfil() {
     signOut(auth);
     router.push("/login");
   };
+
+    const handleSaveChanges = async (data: {
+    name: string;
+    email: string;
+    phone: string;
+    workplace: string;
+    address: string;
+    city: string;
+    state: string;
+    country: string;
+    postal_code: string;
+  }) => {
+    try {
+      if (!user) return;
+      const firebaseToken = await user.getIdToken();
+      const payload = {
+        name: data.name,
+        email: data.email,
+        workplace: data.workplace,
+        phone_number: data.phone,
+        location: {
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          country: data.country,
+          postal_code: data.postal_code
+        }
+      };
+      await editUserData(firebaseToken, payload);
+      console.log("Cambios guardados con éxito");
+    }
+    catch (err: any) {
+      if (err.response) {
+        console.error("Backend error:", err.response.data);
+        console.error("Status:", err.response.status);
+      } else if (err.request) {
+        console.error("No response received:", err.request);
+      } else {
+        console.error("Error en la petición:", err.message);
+      }
+    }
+  };
+
 
   if (!user) return null;
 
@@ -34,13 +78,15 @@ export default function Perfil() {
         <ProfileContainer
           avatarSrc="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
           name="Juan Pérez"
-          organization="Skilliket Inc."
+          workplace="Skilliket Inc."
           phone="555-123-4567"
           email="juan@example.com"
           address="Av. Siempre Viva 742"
-          onSave={(data) => {
-            console.log("Datos guardados:", data);
-          }}
+          city="Springfield"
+          state="IL"
+          country="USA"
+          postal_code="62704"
+          onSave={handleSaveChanges}
         />
       </div>
       <div className="w-full flex justify-center mt-10 mb-4">

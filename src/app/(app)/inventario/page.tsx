@@ -30,8 +30,10 @@ export default function SitioTabla() {
   const [agregarFechaEntrega, setAgregarFechaEntrega] = useState<Date | undefined>(undefined);
   const [agregarFechaExpiracion, setAgregarFechaExpiracion] = useState<Date | undefined>(undefined);
 
+  // ✅ AGREGAR EL ID AL TIPO
   const [rows, setRows] = useState<
     {
+      id: number; // ✅ Agregar el ID aquí
       nombre: string;
       clasificacion: string;
       entrada: string;
@@ -51,7 +53,9 @@ export default function SitioTabla() {
         const token = await user.getIdToken();
         const batches: Batch[] = await getBatches(token);
 
+        // ✅ INCLUIR EL ID EN EL MAPEO
         const mappedRows = batches.map((batch) => ({
+          id: batch.id, // ✅ INCLUIR EL ID DEL BATCH ORIGINAL
           nombre: batch.description,
           clasificacion: batch.classification?.name || "Sin clasificación",
           entrada: format(parseISO(batch.entryDate), "dd-MMMM-yyyy", { locale: es }),
@@ -82,7 +86,10 @@ export default function SitioTabla() {
       return;
     }
 
+    // ✅ NOTA: Los productos agregados localmente no tendrán ID real
+    // hasta que se guarden en el servidor
     const nuevoProducto = {
+      id: Date.now(), // ✅ ID temporal para productos nuevos
       nombre: agregarDescripcion,
       clasificacion: agregarClasificacion,
       entrada: format(agregarFechaEntrega, "dd-MMMM-yyyy", { locale: es }),

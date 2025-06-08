@@ -5,13 +5,15 @@ import { SearchBar } from "@/components/SearchBar/SearchBar";
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
 import LocationsMap from "@/components/Mapa/mapa";
 import { Prompt } from "next/font/google";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Buttons from "@/components/Buttons/Buttons";
 import { useAuth } from "@/providers/AuthProvider";
-import PopUpWindow from "@/components/PopUpWindow/PopupWindow"; // Add this import
-import { motion } from "framer-motion"; // Add this import if not already imported
-import { Download, ChevronDown } from "lucide-react"; // Add this import for the download icon
+import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
+import { motion } from "framer-motion"; 
+import { Download, ChevronDown } from "lucide-react"; 
 import { products } from "@/lib/products";
+import { getBatches} from "@/services/batches/getBatches";
+import { Batch } from "@/types/Batch";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 
@@ -115,7 +117,15 @@ export default function VistaMapa() {
   const [showDownloadPopup, setShowDownloadPopup] = useState(false);
   const [currentDistributionType, setCurrentDistributionType] = useState(null);
   const [productDistributions, setProductDistributions] = useState({});
-  const [rows, setRows] = useState(products);
+  const [rows, setRows] = useState<
+    {
+      nombre: string;
+      clasificacion: string;
+      entrada: string;
+      caducidad: string;
+      prioridad: string;
+    }[]
+  >([]);
 
   const handleDistributionClick = (type: "manual" | "automatico" | null) => {
     setDistributionType(type);
@@ -159,6 +169,29 @@ export default function VistaMapa() {
   };
 
   if (!user) return null;
+  useEffect(() => {
+    async function fetchBatches() {
+      if (!user) return;
+      try {
+        const token = await user.getIdToken();
+        const batches: Batch[] = await getBatches(token);
+
+        const mappedRows = batches.map((batch) => ({
+          nombre: batch.description,
+          clasificacion: batch.classification?.name || "Sin clasificación",
+          entrada: batch.entryDate,
+          caducidad: batch.expirationDate,
+          prioridad: batch.priority,
+        }));
+
+        setRows(mappedRows);
+      } catch (error) {
+        console.error("Error al cargar batches:", error);
+      }
+    }
+
+    fetchBatches();
+  }, [user]);
 
   return (
     <div id="tesss" className="p-5 flex flex-col gap-5 overflow-y-auto h-full">

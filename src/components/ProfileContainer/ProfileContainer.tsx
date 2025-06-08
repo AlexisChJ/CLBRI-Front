@@ -14,7 +14,6 @@ type ProfileContainerProps = React.ComponentProps<typeof Card> & {
   organization: string;
   phone: string;
   email: string;
-  passwordMask: string;
   address: string;
   onSave?: (data: {
     avatarSrc?: string;
@@ -22,7 +21,6 @@ type ProfileContainerProps = React.ComponentProps<typeof Card> & {
     organization: string;
     phone: string;
     email: string;
-    passwordMask: string;
     address: string;
   }) => void;
 };
@@ -40,7 +38,6 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
   organization,
   phone,
   email,
-  passwordMask,
   address,
   onSave,
   ...props
@@ -51,7 +48,6 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
     organization,
     phone,
     email,
-    passwordMask,
     address,
     avatarSrc: avatarSrc || "",
   });
@@ -165,13 +161,6 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
                   />
                   <input
                     type="text"
-                    value={formState.passwordMask}
-                    onChange={handleChange("passwordMask")}
-                    className="w-full border rounded px-2 py-1 mb-2"
-                    placeholder="Contraseña"
-                  />
-                  <input
-                    type="text"
                     value={formState.address}
                     onChange={handleChange("address")}
                     className="w-full border rounded px-2 py-1"
@@ -196,9 +185,6 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
                   </p>
                   <p className="text-sm text-muted-foreground">
                     {formState.email}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {formState.passwordMask}
                   </p>
                   <p className="text-sm text-muted-foreground">
                     {formState.address}

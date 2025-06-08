@@ -37,7 +37,6 @@ export default function Perfil() {
           organization="Skilliket Inc."
           phone="555-123-4567"
           email="juan@example.com"
-          passwordMask="••••••••"
           address="Av. Siempre Viva 742"
           onSave={(data) => {
             console.log("Datos guardados:", data);

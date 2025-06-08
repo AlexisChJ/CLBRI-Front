@@ -27,7 +27,6 @@ const defaultArgs = {
   organization: 'Tecnológico de Monterrey',
   phone: '+52 1 998 123 4567',
   email: 'othon.berlanga@example.com',
-  passwordMask: '••••••••',
   address: 'Guadalajara, Jalisco',
 }
 

@@ -34,8 +34,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     const token = await getIdToken(firebaseUser);
                     setIdToken(token);
 
-                    // setRole('admin');
-                    setRole('user');
+                    setRole('admin');
+                    //setRole('user');
                     // SI EXISTE UNA SESION, OBTENER EL ROL DE ALGUN STORAGE
                 } catch (err) {
                     console.error(err);

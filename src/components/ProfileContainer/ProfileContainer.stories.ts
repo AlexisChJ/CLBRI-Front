@@ -24,11 +24,14 @@ type Story = StoryObj<typeof ProfileContainer>
 
 const defaultArgs = {
   name: 'Othón Berlanga',
-  organization: 'Tecnológico de Monterrey',
+  workplace: 'Tecnológico de Monterrey',
   phone: '+52 1 998 123 4567',
   email: 'othon.berlanga@example.com',
-  passwordMask: '••••••••',
-  address: 'Guadalajara, Jalisco',
+  address: "Av. Insurgentes Sur 123",
+  city: "Ciudad de México",
+  state: "CDMX",
+  country: "México",
+  postal_code: "03100"
 }
 
 export const Default: Story = {

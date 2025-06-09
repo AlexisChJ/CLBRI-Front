@@ -11,19 +11,25 @@ import { AnimatePresence, motion } from "framer-motion";
 type ProfileContainerProps = React.ComponentProps<typeof Card> & {
   avatarSrc?: string;
   name: string;
-  organization: string;
+  workplace: string;
   phone: string;
   email: string;
-  passwordMask: string;
   address: string;
+  city: string;
+  state: string;
+  country: string;
+  postal_code: string;
   onSave?: (data: {
     avatarSrc?: string;
     name: string;
-    organization: string;
+    workplace: string;
     phone: string;
     email: string;
-    passwordMask: string;
     address: string;
+    city: string;
+    state: string;
+    country: string;
+    postal_code: string;
   }) => void;
 };
 
@@ -37,22 +43,28 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
   className,
   avatarSrc,
   name,
-  organization,
+  workplace,
   phone,
   email,
-  passwordMask,
   address,
+  city,
+  state,
+  country,
+  postal_code,
   onSave,
   ...props
 }) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [formState, setFormState] = React.useState({
     name,
-    organization,
+    workplace,
     phone,
     email,
-    passwordMask,
     address,
+    city,
+    state,
+    country,
+    postal_code,
     avatarSrc: avatarSrc || "",
   });
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
@@ -144,8 +156,8 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
                   />
                   <input
                     type="text"
-                    value={formState.organization}
-                    onChange={handleChange("organization")}
+                    value={formState.workplace}
+                    onChange={handleChange("workplace")}
                     className="w-full border rounded px-2 py-1 mb-2"
                     placeholder="Organización"
                   />
@@ -165,17 +177,38 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
                   />
                   <input
                     type="text"
-                    value={formState.passwordMask}
-                    onChange={handleChange("passwordMask")}
-                    className="w-full border rounded px-2 py-1 mb-2"
-                    placeholder="Contraseña"
-                  />
-                  <input
-                    type="text"
                     value={formState.address}
                     onChange={handleChange("address")}
                     className="w-full border rounded px-2 py-1"
                     placeholder="Dirección"
+                  />
+                  <input
+                    type="text"
+                    value={formState.city}
+                    onChange={handleChange("city")}
+                    className="w-full border rounded px-2 py-1 mb-2"
+                    placeholder="Ciudad"
+                  />
+                  <input
+                    type="text"
+                    value={formState.state}
+                    onChange={handleChange("state")}
+                    className="w-full border rounded px-2 py-1 mb-2"
+                    placeholder="Estado"
+                  />
+                  <input
+                    type="text"
+                    value={formState.country}
+                    onChange={handleChange("country")}
+                    className="w-full border rounded px-2 py-1 mb-2"
+                    placeholder="País"
+                  />
+                  <input
+                    type="text"
+                    value={formState.postal_code}
+                    onChange={handleChange("postal_code")}
+                    className="w-full border rounded px-2 py-1 mb-2"
+                    placeholder="Código Postal"
                   />
                 </motion.div>
               ) : (
@@ -189,7 +222,7 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
                 >
                   <h2 className="text-xl font-semibold">{formState.name}</h2>
                   <p className="text-sm text-muted-foreground">
-                    {formState.organization}
+                    {formState.workplace}
                   </p>
                   <p className="text-sm text-muted-foreground">
                     {formState.phone}
@@ -198,10 +231,19 @@ const ProfileContainer: React.FC<ProfileContainerProps> = ({
                     {formState.email}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {formState.passwordMask}
+                    {formState.address}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {formState.address}
+                    {formState.city}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {formState.state}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {formState.country}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {formState.postal_code}
                   </p>
                 </motion.div>
               )}

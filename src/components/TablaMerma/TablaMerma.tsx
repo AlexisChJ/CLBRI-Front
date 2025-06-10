@@ -131,7 +131,7 @@ const TablaMerma = ({ searchText, filterClasificacion, filterPrioridad, batches,
         <Table className="min-w-full table-auto">
           <TableHeader>
             <TableRow className="bg-[#3A70C3] hover:bg-[#3A70C3]">
-              <TableHead className="w-[5%] text-white">Recibido</TableHead>
+              <TableHead className={"w-[5%] ${redHat.className} text-white"}>Recibido</TableHead>
               <TableHead className={`w-[25%] ${redHat.className} text-white`}>Nombre</TableHead>
               <TableHead className={`w-[15%] ${redHat.className} text-white`}>Clasificación</TableHead>
               <TableHead className={`w-[20%] ${redHat.className} text-white`}>Fecha de llegada</TableHead>

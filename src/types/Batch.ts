@@ -7,6 +7,7 @@ export interface Batch {
   createdAt: string;
   lastUpdated: string;
   priority: string;
+  received: boolean;
   classification?: {
     id: number;
     name: string;

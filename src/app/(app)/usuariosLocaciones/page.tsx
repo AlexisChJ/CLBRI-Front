@@ -12,7 +12,6 @@ import { useAuth } from "@/providers/AuthProvider";
 import { UserLocation } from "@/types/UserLocation";
 import { getUserLocations } from "@/services/admin/getUserLocations";
 import { TokenInvitationService } from "@/services/admin/TokenInvitation";
-
 import { User } from "firebase/auth";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
@@ -28,7 +27,6 @@ const useUsers = (adminUser: User | null) => {
   useEffect(() => {
     const fetchUserLocations = async () => {
       if (!adminUser) return;
-
       const token = await adminUser.getIdToken();
       const usersData = await getUserLocations(token);
       setUsuariosDB(usersData.map(value => ({
@@ -40,27 +38,30 @@ const useUsers = (adminUser: User | null) => {
         country: value.location.country,
         postalCode: value.location.postalCode,
       })));
-    }
+    };
     fetchUserLocations();
   }, [adminUser]);
 
   return { usuariosDB };
-}
+};
 
 export default function AdministerUsers() {
   const { user } = useAuth();
   const { usuariosDB } = useUsers(user);
-  const [popupOpen, setPopupOpen] = useState(false);
+
   const [usuarios, setUsuarios] = useState<
     { id: string; nombre: string; lugarTrabajo: string }[]
   >([]);
   const [userLocations, setUserLocations] = useState<
     { lat: number; lng: number; title: string }[]
   >([]);
+  const [usuariosCargados, setUsuariosCargados] = useState(false);
+  const [locationsCargadas, setLocationsCargadas] = useState(false);
+
+  const [popupOpen, setPopupOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState("");
   const [tokenPopupOpen, setTokenPopupOpen] = useState(false);
 
-  // Estados para el token por correo
   const [tokenEmail, setTokenEmail] = useState("");
   const [token, setToken] = useState("");
   const [tokenLoading, setTokenLoading] = useState(false);
@@ -68,13 +69,38 @@ export default function AdministerUsers() {
 
   const [search, setSearch] = useState("");
 
+  useEffect(() => {
+    if (!user) return;
+    const storedUsuarios = localStorage.getItem("usuarios");
+    if (storedUsuarios) setUsuarios(JSON.parse(storedUsuarios));
+    const storedLocations = localStorage.getItem("userLocations");
+    if (storedLocations) setUserLocations(JSON.parse(storedLocations));
+    setUsuariosCargados(true);
+    setLocationsCargadas(true);
+  }, [user]);
+
+  useEffect(() => {
+    if (!usuariosCargados) return;
+    const actual = localStorage.getItem("usuarios");
+    if (actual !== JSON.stringify(usuarios)) {
+      localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    }
+  }, [usuarios, usuariosCargados]);
+
+  useEffect(() => {
+    if (!locationsCargadas) return;
+    const actual = localStorage.getItem("userLocations");
+    if (actual !== JSON.stringify(userLocations)) {
+      localStorage.setItem("userLocations", JSON.stringify(userLocations));
+    }
+  }, [userLocations, locationsCargadas]);
+
   const filteredUsuarios = usuarios.filter(
     (u) =>
       u.nombre.toLowerCase().includes(search.toLowerCase()) ||
       u.lugarTrabajo.toLowerCase().includes(search.toLowerCase()) ||
       u.id.includes(search)
   );
-
   const usuariosDisponibles = usuariosDB.filter(
     (dbUser) => !usuarios.some((u) => u.id === dbUser.id)
   );
@@ -82,38 +108,38 @@ export default function AdministerUsers() {
   const handleAdd = async () => {
     const user = usuariosDB.find((u) => u.id === selectedUserId);
     if (!user) return;
+    if (usuarios.some(u => u.id === user.id)) return;
 
     const fullAddress = `${user.address}, ${user.city}, ${user.state}, ${user.country}, ${user.postalCode}`;
     const coords = await getLatLngFromAddress(fullAddress);
 
-    setUsuarios([
+    const nuevosUsuarios = [
       ...usuarios,
       {
         id: user.id,
         nombre: user.nombre,
         lugarTrabajo: fullAddress,
       },
-    ]);
+    ];
+    setUsuarios(nuevosUsuarios);
 
     if (coords) {
-      setUserLocations([
+      const nuevasLocations = [
         ...userLocations,
         { lat: coords.lat, lng: coords.lng, title: user.nombre },
-      ]);
+      ];
+      setUserLocations(nuevasLocations);
     }
-
     setPopupOpen(false);
     setSelectedUserId("");
   };
 
-  // Generar token usando el servicio
   const handleGenerateToken = async () => {
     setTokenLoading(true);
     setTokenError(null);
     setToken("");
     try {
       const result = await TokenInvitationService({ email: tokenEmail });
-      // Ajusta según la respuesta real de tu backend
       if (typeof result === "string") {
         setToken(result);
       } else if (typeof result === "object" && result.token) {
@@ -130,17 +156,8 @@ export default function AdministerUsers() {
   if (!user) return null;
 
   return (
-    <div
-      id="tesss"
-      className="p-5 flex flex-col gap-5 overflow-y-auto h-full"
-    >
-      <NavBar
-        title="Locaciones"
-        opts={[]}
-        selected={0}
-        onValueChange={() => {}}
-      />
-
+    <div className="p-5 flex flex-col gap-5 overflow-y-auto h-full">
+      <NavBar title="Locaciones" opts={[]} selected={0} onValueChange={() => {}} />
       <div className="flex flex-row gap-3 h-full">
         <div className="w-3/5 flex flex-col gap-5 h-auto">
           <div className="flex gap-5 items-center">
@@ -179,7 +196,6 @@ export default function AdministerUsers() {
             />
           </div>
         </div>
-
         <div className="w-2/5 flex flex-col gap-5 h-auto">
           <LocationsMap
             adminLocation={{
@@ -191,12 +207,9 @@ export default function AdministerUsers() {
           />
         </div>
       </div>
-
       <PopUpWindow open={popupOpen} onClose={() => setPopupOpen(false)}>
         <div className="m-5">
-          <h3
-            className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}
-          >
+          <h3 className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}>
             Agregar usuario
           </h3>
           <select
@@ -220,7 +233,6 @@ export default function AdministerUsers() {
           />
         </div>
       </PopUpWindow>
-
       <PopUpWindow
         open={tokenPopupOpen}
         onClose={() => {
@@ -231,9 +243,7 @@ export default function AdministerUsers() {
         }}
       >
         <div className="m-5 flex flex-col gap-4">
-          <h3
-            className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}
-          >
+          <h3 className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}>
             Generar Token
           </h3>
           <Input

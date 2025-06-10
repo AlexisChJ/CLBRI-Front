@@ -24,6 +24,10 @@ import {
   ChartLegend, 
   ChartLegendContent,
 } from "@/components/ui/chart"
+import { FoodLossGraph, FoodLossGraphData, FoodStockGraph, FoodStockGraphData } from "@/types/dashboard/Graph"
+
+
+/*
 const chartData = [
   { month: "Ene.", desktop: 186, mobile: 80 },
   { month: "Feb.", desktop: 305, mobile: 200 },
@@ -49,8 +53,17 @@ const chartConfig = {
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig
+*/
 
-export function LineChartComp() {
+
+interface LineChartCompProps {
+  chartConfig: ChartConfig;
+  chartValue: string;
+  chartData: FoodStockGraphData[] | FoodLossGraphData[];
+}
+
+
+export function LineChartComp({ chartConfig, chartValue, chartData } : LineChartCompProps) {
   return (
     <Card className="">
 
@@ -79,20 +92,23 @@ export function LineChartComp() {
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent className={ `${ barlow_500.className } text-[#5B5B5B]` }/>} />
             <Line
-              dataKey="desktop"
+              dataKey={chartValue}
               type="monotone"
               stroke="var(--color-desktop)"
               strokeWidth={3}
               dot={false}
-              
             />
+            {
+              /* 
             <Line
-              dataKey="mobile"
-              type="monotone"
-              stroke="var(--color-mobile)"
-              strokeWidth={3}
-              dot={false}
-            />
+            dataKey="mobile"
+            type="monotone"
+            stroke="var(--color-mobile)"
+            strokeWidth={3}
+            dot={false}
+            /> 
+              */
+            }
           </LineChart>
         </ChartContainer>
       </CardContent>

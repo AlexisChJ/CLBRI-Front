@@ -337,11 +337,11 @@ const TablaAvanzada = ({
       
     } catch (error) {
       console.error("Error actualizando batch:", error);
-      if (error instanceof Error) {
-        alert(`Error al guardar cambios: ${error.message}`);
-      } else {
-        alert("Error desconocido al guardar cambios");
-      }
+      //if (error instanceof Error) {
+      //  alert(`Error al guardar cambios: ${error.message}`);
+      //} else {
+      //  alert("Error desconocido al guardar cambios");
+      //}
     } finally {
       setIsEditing(false);
     }

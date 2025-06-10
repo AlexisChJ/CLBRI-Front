@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react"; // Import useEffect
+import { useState, useEffect } from "react";
 import { NavBar } from "@/components/NavBar/NavBar";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import { Prompt } from "next/font/google";
 import { useAuth } from "@/providers/AuthProvider";
-import TablaMerma from "@/components/TablaMerma/TablaMerma";
+import TablaMerma, { BatchReceivedStatusMap } from "@/components/TablaMerma/TablaMerma"; // Import BatchReceivedStatusMap
 import Buttons from "@/components/Buttons/Buttons";
-import { getBatches } from "@/services/batches/getBatches"; 
-import { Batch } from "@/types/Batch"; 
+import { getBatches, updateBatchReceivedStatus, BatchUpdateStatusDTO } from "@/services/batches/getBatches"; 
+import { Batch } from "@/types/Batch";
+import { toast } from "react-toastify";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 
@@ -18,8 +19,11 @@ export default function SitioTabla() {
   const [filterClasificacion, setFilterClasificacion] = useState("");
   const [filterPrioridad, setFilterPrioridad] = useState("");
   const [batches, setBatches] = useState<Batch[]>([]);
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState<string | null>(null); 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [currentBatchReceivedStatus, setCurrentBatchReceivedStatus] = useState<BatchReceivedStatusMap>({});
+
 
   useEffect(() => {
     async function fetchBatches() {
@@ -27,9 +31,8 @@ export default function SitioTabla() {
         setLoading(false);
         return;
       }
-
       setLoading(true);
-      setError(null); 
+      setError(null);
 
       try {
         const token = await user.getIdToken();
@@ -44,14 +47,46 @@ export default function SitioTabla() {
     }
 
     fetchBatches();
-  }, [user]); 
+  }, [user]);
 
-  if (!user) return null; 
+  const handleBatchesStatusReady = (statusMap: BatchReceivedStatusMap) => {
+    setCurrentBatchReceivedStatus(statusMap);
+  };
+
+  const handleIndividualBatchStatusChange = (batchId: number, isReceived: boolean) => {
+  };
+
+
+  const handleSaveBatches = async () => {
+  try {
+    const token = await user.getIdToken();
+
+    const updatesPayload: BatchUpdateStatusDTO[] = batches.map(batch => ({
+      id: batch.id,
+      received: currentBatchReceivedStatus[batch.id] || false,
+    }));
+
+    const backendResponse = await updateBatchReceivedStatus(updatesPayload, token);
+    if (backendResponse && Array.isArray(backendResponse.processedBatches)) {
+      setBatches(backendResponse.processedBatches);
+    } else {
+      console.error("Backend did not return expected 'processedBatches' array:", backendResponse);
+    }
+
+  } catch (err: any) {
+    console.error("Error al guardar los batches:", err);
+    setError(err.message || "Error al guardar los batches.");
+    toast.error("Error al guardar el estado de los batches. Por favor, inténtalo de nuevo.");
+  } finally {
+    setIsSaving(false);
+  }
+};
+
+  if (!user) return null;
   if (loading) {
     return (
       <div className="flex flex-col p-5 gap-5 overflow-y-auto h-full items-center justify-center">
         <p className={`${prompt.className} text-xl text-gray-700`}>Cargando batches...</p>
-        {/* You can add a spinner here */}
       </div>
     );
   }
@@ -64,7 +99,6 @@ export default function SitioTabla() {
       </div>
     );
   }
-
 
   return (
     <div className="flex flex-col p-5 gap-5 overflow-y-auto h-full">
@@ -91,11 +125,12 @@ export default function SitioTabla() {
           />
         </div>
         <Buttons
-          text="Guardar"
+          text={isSaving ? "Guardando..." : "Guardar"} 
           color="register"
           className="w-1/5 px-6"
           buttonSize="default"
-          // onClick={} 
+          onClick={handleSaveBatches}
+          disabled={isSaving} 
         />
       </div>
       <TablaMerma
@@ -103,6 +138,8 @@ export default function SitioTabla() {
         filterClasificacion={filterClasificacion}
         filterPrioridad={filterPrioridad}
         batches={batches}
+        onBatchStatusChange={handleIndividualBatchStatusChange}
+        onBatchesStatusReady={handleBatchesStatusReady}
       />
     </div>
   );

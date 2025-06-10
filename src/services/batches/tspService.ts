@@ -1,4 +1,3 @@
-// @/services/batches/tspService.ts
 import api from "../api";
 import { Batch } from "@/types/Batch";
 import { UserLocation } from "@/types/UserLocation"; 

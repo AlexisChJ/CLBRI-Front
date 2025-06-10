@@ -1,6 +1,6 @@
-import { Batch } from "@/types/Batch";
-import api from "../api";
 import axios from "axios";
+import { Batch } from "@/types/Batch"; 
+import api from "../api"; 
 
 export interface BatchUpdateStatusDTO {
   id: number;
@@ -12,7 +12,7 @@ export const getBatches = async (firebaseToken: string): Promise<Batch[]> => {
         headers: { Authorization: `Bearer ${firebaseToken}` }
     };
 
-    const { data } = await api.get(`/batches/getbatches`, config);
+    const { data } = await api.get(`/batches/getuserbatches`, config);
     return data;
 };
 
@@ -26,7 +26,7 @@ export const updateBatchReceivedStatus = async (
 
   try {
     const { data } = await api.post(`/batches/save`, updates, config);
-    return data; // Returns the updated list of Batches
+    return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Error updating batch status:", error.response?.data || error.message);

@@ -13,6 +13,7 @@ export function SwitchDemo({ checked, onCheckedChange }: SwitchDemoProps) {
       <Switch
         id="roleVerifier"
         checked={checked}
+        data-testid="admin-switch"
         onCheckedChange={onCheckedChange}
         className={checked ? "data-[state=checked]:bg-[#3A70C3] data-[state=checked]:border-[#3A70C3]" : ""}
       />

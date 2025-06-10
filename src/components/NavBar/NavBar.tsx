@@ -72,6 +72,7 @@ export const NavBar = ({
 
           <button
             className="hover:cursor-pointer"
+            data-testid="logout-button"
             onClick={handleLogout}
           >
             <img src={LogOut.src} alt="Salir" />

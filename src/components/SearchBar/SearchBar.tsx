@@ -35,6 +35,7 @@ export function SearchBar({
       <Input 
         type="search" 
         placeholder="Buscar" 
+        data-cy="search-bar"
         className={`${ zen_700.className} bg-gray-100 dark:bg-gray-800 border border-gray-600 rounded-full`}
         value={searchText}
         onChange={e => onSearchTextChange(e.target.value)}

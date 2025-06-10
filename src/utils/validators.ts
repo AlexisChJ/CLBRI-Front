@@ -13,4 +13,6 @@ export const isValidPassword = (password: string): boolean => {
 export const isAlphanumeric = (value: string): boolean => /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s]+$/.test(value.trim());
 export const isAddress = (value: string): boolean => /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s#.,-]+$/.test(value.trim());
 export const isNumeric = (value: string): boolean => /^\d+$/.test(value.trim());
-export const isAlphanumericToken = (value: string): boolean => /^[a-zA-Z0-9]*$/.test(value.trim());
+export const isAlphanumericToken = (value: string): boolean =>
+  /^[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]+$/.test(value.trim());
+

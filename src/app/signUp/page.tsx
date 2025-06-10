@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { SheetLeft } from "@/components/Eula/Eula";
 import { signUpUser } from "@/services/signUp/signUpUser";
-import Colibri from "@/assets/images/colbri.jpeg"
+import Colibri from "@/assets/images/colbri.jpeg";
 
 import {
   isValidEmail,
@@ -20,6 +20,7 @@ import {
   isAlphanumeric,
   isAddress,
   isNumeric,
+  isAlphanumericToken,
 } from "@/utils/validators";
 import { signUpAdmin } from "@/services/signUp/signUpAdmin";
 
@@ -29,13 +30,11 @@ const redhat_700 = Red_Hat_Display({
   preload: true,
 });
 
-
 const zen_500 = Zen_Maru_Gothic({
   weight: "500",
   subsets: ["latin"],
   preload: true,
 });
-
 
 const SignUpPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -58,14 +57,19 @@ const SignUpPage = () => {
   const [country, setCountry] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [postalCodeError, setPostalCodeError] = useState<boolean>(false);
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<boolean>(false);
+  const [workplace, setWorkplace] = useState("");
+  const [workplaceError, setWorkplaceError] = useState<boolean>(false);
   const [adminToken, setAdminToken] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false); // Add state for switch
+  const [adminTokenError, setAdminTokenError] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState<string>("");
   const router = useRouter();
 
   const onCountryChange = (ctry: string) => {
     setCountry(ctry);
-  }
+  };
 
   const validateEmail = (value: string): boolean => {
     const valid = isValidEmail(value);
@@ -130,11 +134,30 @@ const SignUpPage = () => {
     return valid;
   };
 
-  
+  const validatePhone = (value: string): boolean => {
+    const valid = isNumeric(value);
+    setPhoneError(!valid);
+    if (!valid) setError("Credenciales incorrectas.");
+    return valid;
+  };
+
+  const validateWorkplace = (value: string): boolean => {
+    const valid = isAlphanumeric(value);
+    setWorkplaceError(!valid);
+    if (!valid) setError("Credenciales incorrectas.");
+    return valid;
+  };
+
+  const validateAdminToken = (value: string): boolean => {
+    const valid = isAlphanumericToken(value);
+    setAdminTokenError(!valid);
+    if (!valid) setError("Credenciales incorrectas.");
+    return valid;
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(""); // limpia errores anteriores
+    setError("");
 
     const isEmailValid = validateEmail(email);
     const isPasswordValid = validatePassword(password);
@@ -145,7 +168,10 @@ const SignUpPage = () => {
     const isCityValid = validateCity(city);
     const isStateValid = validateState(state);
     const isPostalCodeValid = validatePostalCode(postalCode);
-    //const isAdminTokenValid = validateAdminToken(adminToken);
+    const isPhoneValid = validatePhone(phone);
+    const isWorkplaceValid = validateWorkplace(workplace);
+
+    const isAdminTokenValid = isAdmin ? true : validateAdminToken(adminToken);
 
     if (
       !isEmailValid ||
@@ -156,8 +182,10 @@ const SignUpPage = () => {
       !isAddressValid ||
       !isCityValid ||
       !isStateValid ||
-      !isPostalCodeValid
-      //!isAdminTokenValid
+      !isPostalCodeValid ||
+      !isPhoneValid ||
+      !isWorkplaceValid ||
+      !isAdminTokenValid
     ) {
       return;
     }
@@ -168,50 +196,43 @@ const SignUpPage = () => {
       return;
     }
 
-    if (!isAdmin) {
-      try {
+    try {
+      if (!isAdmin) {
         await signUpUser({
           first_name: name,
           last_name: lastname,
           email: email,
           password: password,
-          workplace: "",
-          phone_number: "", // FALTA
+          workplace: workplace,
+          phone_number: phone,
           address: address,
           city: city,
           state: state,
           postal_code: postalCode,
           country: country,
-          admin_token: adminToken
+          admin_token: adminToken,
         });
-        router.push("/");
-      } catch (err) {
-        console.error(err);
-        // Marcar como erroneo el registro.
-      }
-    } else {
-      console.log("Registrando admin...");
-      try { 
+      } else {
         await signUpAdmin({
           first_name: name,
           last_name: lastname,
           email: email,
           password: password,
-          workplace: "",
-          phone_number: "", // FALTA
+          workplace: workplace,
+          phone_number: phone,
           address: address,
           city: city,
           state: state,
           postal_code: postalCode,
           country: country,
         });
-        router.push("/login");
-      } catch (err) {
-        console.error(err);
       }
-    }
 
-    router.push("/login");
+      router.push("/login");
+    } catch (err) {
+      console.error(err);
+      setError("Credenciales Inválidas");
+    }
   };
 
   const goBack = () => {
@@ -219,7 +240,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-full">
       {/* Imagen de fondo */}
       <div className="relative flex w-1/2">
         <Image
@@ -320,18 +341,34 @@ const SignUpPage = () => {
             hasError={postalCodeError}
             onChange={(e) => setPostalCode(e.target.value)}
           />
-          <CountryCombobox onCountryChange={onCountryChange} />
+          <div data-testid="country-combobox">
+            <CountryCombobox onCountryChange={onCountryChange} />
+          </div>
         </div>
 
         <div className="flex gap-4">
-          {/* Pass checked and onCheckedChange to SwitchDemo */}
+          <TextInput
+            value={phone}
+            placeholder="Teléfono"
+            hasError={phoneError}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          <TextInput
+            value={workplace}
+            placeholder="Workplace"
+            hasError={workplaceError}
+            onChange={(e) => setWorkplace(e.target.value)}
+          />
+        </div>
+
+        <div className="flex gap-4">
           <SwitchDemo checked={isAdmin} onCheckedChange={setIsAdmin} />
           <TextInput
             value={adminToken}
             placeholder="Token de Administrador"
-            
+            hasError={adminTokenError}
             onChange={(e) => setAdminToken(e.target.value)}
-            disabled={isAdmin} // Disable input if switch is ON
+            disabled={isAdmin}
           />
         </div>
 

@@ -29,15 +29,17 @@ const useUsers = (adminUser: User | null) => {
       if (!adminUser) return;
       const token = await adminUser.getIdToken();
       const usersData = await getUserLocations(token);
-      setUsuariosDB(usersData.map(value => ({
-        id: value.id + "",
-        nombre: value.name,
-        address: value.location.address,
-        city: value.location.city,
-        state: value.location.state,
-        country: value.location.country,
-        postalCode: value.location.postalCode,
-      })));
+      setUsuariosDB(
+        usersData.map((value) => ({
+          id: value.id + "",
+          nombre: value.name,
+          address: value.location.address,
+          city: value.location.city,
+          state: value.location.state,
+          country: value.location.country,
+          postalCode: value.location.postalCode,
+        }))
+      );
     };
     fetchUserLocations();
   }, [adminUser]);
@@ -48,6 +50,7 @@ const useUsers = (adminUser: User | null) => {
 export default function AdministerUsers() {
   const { user } = useAuth();
   const { usuariosDB } = useUsers(user);
+  const [tokenUser, setTokenUser] = useState<string | null>(null);
 
   const [usuarios, setUsuarios] = useState<
     { id: string; nombre: string; lugarTrabajo: string }[]
@@ -95,6 +98,14 @@ export default function AdministerUsers() {
     }
   }, [userLocations, locationsCargadas]);
 
+  useEffect(() => {
+    if (!user) {
+      setTokenUser(null);
+      return;
+    }
+    user.getIdToken().then(setToken);
+  }, [user]);
+
   const filteredUsuarios = usuarios.filter(
     (u) =>
       u.nombre.toLowerCase().includes(search.toLowerCase()) ||
@@ -108,7 +119,7 @@ export default function AdministerUsers() {
   const handleAdd = async () => {
     const user = usuariosDB.find((u) => u.id === selectedUserId);
     if (!user) return;
-    if (usuarios.some(u => u.id === user.id)) return;
+    if (usuarios.some((u) => u.id === user.id)) return;
 
     const fullAddress = `${user.address}, ${user.city}, ${user.state}, ${user.country}, ${user.postalCode}`;
     const coords = await getLatLngFromAddress(fullAddress);
@@ -157,7 +168,12 @@ export default function AdministerUsers() {
 
   return (
     <div className="p-5 flex flex-col gap-5 overflow-y-auto h-full">
-      <NavBar title="Locaciones" opts={[]} selected={0} onValueChange={() => {}} />
+      <NavBar
+        title="Locaciones"
+        opts={[]}
+        selected={0}
+        onValueChange={() => {}}
+      />
       <div className="flex flex-row gap-3 h-full">
         <div className="w-3/5 flex flex-col gap-5 h-auto">
           <div className="flex gap-5 items-center">
@@ -193,6 +209,7 @@ export default function AdministerUsers() {
               setUsuarios={setUsuarios}
               userLocations={userLocations}
               setUserLocations={setUserLocations}
+              firebaseToken={tokenUser}
             />
           </div>
         </div>
@@ -209,7 +226,9 @@ export default function AdministerUsers() {
       </div>
       <PopUpWindow open={popupOpen} onClose={() => setPopupOpen(false)}>
         <div className="m-5">
-          <h3 className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}>
+          <h3
+            className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}
+          >
             Agregar usuario
           </h3>
           <select
@@ -243,7 +262,9 @@ export default function AdministerUsers() {
         }}
       >
         <div className="m-5 flex flex-col gap-4">
-          <h3 className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}>
+          <h3
+            className={`${prompt.className} text-[#3A70C3] text-center text-4xl m-5`}
+          >
             Generar Token
           </h3>
           <Input

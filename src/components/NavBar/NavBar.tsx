@@ -14,7 +14,6 @@ const prompt_500 = Prompt({ weight: "500", subsets: ["latin"], preload: true })
 
 interface NavBarProps {
   title: string;
-  opts: any[];
   selected: number;
   onValueChange: (index: number) => void;
   center?: React.ReactNode;
@@ -22,7 +21,6 @@ interface NavBarProps {
 
 export const NavBar = ({
   title = "",
-  opts = [],
   selected = 0,
   onValueChange = () => {},
   center,
@@ -45,22 +43,6 @@ export const NavBar = ({
           >
             {title}
           </span>
-          <div className="flex flex-wrap gap-x-4">
-            {opts.map((value, index) => (
-              <button
-                key={index}
-                className={`${prompt_500.className} ${
-                  current === index ? "text-[#3A70C3]" : "text-gray-600"
-                } whitespace-nowrap`}
-                onClick={() => {
-                  onValueChange(index);
-                  setCurrent(index);
-                }}
-              >
-                {value}
-              </button>
-            ))}
-          </div>
         </div>
 
         {/* Centro */}
@@ -68,7 +50,6 @@ export const NavBar = ({
 
         {/* Notificaciones */}
         <div className="flex justify-end">
-          {/* <NotificationIcon notifications={notificaciones} /> */}
 
           <button
             className="hover:cursor-pointer"

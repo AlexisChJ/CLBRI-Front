@@ -1,0 +1,8 @@
+export const protectedRoutes = new Set([
+  "/dashboard",
+  "/perfil",
+  "/usuariosLocaciones",
+  "/inventario",
+  "/distribucionUsuarios",
+  "Usuario",
+]);

@@ -7,17 +7,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { NetFood } from "@/types/dashboard/NetFood";
 import { Advent_Pro } from "next/font/google";
 
 const adventPro = Advent_Pro({ subsets: ["latin"], weight: ["400", "700"], preload: true }); // Puedes agregar más pesos si quieres
 
 
-const DataContainerDashboard = () => {
+const DataContainerDashboard = ({ totalFood, totalWaste }: NetFood) => {
+  const wastedPercent = 100 * (totalFood / (totalFood + totalWaste));
+
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 w-full justify-between my-2">
       <Card className="w-[170px] bg-blue-300 text-white">
         <CardHeader>
-          <CardTitle className={`text-5xl ${adventPro.className}`}>171K</CardTitle>
+          <CardTitle className={`text-5xl ${adventPro.className}`}>{totalFood}</CardTitle>
         </CardHeader>
         <CardFooter>
           <p>Alimento Acopiado (kg)</p>
@@ -26,7 +29,7 @@ const DataContainerDashboard = () => {
 
       <Card className="w-[170px] bg-black text-white">
         <CardHeader>
-          <CardTitle className={`text-5xl ${adventPro.className}`}>44K</CardTitle>
+          <CardTitle className={`text-5xl ${adventPro.className}`}>{totalWaste}</CardTitle>
         </CardHeader>
         <CardFooter>
           <p>Alimento Desechado (kg)</p>
@@ -35,7 +38,8 @@ const DataContainerDashboard = () => {
 
       <Card className="w-[170px] bg-white text-black border-black-500">
         <CardHeader>
-          <CardTitle className={`text-5xl ${adventPro.className}`}>26%</CardTitle>
+          <CardTitle className={`text-5xl ${adventPro.className}`}>
+            {(!Number.isNaN(wastedPercent)) ? wastedPercent.toFixed(0) + "%" : "NA"}</CardTitle>
         </CardHeader>
         <CardFooter>
           <p>Alimento Desechado (%)</p>

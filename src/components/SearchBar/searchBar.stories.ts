@@ -1,1 +1,15 @@
-export {SearchBar} from "./SearchBar"
+import type { Meta, StoryObj } from '@storybook/react';
+import { SearchBar } from './SearchBar'; // make sure the path is correct
+
+const meta: Meta<typeof SearchBar> = {
+  title: 'Components/SearchBar',
+  component: SearchBar,
+  tags: ['autodocs'],
+};
+
+export default meta;
+
+type Story = StoryObj<typeof SearchBar>;
+
+export const Default: Story = {};
+

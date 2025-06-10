@@ -19,7 +19,7 @@ import { BatchTSPDeliveryDTO } from "@/services/batches/BatchTSPDeliveryDTO";
 import { Batch } from "@/types/Batch";
 import { DistributionItem } from "@/types/Manual";
 import { Order } from "@/types/Order";
-import { UserLocation } from "@/types/UserLocation"; // Asegúrate de que esta interfaz es correcta
+import { UserLocation } from "@/types/UserLocation"; 
 import { getUserLocations } from "@/services/admin/getUserLocations"; // **NUEVO: Importa tu servicio para obtener ubicaciones**
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
@@ -30,10 +30,7 @@ export default function VistaMapa() {
   const [searchText, setSearchText] = useState("");
   const [filterClasificacion, setFilterClasificacion] = useState("");
   const [filterPrioridad, setFilterPrioridad] = useState("");
-  // Remove the state that controls the first confirmation popup if you want to go directly to assignment
-  // const [distributionType, setDistributionType] = useState<"manual" | "automatico" | null>(null);
 
-  // This state will now control the popup where you assign locations for manual distribution
   const [showManualAssignmentPopup, setShowManualAssignmentPopup] = useState(false);
   const [distributionType, setDistributionType] = useState<
     "manual" | "automatico" | null
@@ -50,7 +47,6 @@ export default function VistaMapa() {
   const [tspLoading, setTspLoading] = useState(false);
   const [tspError, setTspError] = useState<string | null>(null);
 
-  // Nuevos estados para distribución manual
   const [manualDistributionLoading, setManualDistributionLoading] = useState(false);
   const [manualDistributionError, setManualDistributionError] = useState<string | null>(null);
   const [manualDistributionOrders, setManualDistributionOrders] = useState<Order[] | null>(null);
@@ -71,24 +67,22 @@ export default function VistaMapa() {
 
   const handleDistributionClick = (type: "manual" | "automatico") => {
     if (type === "manual") {
-      setShowManualAssignmentPopup(true); // Directly open the assignment popup
-      setCurrentDistributionType("manual"); // Set current type
+      setShowManualAssignmentPopup(true); 
+      setCurrentDistributionType("manual"); 
     } else {
-      // For automatic, you might still want a confirmation popup
-      setDistributionType(type); // This will open your existing confirmation popup for automatic
+      setDistributionType(type); 
     }
   };
 
-  const confirmarDistribucionInicial = async () => { // Renamed this function
-    console.log(`Confirmando distribución ${distributionType}`);
-    setCurrentDistributionType(distributionType); // This will be "automatico" here
-    setDistributionType(null); // Close the initial confirmation popup
+  const confirmarDistribucionInicial = async () => { 
+    console.log(`Confirmando distribución ${distributionType}`); 
+    setCurrentDistributionType(distributionType); 
+    setDistributionType(null);
 
-    if (currentDistributionType === "automatico") { // Use currentDistributionType here
+    if (currentDistributionType === "automatico") { 
         await ejecutarTSP();
-        setShowDownloadPopup(true); // Open the download popup for TSP results
+        setShowDownloadPopup(true);
     }
-    // No else if for manual here, as manual flow is handled differently
   };
 
   const ejecutarTSP = async () => {
@@ -164,13 +158,9 @@ export default function VistaMapa() {
       console.log("Generando distribución manual");
       console.log("Distribuciones:", productDistributions);
       console.log("Órdenes de distribución manual:", manualDistributionOrders);
-      // You would implement PDF generation logic here, using productDistributions and userLocations
-      // to display the assigned addresses.
     } else {
       console.log("Descargando PDF de distribución automática");
       console.log("Resultado TSP:", tspResult);
-      // You would implement PDF generation logic here, using tspResult.deliveryOrder
-      // to display the optimized route and addresses.
     }
   };
 
@@ -187,30 +177,27 @@ export default function VistaMapa() {
     });
   };
 
-  const cerrarPopupDescarga = () => { // Renamed to clarify this is for the *results* popup
+  const cerrarPopupDescarga = () => { 
     setShowDownloadPopup(false);
     setCurrentDistributionType(null);
-    setProductDistributions({}); // Clear assignments on close
+    setProductDistributions({}); 
     setTspResult(null);
     setTspError(null);
     setManualDistributionOrders(null);
     setManualDistributionError(null);
-    setShowManualAssignmentPopup(false); // Also close manual assignment if open
+    setShowManualAssignmentPopup(false);
   };
 
-  // Close initial confirmation popup (if still used for automatic)
   const cerrarInitialPopup = () => {
     setDistributionType(null);
   };
 
-  // Add a function to close the manual assignment popup without confirming
   const cerrarManualAssignmentPopup = () => {
     setShowManualAssignmentPopup(false);
-    setProductDistributions({}); // Clear assignments if user cancels manual distribution
+    setProductDistributions({}); 
     setManualDistributionError(null);
   };
 
-  // NEW: A computed value for manual distribution batches with assigned locations
   const batchesWithAssignedLocations = batches.map(batch => {
     const assignedLocationId = productDistributions[batch.id];
     let assignedLocation: UserLocation | undefined;
@@ -221,7 +208,7 @@ export default function VistaMapa() {
 
     return {
       ...batch,
-      assignedLocation: assignedLocation // Add the assigned location to the batch object
+      assignedLocation: assignedLocation 
     };
   });
 
@@ -247,12 +234,12 @@ export default function VistaMapa() {
         setRows(mappedRows);
         console.log("5. Batches cargados y mapeados para la tabla:", batchesData);
 
-        const fetchedLocations: GetUserLocation[] = await getUserLocations(token); // Get the raw data
+        const fetchedLocations: GetUserLocation[] = await getUserLocations(token);
         
         // *** TRANSFORM THE FETCHED LOCATIONS TO MATCH UserLocation INTERFACE ***
         const transformedLocations: UserLocation[] = fetchedLocations.map(gl => ({
             id: gl.id,
-            nombre: gl.name, // Assuming 'nombre' in UserLocation maps to 'name' in GetUserLocation
+            nombre: gl.name,
             address: gl.location.address,
             city: gl.location.city,
             state: gl.location.state,
@@ -260,8 +247,8 @@ export default function VistaMapa() {
             postalCode: gl.location.postalCode,
         }));
 
-        setUserLocations(transformedLocations); // Set the transformed data
-        console.log("6. Transformed User Locations cargadas:", transformedLocations); // Inspect this
+        setUserLocations(transformedLocations); 
+        console.log("6. Transformed User Locations cargadas:", transformedLocations);
 
       } catch (error) {
         console.error("Error al cargar datos:", error);
@@ -306,14 +293,14 @@ export default function VistaMapa() {
               color="register"
               className="flex-1 px-6"
               buttonSize="default"
-              onClick={() => handleDistributionClick("manual")} // Call the new handler
+              onClick={() => handleDistributionClick("manual")}
             />
             <Buttons
               text="Automático"
               color="login"
               className="flex-1 px-6"
               buttonSize="default"
-              onClick={() => handleDistributionClick("automatico")} // Call the new handler
+              onClick={() => handleDistributionClick("automatico")} 
             />
           </div>
           <LocationsMap
@@ -322,7 +309,7 @@ export default function VistaMapa() {
               lng: -99.135333,
               title: undefined,
             }}
-            userLocations={[]} // You might want to pass userLocations here if your map uses them
+            userLocations={[]} 
           />
         </div>
       </div>
@@ -348,7 +335,7 @@ export default function VistaMapa() {
             Cancelar
           </motion.button>
           <motion.button
-            onClick={confirmarDistribucionInicial} // Use the new function name
+            onClick={confirmarDistribucionInicial} 
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.1 }}
             className={`px-4 py-2 text-white rounded transition duration-200 ${
@@ -362,10 +349,9 @@ export default function VistaMapa() {
         </div>
       </PopUpWindow>
 
-      {/* THIS IS THE NEW POPUP FOR MANUAL ASSIGNMENTS */}
       <PopUpWindow
-        open={showManualAssignmentPopup} // Controlled by the new state
-        onClose={cerrarManualAssignmentPopup} // New close handler
+        open={showManualAssignmentPopup} 
+        onClose={cerrarManualAssignmentPopup} 
         width="max-w-6xl"
       >
         <div className="max-w-none w-full max-h-[90vh] overflow-auto">
@@ -445,39 +431,39 @@ export default function VistaMapa() {
                       </span>
                     </td>
                     <td className="border-b border-gray-100 px-8 py-5">
-  {batch.assignedLocation ? ( // This is where the display logic occurs
-    <div className="px-5 py-3 bg-blue-50 border-2 border-blue-200 rounded-lg">
-      <span className="text-blue-800 font-semibold text-sm">
-        Asignado:
-      </span>
-      <div className="text-sm text-blue-600 mt-1 font-medium">
-        {/* Ensure all properties are accessed safely */}
-        {batch.assignedLocation.city || 'N/A'}, {batch.assignedLocation.state || 'N/A'}, {batch.assignedLocation.country || 'N/A'} ({batch.assignedLocation.postalCode || 'N/A'})
-      </div>
-    </div>
-  ) : (
-    <div className="relative">
-      <select
-        value={productDistributions[batch.id] || ""}
-        onChange={(e) =>
-          handleLocationAssignment(batch.id, e.target.value)
-        }
-        className="w-full px-5 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-3 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white text-sm font-medium transition-all duration-200 hover:border-gray-400"
-      >
-        <option value="">Seleccionar destino...</option>
-        {userLocations.map((location) => (
-          <option key={location.id} value={location.id}>
-            {location.city}, {location.state}, {location.country} ({location.postalCode})
-          </option>
-        ))}
-      </select>
-      <ChevronDown
-        size={20}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none"
-      />
-    </div>
-  )}
-</td>
+                      {batch.assignedLocation ? ( // This is where the display logic occurs
+                        <div className="px-5 py-3 bg-blue-50 border-2 border-blue-200 rounded-lg">
+                          <span className="text-blue-800 font-semibold text-sm">
+                            Asignado:
+                          </span>
+                          <div className="text-sm text-blue-600 mt-1 font-medium">
+                            {/* Ensure all properties are accessed safely */}
+                            {batch.assignedLocation.city || 'N/A'}, {batch.assignedLocation.state || 'N/A'}, {batch.assignedLocation.country || 'N/A'} ({batch.assignedLocation.postalCode || 'N/A'})
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="relative">
+                          <select
+                            value={productDistributions[batch.id] || ""}
+                            onChange={(e) =>
+                              handleLocationAssignment(batch.id, e.target.value)
+                            }
+                            className="w-full px-5 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-3 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white text-sm font-medium transition-all duration-200 hover:border-gray-400"
+                          >
+                            <option value="">Seleccionar destino...</option>
+                            {userLocations.map((location) => (
+                              <option key={location.id} value={location.id}>
+                                {location.city}, {location.state}, {location.country} ({location.postalCode})
+                              </option>
+                            ))}
+                          </select>
+                          <ChevronDown
+                            size={20}
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none"
+                          />
+                        </div>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -502,7 +488,7 @@ export default function VistaMapa() {
               whileTap={{ scale: 0.95 }}
               whileHover={{ scale: 1.02 }}
               className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200 flex items-center gap-2 font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={manualDistributionLoading || Object.keys(productDistributions).length === 0} // Disable if no assignments or loading
+              disabled={manualDistributionLoading || Object.keys(productDistributions).length === 0}
             >
               <Download size={20} />
               {manualDistributionLoading ? "Enviando..." : "Generar Distribución"}
@@ -513,7 +499,7 @@ export default function VistaMapa() {
 
 
       <PopUpWindow
-        open={showDownloadPopup && currentDistributionType !== null} // Only open if results are to be shown
+        open={showDownloadPopup && currentDistributionType !== null} 
         onClose={cerrarPopupDescarga}
         width="max-w-6xl"
       >

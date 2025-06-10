@@ -91,13 +91,13 @@ export default function SitioTabla() {
     try {
       await addBatch(
         {
-          sku: "10001A", // Puedes usar un SKU dinámico si lo tienes
+          sku: "10001A",
           description: agregarDescripcion,
           entryDate: format(agregarFechaEntrega, "yyyy-MM-dd"),
           expirationDate: format(agregarFechaExpiracion, "yyyy-MM-dd"),
           priority: agregarPrioridad,
-          location_id: 1, // Cambia según tu lógica
-          classification_id: 1, // Cambia según tu lógica
+          location_id: 1, 
+          classification_id: 1, 
         },
         token
       );

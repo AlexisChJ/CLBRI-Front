@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     const role = await getUserRole(token);
                     setIdToken(token);
                     
-                    console.log(role);
                     if (role.isAdmin) {
                         setRole('admin');
                     } else {

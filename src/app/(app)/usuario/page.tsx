@@ -7,9 +7,10 @@ import { Prompt } from "next/font/google";
 import { useAuth } from "@/providers/AuthProvider";
 import TablaMerma, { BatchReceivedStatusMap } from "@/components/TablaMerma/TablaMerma"; // Import BatchReceivedStatusMap
 import Buttons from "@/components/Buttons/Buttons";
-import { getBatches, updateBatchReceivedStatus, BatchUpdateStatusDTO } from "@/services/batches/getBatches"; 
+import { updateBatchReceivedStatus, BatchUpdateStatusDTO } from "@/services/batches/getBatches"; 
+import { getBatches } from "@/services/batches/getUserBatches";
 import { Batch } from "@/types/Batch";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 
@@ -76,7 +77,7 @@ export default function SitioTabla() {
   } catch (err: any) {
     console.error("Error al guardar los batches:", err);
     setError(err.message || "Error al guardar los batches.");
-    toast.error("Error al guardar el estado de los batches. Por favor, inténtalo de nuevo.");
+    // toast.error("Error al guardar el estado de los batches. Por favor, inténtalo de nuevo.");
   } finally {
     setIsSaving(false);
   }

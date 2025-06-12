@@ -15,10 +15,10 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!loading) {
-      // Si la ruta es protegida y no hay usuario, redirige a login
       if (protectedRoutes.has(pathname) && !user) {
         router.push(loginRoute);
       }
+      console.log(role);
       // Si está logueado y va a login o register, redirige dashboard
       if (user && (pathname === "/login" || pathname === "/register")) {
         if (role === "admin") {
@@ -28,7 +28,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
         }
       }
     }
-  }, [user, loading, pathname, router]);
+  }, [user, loading, pathname, router, role]);
 
   // Está linea causa que cambiar entre pantallas haya una pequeña "espera".
   if (loading) {

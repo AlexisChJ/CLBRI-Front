@@ -24,7 +24,7 @@ const zen_500 = Zen_Maru_Gothic({
 
 export default function LoginPage() {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, loading, role } = useAuth();
 
   useEffect(() => {
     if (!loading && user) {
@@ -66,7 +66,6 @@ export default function LoginPage() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard");
     } catch (err) {
       setError("Credenciales incorrectas.");
       console.error("Login error:", err);

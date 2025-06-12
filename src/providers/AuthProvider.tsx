@@ -1,6 +1,7 @@
 "use client";
 
 import { auth } from "@/lib/firebase";
+import { getUserRole } from "@/services/auth/getUserRole";
 import { User, getIdToken, onAuthStateChanged } from "firebase/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
@@ -32,11 +33,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (firebaseUser) {
                 try {
                     const token = await getIdToken(firebaseUser);
+                    const role = await getUserRole(token);
                     setIdToken(token);
-
-                    setRole('admin');
-                    //setRole('user');
-                    // SI EXISTE UNA SESION, OBTENER EL ROL DE ALGUN STORAGE
+                    
+                    console.log(role);
+                    if (role.isAdmin) {
+                        setRole('admin');
+                    } else {
+                        setRole('user');
+                    }
                 } catch (err) {
                     console.error(err);
                     setIdToken(null);
@@ -51,7 +56,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         });
 
         return () => unsubscribe();
-
     }, []);
 
     return (

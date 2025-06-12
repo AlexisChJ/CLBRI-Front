@@ -28,7 +28,7 @@ export const sendManualDistribution = async (
     };
 
     const { data: createdOrders } = await api.post<Order[]>( // Especifica el tipo de respuesta
-      "/manualdistribution",
+      "/batches/manualdistribution",
       requestBody,
       config
     );

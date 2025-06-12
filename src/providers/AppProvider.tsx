@@ -11,7 +11,7 @@ const AppContext = createContext<AppContextProps>({
     notifications: []
 });
 
-export const AppContextProvider = ({ children } : { children: React.ReactNode }) => {
+export const AppProvider = ({ children } : { children: React.ReactNode }) => {
     const [notifications] = useState<Notification[]>([]);
 
     return (

@@ -10,8 +10,6 @@ import { AnimatePresence } from "framer-motion"
 
 import {
   Table,
-  TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -568,7 +566,9 @@ const TablaAvanzada = ({
                   type={key === 'entrada' || key === 'caducidad' ? 'date' : 'text'}
                   className="w-full border px-3 py-2 rounded"
                   value={(editValues as any)[key]}
+                  // eslint-disable-next-line react-hooks/exhaustive-deps
                   onChange={(e) =>
+                    // eslint-disable-next-line react-hooks/exhaustive-deps
                     setEditValues((prev) => ({ ...prev, [key]: e.target.value }))
                   }
                   disabled={isEditing}

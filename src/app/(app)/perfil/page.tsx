@@ -12,8 +12,6 @@ import { editUserData } from "@/services/user/editUserData";
 import { getUserData } from "@/services/user/showData";
 import { UserShowData } from "@/types/ShowUserData";
 
-const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
-
 export default function Perfil() {
   const { user } = useAuth();
   const router = useRouter();
@@ -66,6 +64,7 @@ export default function Perfil() {
       await editUserData(firebaseToken, payload);
       console.log("Cambios guardados con éxito");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     catch (err: any) {
       if (err.response) {
         console.error("Backend error:", err.response.data);

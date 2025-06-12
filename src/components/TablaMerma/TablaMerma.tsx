@@ -8,7 +8,6 @@ import { AnimatePresence } from "framer-motion"
 
 import {
   Table,
-  TableBody,
   TableCell,
   TableHead,
   TableHeader,
@@ -43,7 +42,7 @@ interface TablaMermaProps {
   onBatchesStatusReady: (statusMap: BatchReceivedStatusMap) => void;
 }
 
-const TablaMerma = ({ searchText, filterClasificacion, filterPrioridad, batches, onBatchStatusChange, onBatchesStatusReady }: TablaMermaProps) => {
+const TablaMerma = ({ searchText, filterClasificacion, filterPrioridad, batches, onBatchesStatusReady }: TablaMermaProps) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;

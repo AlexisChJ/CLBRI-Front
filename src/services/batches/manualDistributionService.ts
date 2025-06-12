@@ -1,6 +1,4 @@
 import api from "../api";
-import { Batch } from "@/types/Batch";
-import { UserLocation } from "@/types/UserLocation";
 import { Order } from "@/types/Order";
 import { ManualDistributionRequestDTO, DistributionItem } from "@/types/Manual";
 export const sendManualDistribution = async (
@@ -33,12 +31,13 @@ export const sendManualDistribution = async (
       config
     );
 
-    console.log("✅ Respuesta de distribución manual completa:", createdOrders);
+    console.log("Respuesta de distribución manual completa:", createdOrders);
     return createdOrders;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   } catch (error: any) {
-    console.error("❌ Error en distribución manual:", error);
-    console.error("📄 Response status:", error.response?.status);
-    console.error("📝 Response data:", error.response?.data);
+    console.error("Error en distribución manual:", error);
+    console.error("Response status:", error.response?.status);
+    console.error("Response data:", error.response?.data);
     throw error;
   }
 };

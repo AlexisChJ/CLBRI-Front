@@ -1,9 +1,8 @@
 import api from "../api";
 import { Batch } from "@/types/Batch";
 
-// Define the response type based on your Java endpoint
 export interface BatchTSPDeliveryDTO {
-  // Ajusta estas propiedades según lo que devuelve tu BatchTSPDeliveryDTO en Java
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   optimizedRoute?: any[];
   totalDistance?: number;
   deliveryOrder?: Batch[];

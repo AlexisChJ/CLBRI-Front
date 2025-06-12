@@ -2,9 +2,7 @@
 
 import { Prompt } from "next/font/google";
 import LogOut from "@/assets/icons/log-out.svg"
-import { useEffect, useState } from "react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { Notification } from "@/types/Notification";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";

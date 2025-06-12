@@ -1,6 +1,5 @@
 import api from "../api";
 import { Batch } from "@/types/Batch";
-import { UserLocation } from "@/types/UserLocation"; 
 
 export interface BackendTspResponse {
   [key: string]: { 
@@ -13,16 +12,14 @@ export interface StepAssignment {
 }
 
 export interface BackendTspAssignmentResponse {
-  // The outer object which contains numeric keys
   [stepIndex: string]: StepAssignment;
 }
 
-
-// The DTO that your component expects (with a flat deliveryOrder)
 export interface BatchTSPDeliveryDTO {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   optimizedRoute?: any[];
   totalDistance?: number;
-  deliveryOrder?: Batch[]; // This will be the flattened list
+  deliveryOrder?: Batch[]; 
   executionTime?: number;
   success?: boolean;
   message?: string;
@@ -61,26 +58,19 @@ export const solveTSP = async (
 
     const flattenedDeliveryOrder: Batch[] = [];
 
-    // Iterate over the numeric keys of the main response object
     for (const stepIndex in rawBackendResponse) {
       if (Object.prototype.hasOwnProperty.call(rawBackendResponse, stepIndex)) {
         const stepAssignment: StepAssignment = rawBackendResponse[stepIndex];
-
-        // Now, iterate over the single key (location string) within each stepAssignment
         for (const locationKey in stepAssignment) {
           if (Object.prototype.hasOwnProperty.call(stepAssignment, locationKey)) {
             const batchesForLocation: Batch[] = stepAssignment[locationKey];
-            
-            // This is where the error was: ensure batchesForLocation is an array
-            // It seems it is, but if it's not, the error occurs.
-            // Push all batches from this location into the flattened list
+          
             flattenedDeliveryOrder.push(...batchesForLocation);
           }
         }
       }
     }
 
-    // Opcional: Ordenar los batches aplanados si necesitas un orden específico
     flattenedDeliveryOrder.sort((a, b) => {
       const priorityOrder = { 'HIGH': 0, 'MEDIUM': 1, 'LOW': 2, 'NORMAL': 3 };
       const pA = priorityOrder[a.priority as keyof typeof priorityOrder] ?? 99;
@@ -100,16 +90,17 @@ export const solveTSP = async (
       message: "Distribución automática procesada en el frontend.",
     };
 
-    console.log("📊 Estructura de respuesta (aplanada para frontend):", {
+    console.log("Estructura de respuesta (aplanada para frontend):", {
       hasDeliveryOrder: !!result.deliveryOrder,
       deliveryOrderLength: result.deliveryOrder?.length,
     });
 
     return result;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   } catch (error: any) {
-    console.error("❌ Error en TSP:", error);
-    console.error("📄 Response status:", error.response?.status);
-    console.error("📝 Response data:", error.response?.data);
+    console.error("Error en TSP:", error);
+    console.error("Response status:", error.response?.status);
+    console.error("Response data:", error.response?.data);
     throw error;
   }
 };

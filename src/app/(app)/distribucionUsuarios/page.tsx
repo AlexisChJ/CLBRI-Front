@@ -10,8 +10,7 @@ import Buttons from "@/components/Buttons/Buttons";
 import { useAuth } from "@/providers/AuthProvider";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
 import { motion } from "framer-motion";
-import { Download, ChevronDown, MapPin, Package, Clock } from "lucide-react";
-// import { products } from "@/lib/products";
+import { Download, ChevronDown, Package } from "lucide-react";
 import { getBatches } from "@/services/batches/getBatches";
 import { solveTSP} from "@/services/batches/tspService";
 import { sendManualDistribution } from "@/services/batches/manualDistributionService";
@@ -21,9 +20,6 @@ import { DistributionItem } from "@/types/Manual";
 import { Order } from "@/types/Order";
 import { GetUserLocation, UserLocation } from "@/types/UserLocation"; 
 import { getUserLocations } from "@/services/admin/getUserLocations"; // **NUEVO: Importa tu servicio para obtener ubicaciones**
-
-const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
-
 
 export default function VistaMapa() {
   const { user } = useAuth();
@@ -46,7 +42,7 @@ export default function VistaMapa() {
   const [batches, setBatches] = useState<Batch[]>([]);
   const [tspResult, setTspResult] = useState<BatchTSPDeliveryDTO | null>(null);
   const [tspLoading, setTspLoading] = useState(false);
-  const [tspError, setTspError] = useState<string | null>(null);
+  const [setTspError] = useState<string | null>(null);
 
   const [manualDistributionLoading, setManualDistributionLoading] = useState(false);
   const [manualDistributionError, setManualDistributionError] = useState<string | null>(null);
@@ -97,6 +93,7 @@ export default function VistaMapa() {
       const result = await solveTSP(batches, token);
       setTspResult(result);
       console.log("TSP Result:", result);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     } catch (error: any) {
       console.error("Error al ejecutar TSP:", error);
       setTspError(
@@ -144,6 +141,7 @@ export default function VistaMapa() {
       );
       setManualDistributionOrders(resultOrders);
       console.log("Resultado de distribución manual (Órdenes creadas):", resultOrders);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     } catch (error: any) {
       console.error("Error al ejecutar distribución manual:", error);
       setManualDistributionError(
@@ -151,17 +149,6 @@ export default function VistaMapa() {
       );
     } finally {
       setManualDistributionLoading(false);
-    }
-  };
-
-  const descargarPDF = () => {
-    if (currentDistributionType === "manual") {
-      console.log("Generando distribución manual");
-      console.log("Distribuciones:", productDistributions);
-      console.log("Órdenes de distribución manual:", manualDistributionOrders);
-    } else {
-      console.log("Descargando PDF de distribución automática");
-      console.log("Resultado TSP:", tspResult);
     }
   };
 
@@ -213,16 +200,12 @@ export default function VistaMapa() {
     };
   });
 
-
-  if (!user) return null;
-
   useEffect(() => {
     async function fetchBatchesAndLocations() {
       if (!user) return;
       try {
         const token = await user.getIdToken();
         
-        // Cargar Batches
         const batchesData: Batch[] = await getBatches(token);
         setBatches(batchesData);
         const mappedRows = batchesData.map((batch) => ({
@@ -258,7 +241,9 @@ export default function VistaMapa() {
 
     fetchBatchesAndLocations();
 }, [user]);
-
+  if (!user) {
+      return <div>Loading user information or please log in...</div>;
+  }
   return (
     <div id="tesss" className="p-5 flex flex-col gap-5 overflow-y-auto h-full">
       <NavBar

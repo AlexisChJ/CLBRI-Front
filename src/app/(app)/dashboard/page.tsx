@@ -4,84 +4,24 @@ import { LineChartComp } from "@/components/Chart/LineChart";
 import DataContainerDashboard from "@/components/DataContainerDashboard/DataContainerDashboard";
 import { NavBar } from "@/components/NavBar/NavBar";
 import { TablaBasica } from "@/components/TablaBasica/TablaBasica";
-import { Red_Hat_Display, Prompt, Reem_Kufi } from "next/font/google";
+import { Red_Hat_Display} from "next/font/google";
 import { months } from "@/lib/months";
-import { SearchBar } from "@/components/SearchBar/SearchBar";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { parse, differenceInDays } from "date-fns";
-import { es } from "date-fns/locale";
 import { useAuth } from "@/providers/AuthProvider";
 import { getBatchLogs } from "@/services/dashboard/batchLogs";
 import { getFoodLossData } from "@/services/dashboard/foodLoss";
 import { NetFood } from "@/types/dashboard/NetFood";
 import { getRecentDistributions } from "@/services/dashboard/recentDistributions";
-import { BatchLog, BatchLogEntry, Distribution, UserWaste } from "@/types/dashboard/BatchLogs";
-import { endpointWriteToDisk } from "next/dist/build/swc/generated-native";
+import { BatchLogEntry, Distribution, UserWaste } from "@/types/dashboard/BatchLogs";
 import { FoodLossGraphData, FoodStockGraphData } from "@/types/dashboard/Graph";
 import { GroupFoodLossData, GroupFoodStockData } from "@/utils/graphDataGrouping";
 
-const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 const redhat_700 = Red_Hat_Display({
   weight: "700",
   subsets: ["latin"],
   preload: true,
 });
-
-/*
-const distribuciones = [
-  {
-    usuario: "Ana Chávez",
-    fecha: "24 de Abril, 2025",
-  },
-  {
-    usuario: "Adrián Gonzalez",
-    fecha: "23 de Abril, 2025",
-  },
-  {
-    usuario: "Rosa Pérez",
-    fecha: "23 de Abril, 2025",
-  },
-  {
-    usuario: "Axel Torres",
-    fecha: "22 de Abril, 2025",
-  },
-  {
-    usuario: "Luis Fernández",
-    fecha: "20 de Abril, 2025",
-  },
-];
-*/
-/*
-const menoresPerdidas = [
-  {
-    usuario: "Ana García",
-    icon: "down",
-    kg: "2,3 kg",
-  },
-  {
-    usuario: "Carlos López",
-    icon: "up",
-    kg: "3,1 kg",
-  },
-  {
-    usuario: "María Rodríguez",
-    icon: "up",
-    kg: "3,8 kg",
-  },
-  {
-    usuario: "Juan Pérez",
-    icon: "down",
-    kg: "4,2 kg",
-  },
-  {
-    usuario: "Sofia Martínez",
-    icon: "up",
-    kg: "4,7 kg",
-  },
-];
-*/
-
 
 const foodLossGraphConfig = {
   desktop: {

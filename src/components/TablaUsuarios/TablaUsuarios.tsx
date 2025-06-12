@@ -1,8 +1,6 @@
 "use client";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
 import { useState } from "react";
-import { useAuth } from "@/providers/AuthProvider";
-import { editUserByAdmin } from "@/services/admin/editUserLocations";
 import { motion } from "framer-motion";
 import {
   Table,
@@ -57,7 +55,6 @@ const TablaUsuarios = ({
   setUsuarios,
   userLocations,
   setUserLocations,
-  firebaseToken,
 }: Props) => {
   const [popupEditOpen, setPopupEditOpen] = useState(false);
   const [popupDeleteOpen, setPopupDeleteOpen] = useState(false);

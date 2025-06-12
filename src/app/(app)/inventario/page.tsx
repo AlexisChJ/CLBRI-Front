@@ -17,6 +17,8 @@ import { products } from "@/lib/products";
 import { getBatches} from "@/services/batches/getBatches";
 import { Batch } from "@/types/Batch";
 import { addBatch } from "@/services/batches/addBatch";
+import { Classification } from "@/types/Classification";
+import { getClassifications } from "@/services/classifications/getClassifications";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 
@@ -26,7 +28,7 @@ export default function SitioTabla() {
   const [filterClasificacion, setFilterClasificacion] = useState("");
   const [filterPrioridad, setFilterPrioridad] = useState("");
   const [agregarDescripcion, setAgregarDescripcion] = useState("");
-  const [agregarClasificacion, setAgregarClasificacion] = useState("");
+  const [agregarClasificacion, setAgregarClasificacion] = useState(-1);
   const [agregarPrioridad, setAgregarPrioridad] = useState("");
   const [agregarFechaEntrega, setAgregarFechaEntrega] = useState<Date | undefined>(undefined);
   const [agregarFechaExpiracion, setAgregarFechaExpiracion] = useState<Date | undefined>(undefined);
@@ -42,9 +44,9 @@ export default function SitioTabla() {
     }[]
   >([]);
 
-  const [popupOpen, setPopupOpen] = useState(false);
+  const [classifications, setClassifications] = useState<Classification[]>([]);
 
-  const notificaciones: Notification[] = [{ description: "S" }];
+  const [popupOpen, setPopupOpen] = useState(false);
 
   useEffect(() => {
     async function fetchBatches() {
@@ -52,6 +54,7 @@ export default function SitioTabla() {
       try {
         const token = await user.getIdToken();
         const batches: Batch[] = await getBatches(token);
+        const classifications_data: Classification[] = await getClassifications(token);
 
         const mappedRows = batches.map((batch) => ({
           id: batch.id, 
@@ -62,6 +65,7 @@ export default function SitioTabla() {
           prioridad: batch.priority,
         }));
 
+        setClassifications(classifications_data);
         setRows(mappedRows);
       } catch (error) {
         console.error("Error cargando batches:", error);
@@ -89,7 +93,8 @@ export default function SitioTabla() {
     const token = await user.getIdToken();
 
     try {
-      await addBatch(
+      if (agregarClasificacion === -1) throw Error("Invalid classification");
+      const addedBatch = await addBatch(
         {
           sku: "10001A",
           description: agregarDescripcion,
@@ -97,11 +102,19 @@ export default function SitioTabla() {
           expirationDate: format(agregarFechaExpiracion, "yyyy-MM-dd"),
           priority: agregarPrioridad,
           location_id: 1, 
-          classification_id: 1, 
+          classification_id: agregarClasificacion, 
         },
         token
       );
 
+      setRows([...rows, { 
+        id: addedBatch.id,
+        nombre: addedBatch.description,
+        clasificacion: classifications[addedBatch.classification?.id ?? 0].name,
+        entrada: format(new Date(addedBatch.entryDate), 'dd-MMMM-yyyy', { locale: es }),
+        caducidad: format(new Date(addedBatch.expirationDate), 'dd-MMMM-yyyy', { locale: es }),
+        prioridad: addedBatch.priority
+       }])
       setPopupOpen(false);
     } catch (error) {
       console.error("Error al agregar producto:", error);
@@ -144,6 +157,7 @@ export default function SitioTabla() {
       </div>
       <TablaAvanzada
         searchText={searchText}
+        clasificaciones={classifications}
         filterClasificacion={filterClasificacion}
         filterPrioridad={filterPrioridad}
         rows={rows}
@@ -169,13 +183,14 @@ export default function SitioTabla() {
           <select
             className="w-full border rounded p-2 bg-[#E9EBEA] text-[#5B5B5B]"
             value={agregarClasificacion}
-            onChange={(e) => setAgregarClasificacion(e.target.value)}
+            onChange={(e) => setAgregarClasificacion(Number(e.target.value))}
           >
-            <option value="">Selecciona una clasificación</option>
-            <option value="Enbotellado">Enbotellado</option>
-            <option value="Enlatado">Enlatado</option>
-            <option value="Perecederos">Perecederos</option>
-            <option value="Otros">Otros</option>
+            <option value={-1}>Selecciona una clasificación</option>
+            {
+              classifications.map((e, i) => (
+                <option value={e.id} key={i}>{e.name}</option>
+              ))
+            }
           </select>
 
           {/* Fecha de llegada */}

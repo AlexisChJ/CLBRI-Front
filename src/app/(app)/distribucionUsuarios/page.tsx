@@ -5,7 +5,7 @@ import { SearchBar } from "@/components/SearchBar/SearchBar";
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
 import LocationsMap from "@/components/Mapa/mapa";
 import { Prompt } from "next/font/google";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Buttons from "@/components/Buttons/Buttons";
 import { useAuth } from "@/providers/AuthProvider";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
@@ -19,7 +19,7 @@ import { BatchTSPDeliveryDTO } from "@/services/batches/BatchTSPDeliveryDTO";
 import { Batch } from "@/types/Batch";
 import { DistributionItem } from "@/types/Manual";
 import { Order } from "@/types/Order";
-import { UserLocation } from "@/types/UserLocation"; 
+import { GetUserLocation, UserLocation } from "@/types/UserLocation"; 
 import { getUserLocations } from "@/services/admin/getUserLocations"; // **NUEVO: Importa tu servicio para obtener ubicaciones**
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
@@ -28,6 +28,7 @@ const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 export default function VistaMapa() {
   const { user } = useAuth();
   const [searchText, setSearchText] = useState("");
+  const [clasificaciones, setClasificaciones] = useState([]);
   const [filterClasificacion, setFilterClasificacion] = useState("");
   const [filterPrioridad, setFilterPrioridad] = useState("");
 
@@ -73,13 +74,13 @@ export default function VistaMapa() {
       setDistributionType(type); 
     }
   };
-
+  
   const confirmarDistribucionInicial = async () => { 
     console.log(`Confirmando distribución ${distributionType}`); 
     setCurrentDistributionType(distributionType); 
     setDistributionType(null);
 
-    if (currentDistributionType === "automatico") { 
+    if (distributionType === "automatico") { 
         await ejecutarTSP();
         setShowDownloadPopup(true);
     }
@@ -281,6 +282,7 @@ export default function VistaMapa() {
             searchText={searchText}
             filterClasificacion={filterClasificacion}
             filterPrioridad={filterPrioridad}
+            clasificaciones={clasificaciones}
             rows={rows}
             setRows={setRows}
           />

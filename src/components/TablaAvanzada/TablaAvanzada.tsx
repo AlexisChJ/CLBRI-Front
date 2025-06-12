@@ -30,12 +30,14 @@ import {
 
 import { Red_Hat_Display, Zen_Maru_Gothic } from "next/font/google"
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow" 
+import { Classification } from "@/types/Classification";
 
 const redHat = Red_Hat_Display({ weight: ["800"], subsets: ["latin"], preload: true })
 const zenMaru = Zen_Maru_Gothic({ weight: ["500"], subsets: ["latin"], preload: true })
 
 interface TablaAvanzadaProps {
   searchText: string;
+  clasificaciones: Classification[];
   filterClasificacion: string;
   filterPrioridad: string;
   rows: {
@@ -58,6 +60,7 @@ interface TablaAvanzadaProps {
 
 const TablaAvanzada = ({
   searchText,
+  clasificaciones,
   filterClasificacion,
   filterPrioridad,
   rows,
@@ -301,21 +304,16 @@ const TablaAvanzada = ({
       if (!formattedEntryDate || !formattedExpirationDate) {
         throw new Error("Las fechas no pudieron ser convertidas al formato correcto");
       }
-      
+
+      const selectedClassification = clasificaciones.filter((e) => e.name === editValues.clasificacion)[0];
+
       // Prepare the data payload
       const batchUpdateData = {
         description: editValues.nombre,
         entryDate: formattedEntryDate,
         expirationDate: formattedExpirationDate,
         priority: editValues.prioridad.toUpperCase() as "LOW" | "MID" | "HIGH",
-        classification_id:
-          editValues.clasificacion === "Embotellado"
-            ? 1
-            : editValues.clasificacion === "Enlatado"
-            ? 2
-            : editValues.clasificacion === "Perecedero"
-            ? 3
-            : 4,
+        classification_id: selectedClassification.id,
       };
 
       console.log("Final payload being sent:", JSON.stringify(batchUpdateData, null, 2));
@@ -546,10 +544,11 @@ const TablaAvanzada = ({
                   }
                   disabled={isEditing}
                 >
-                  <option value="Embotellado">Embotellado</option>
-                  <option value="Enlatado">Enlatado</option>
-                  <option value="Perecedero">Perecedero</option>
-                  <option value="Otro">Otro</option>
+                  {
+                    clasificaciones.map((e, i) => (
+                      <option value={e.name} key={i}>{e.name}</option>
+                    ))
+                  }
                 </select>
               ) : key === 'prioridad' ? (
                 <select

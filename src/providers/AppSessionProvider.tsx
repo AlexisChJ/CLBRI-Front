@@ -7,18 +7,18 @@ interface AppContextProps {
     notifications: Notification[];
 };
 
-const AppContext = createContext<AppContextProps>({
+const AppSessionContext = createContext<AppContextProps>({
     notifications: []
 });
 
-export const AppProvider = ({ children } : { children: React.ReactNode }) => {
+export const AppSessionProvider = ({ children } : { children: React.ReactNode }) => {
     const [notifications] = useState<Notification[]>([]);
 
     return (
-        <AppContext.Provider value={{ notifications }}>
+        <AppSessionContext.Provider value={{ notifications }}>
             {children}
-        </AppContext.Provider>
+        </AppSessionContext.Provider>
     )
 }
 
-export const useAppData = () => useContext(AppContext);
+export const useAppSession = () => useContext(AppSessionContext);

@@ -41,7 +41,7 @@ export default function VistaMapa() {
   const [batches, setBatches] = useState<Batch[]>([]);
   const [tspResult, setTspResult] = useState<BatchTSPDeliveryDTO | null>(null);
   const [tspLoading, setTspLoading] = useState(false);
-  const [setTspError] = useState<string | null>(null);
+  const [tspError, setTspError] = useState<string | null>(null);
 
   const [manualDistributionLoading, setManualDistributionLoading] = useState(false);
   const [manualDistributionError, setManualDistributionError] = useState<string | null>(null);
@@ -85,6 +85,7 @@ export default function VistaMapa() {
     if (!user || batches.length === 0) return;
 
     setTspLoading(true);
+    setTspError(tspError);
     setTspError(null);
 
     try {

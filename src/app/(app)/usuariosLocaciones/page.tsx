@@ -13,6 +13,7 @@ import { UserLocation } from "@/types/UserLocation";
 import { getUserLocations } from "@/services/admin/getUserLocations";
 import { TokenInvitationService } from "@/services/admin/TokenInvitation";
 import { User } from "firebase/auth";
+import { useAppSession } from "@/providers/AppSessionProvider";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 const zen_700 = Zen_Maru_Gothic({
@@ -21,35 +22,9 @@ const zen_700 = Zen_Maru_Gothic({
   preload: true,
 });
 
-const useUsers = (adminUser: User | null) => {
-  const [usuariosDB, setUsuariosDB] = useState<UserLocation[]>([]);
-
-  useEffect(() => {
-    const fetchUserLocations = async () => {
-      if (!adminUser) return;
-      const token = await adminUser.getIdToken();
-      const usersData = await getUserLocations(token);
-      setUsuariosDB(
-        usersData.map((value) => ({
-          id: value.id + "",
-          nombre: value.name,
-          address: value.location.address,
-          city: value.location.city,
-          state: value.location.state,
-          country: value.location.country,
-          postalCode: value.location.postalCode,
-        }))
-      );
-    };
-    fetchUserLocations();
-  }, [adminUser]);
-
-  return { usuariosDB };
-};
-
 export default function AdministerUsers() {
   const { user } = useAuth();
-  const { usuariosDB } = useUsers(user);
+  const { notifications, fetchedUserLocations } = useAppSession();
   const [tokenUser, setTokenUser] = useState<string | null>(null);
 
   const [usuarios, setUsuarios] = useState<
@@ -112,12 +87,12 @@ export default function AdministerUsers() {
       u.lugarTrabajo.toLowerCase().includes(search.toLowerCase()) ||
       u.id.includes(search)
   );
-  const usuariosDisponibles = usuariosDB.filter(
+  const usuariosDisponibles = fetchedUserLocations.filter(
     (dbUser) => !usuarios.some((u) => u.id === dbUser.id)
   );
 
   const handleAdd = async () => {
-    const user = usuariosDB.find((u) => u.id === selectedUserId);
+    const user = fetchedUserLocations.find((u) => u.id === selectedUserId);
     if (!user) return;
     if (usuarios.some((u) => u.id === user.id)) return;
 

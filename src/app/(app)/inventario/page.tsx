@@ -91,10 +91,11 @@ export default function SitioTabla() {
 
     if (!user) return;
     const token = await user.getIdToken();
+    let addBatchResult;
 
     try {
       if (agregarClasificacion === -1) throw Error("Invalid classification");
-      const addedBatch = await addBatch(
+      addBatchResult = await addBatch(
         {
           sku: "10001A",
           description: agregarDescripcion,
@@ -107,18 +108,23 @@ export default function SitioTabla() {
         token
       );
 
-      setRows([...rows, { 
-        id: addedBatch.id,
-        nombre: addedBatch.description,
-        clasificacion: classifications[addedBatch.classification?.id ?? 0].name,
-        entrada: format(new Date(addedBatch.entryDate), 'dd-MMMM-yyyy', { locale: es }),
-        caducidad: format(new Date(addedBatch.expirationDate), 'dd-MMMM-yyyy', { locale: es }),
-        prioridad: addedBatch.priority
-       }])
       setPopupOpen(false);
     } catch (error) {
       console.error("Error al agregar producto:", error);
       alert("Error al agregar producto");
+    }
+
+    if (addBatchResult) {
+      const classification_obj = classifications.filter((e) => e.id === addBatchResult.classification?.id)[0];
+
+      setRows([...rows, { 
+        id: addBatchResult.id,
+        nombre: addBatchResult.description,
+        clasificacion: classification_obj.name,
+        entrada: format(new Date(addBatchResult.entryDate), 'dd-MMMM-yyyy', { locale: es }),
+        caducidad: format(new Date(addBatchResult.expirationDate), 'dd-MMMM-yyyy', { locale: es }),
+        prioridad: addBatchResult.priority
+       }]);
     }
   };
 

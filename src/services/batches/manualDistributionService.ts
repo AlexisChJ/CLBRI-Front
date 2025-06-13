@@ -4,15 +4,13 @@ import { UserLocation } from "@/types/UserLocation";
 import { Order } from "@/types/Order";
 import { ManualDistributionRequestDTO, DistributionItem } from "@/types/Manual";
 export const sendManualDistribution = async (
-  adminId: string,
   distributions: DistributionItem[],
   firebaseToken: string
 ): Promise<Order[]> => { 
   try {
     console.log("🚀 Iniciando distribución manual con:", {
-      adminId,
       distributionCount: distributions.length,
-      distributions: distributions.map(d => ({ batchId: d.batchId, locationId: d.locationId }))
+      distributions: distributions.map(d => ({ batchId: d.batchId, locationId: d.receivedByUserId }))
     });
 
     const config = {
@@ -23,7 +21,6 @@ export const sendManualDistribution = async (
     };
 
     const requestBody: ManualDistributionRequestDTO = {
-      sentByAdminId: adminId,
       distributions: distributions,
     };
 

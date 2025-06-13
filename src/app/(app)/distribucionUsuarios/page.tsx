@@ -21,12 +21,15 @@ import { DistributionItem } from "@/types/Manual";
 import { Order } from "@/types/Order";
 import { GetUserLocation, UserLocation } from "@/types/UserLocation"; 
 import { getUserLocations } from "@/services/admin/getUserLocations"; // **NUEVO: Importa tu servicio para obtener ubicaciones**
+import { useAppSession } from "@/providers/AppSessionProvider";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 
 
 export default function VistaMapa() {
   const { user } = useAuth();
+  const { fetchedUserLocations } = useAppSession();
+
   const [searchText, setSearchText] = useState("");
   const [clasificaciones, setClasificaciones] = useState([]);
   const [filterClasificacion, setFilterClasificacion] = useState("");
@@ -54,6 +57,9 @@ export default function VistaMapa() {
   
   // **NUEVO ESTADO: Para almacenar las ubicaciones de los usuarios**
   const [userLocations, setUserLocations] = useState<UserLocation[]>([]);
+  const [mapLocations, setMapLocations] = useState<
+    { lat: number; lng: number; title: string }[]
+  >([]);
 
 
   const [rows, setRows] = useState<
@@ -121,8 +127,8 @@ export default function VistaMapa() {
 
     const distributions: DistributionItem[] = Object.entries(productDistributions)
       .map(([batchId, locationId]) => ({
-        batchId,
-        locationId,
+        batchId: Number(batchId),
+        receivedByUserId: Number(locationId),
       }));
 
     console.log("2. Array 'distributions' a enviar:", distributions);
@@ -138,7 +144,6 @@ export default function VistaMapa() {
       const token = await user.getIdToken();
       const adminFirebaseId = user.uid;
       const resultOrders = await sendManualDistribution(
-        adminFirebaseId,
         distributions,
         token
       );
@@ -235,21 +240,8 @@ export default function VistaMapa() {
         setRows(mappedRows);
         console.log("5. Batches cargados y mapeados para la tabla:", batchesData);
 
-        const fetchedLocations: GetUserLocation[] = await getUserLocations(token);
-        
-        // *** TRANSFORM THE FETCHED LOCATIONS TO MATCH UserLocation INTERFACE ***
-        const transformedLocations: UserLocation[] = fetchedLocations.map(gl => ({
-            id: gl.id,
-            nombre: gl.name,
-            address: gl.location.address,
-            city: gl.location.city,
-            state: gl.location.state,
-            country: gl.location.country,
-            postalCode: gl.location.postalCode,
-        }));
-
-        setUserLocations(transformedLocations); 
-        console.log("6. Transformed User Locations cargadas:", transformedLocations);
+        setUserLocations(fetchedUserLocations); 
+        console.log("6. Transformed User Locations cargadas:", fetchedUserLocations);
 
       } catch (error) {
         console.error("Error al cargar datos:", error);
@@ -258,6 +250,11 @@ export default function VistaMapa() {
 
     fetchBatchesAndLocations();
 }, [user]);
+
+  useEffect(() => {
+    setUserLocations(fetchedUserLocations);
+    console.log("Corre...")
+  }, [fetchedUserLocations]); 
 
   return (
     <div id="tesss" className="p-5 flex flex-col gap-5 overflow-y-auto h-full">
@@ -350,7 +347,7 @@ export default function VistaMapa() {
           </motion.button>
         </div>
       </PopUpWindow>
-
+      {/* Manual assignment */}
       <PopUpWindow
         open={showManualAssignmentPopup} 
         onClose={cerrarManualAssignmentPopup} 
@@ -440,7 +437,7 @@ export default function VistaMapa() {
                           </span>
                           <div className="text-sm text-blue-600 mt-1 font-medium">
                             {/* Ensure all properties are accessed safely */}
-                            {batch.assignedLocation.city || 'N/A'}, {batch.assignedLocation.state || 'N/A'}, {batch.assignedLocation.country || 'N/A'} ({batch.assignedLocation.postalCode || 'N/A'})
+                            {batch.assignedLocation.nombre} | {batch.assignedLocation.city || 'N/A'}, {batch.assignedLocation.state || 'N/A'}, {batch.assignedLocation.country || 'N/A'} ({batch.assignedLocation.postalCode || 'N/A'})
                           </div>
                         </div>
                       ) : (
@@ -455,7 +452,7 @@ export default function VistaMapa() {
                             <option value="">Seleccionar destino...</option>
                             {userLocations.map((location) => (
                               <option key={location.id} value={location.id}>
-                                {location.city}, {location.state}, {location.country} ({location.postalCode})
+                                {location.nombre} | {location.city}, {location.state}, {location.country} ({location.postalCode})
                               </option>
                             ))}
                           </select>

@@ -33,9 +33,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <AuthGuard>
-            <AppSessionProvider>
-              {children}
-            </AppSessionProvider>
+            {children}
           </AuthGuard>
         </AuthProvider>
       </body>

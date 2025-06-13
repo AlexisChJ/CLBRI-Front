@@ -3,6 +3,7 @@ import "../globals.css";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { AuthGuard } from "@/components/AuthGuard/AuthGuard";
 import Sidebar from "@/components/SideBar/SideBar";
+import { AppSessionProvider } from "@/providers/AppSessionProvider";
 
 export const metadata: Metadata = {
   title: "CLBRi",
@@ -16,10 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthProvider>
-      <AuthGuard>
-        <Sidebar>{children}</Sidebar>
-      </AuthGuard>
-    </AuthProvider>
+    <AppSessionProvider>
+      <Sidebar>{children}</Sidebar>
+    </AppSessionProvider>
   );
 }

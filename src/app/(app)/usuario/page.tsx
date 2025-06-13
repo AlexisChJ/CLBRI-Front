@@ -57,13 +57,6 @@ export default function SitioTabla() {
     setCurrentBatchReceivedStatus(statusMap);
   };
 
-  const handleIndividualBatchStatusChange = (batchId: number, received: boolean) => {
-    setCurrentBatchReceivedStatus(prev => ({
-      ...prev,
-      [batchId]: received,
-    }));
-  };
-
 const handleSaveBatches = async () => {
   if (!user) {
     setError("Usuario no autenticado.");

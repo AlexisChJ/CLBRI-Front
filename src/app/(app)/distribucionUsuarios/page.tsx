@@ -26,7 +26,7 @@ export default function VistaMapa() {
   const { fetchedUserLocations } = useAppSession();
 
   const [searchText, setSearchText] = useState("");
-  const [clasificaciones, setClasificaciones] = useState([]);
+  const [clasificaciones] = useState([]);
   const [filterClasificacion, setFilterClasificacion] = useState("");
   const [filterPrioridad, setFilterPrioridad] = useState("");
 
@@ -92,6 +92,7 @@ export default function VistaMapa() {
     if (!user || batches.length === 0) return;
 
     setTspLoading(true);
+    setTspError(tspError);
     setTspError(null);
 
     try {
@@ -99,11 +100,13 @@ export default function VistaMapa() {
       const result = await solveTSP(batches, token);
       setTspResult(result);
       console.log("TSP Result:", result);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    } catch (error: any) {
+// eslint-disable-next-line react-hooks/exhaustive-deps
+    } catch (error: unknown) {
       console.error("Error al ejecutar TSP:", error);
       setTspError(
-        error.message || "Error al procesar la distribución automática"
+        typeof error === "object" && error !== null && "message" in error
+          ? (error as { message: string }).message
+          : "Error al procesar la distribución automática"
       );
     } finally {
       setTspLoading(false);
@@ -146,11 +149,13 @@ export default function VistaMapa() {
       );
       setManualDistributionOrders(resultOrders);
       console.log("Resultado de distribución manual (Órdenes creadas):", resultOrders);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    } catch (error: any) {
+// eslint-disable-next-line react-hooks/exhaustive-deps
+    } catch (error: unknown) {
       console.error("Error al ejecutar distribución manual:", error);
       setManualDistributionError(
-        error.message || "Error al procesar la distribución manual"
+        typeof error === "object" && error !== null && "message" in error
+          ? (error as { message: string }).message
+          : "Error al procesar la distribución manual"
       );
     } finally {
       setManualDistributionLoading(false);
@@ -214,7 +219,7 @@ export default function VistaMapa() {
         const batchesData: Batch[] = await getBatches(token);
         setBatches(batchesData);
         const mappedRows = batchesData.map((batch) => ({
-          id: batch.id,
+          id: typeof batch.id === "number" ? batch.id : Number(batch.id), 
           nombre: batch.description,
           clasificacion: batch.classification?.name || "Sin clasificación",
           entrada: batch.entryDate,
@@ -247,7 +252,6 @@ export default function VistaMapa() {
     <div id="tesss" className="p-5 flex flex-col gap-5 overflow-y-auto h-full">
       <NavBar
         title="Distribución"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
       />
@@ -432,7 +436,7 @@ export default function VistaMapa() {
                           <select
                             value={productDistributions[batch.id] || ""}
                             onChange={(e) =>
-                              handleLocationAssignment(batch.id, e.target.value)
+                              handleLocationAssignment(String(batch.id), e.target.value)
                             }
                             className="w-full px-5 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-3 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white text-sm font-medium transition-all duration-200 hover:border-gray-400"
                           >

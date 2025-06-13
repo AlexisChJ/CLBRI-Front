@@ -30,7 +30,7 @@ type EncabezadoObjeto = {
   key: string;
   align?: "left" | "right" | "center";
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  icono?: (valor: any, fila: any, index: number) => JSX.Element;
+  icono?: (valor: unknown, fila: unknown, index: number) => JSX.Element;
 };
 
 type Encabezado = string | EncabezadoObjeto;
@@ -40,7 +40,7 @@ interface TablaBasicaProps {
   fecha?: string | null;
   encabezados?: Encabezado[];
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  datos?: any[];
+  datos?: Array<Record<string, unknown> | unknown>;
   className?: string;
 }
 
@@ -109,7 +109,9 @@ export function TablaBasica({
                 const align = esObjeto ? encabezado.align : undefined;
                 const icono = esObjeto ? encabezado.icono : undefined;
                 const valor =
-                  typeof fila === "object" ? fila[key] : fila[colIndex];
+                  fila && typeof fila === "object"
+                    ? (fila as Record<string, unknown>)[key as string]
+                    : (fila as unknown[])[colIndex];
 
                 return (
                   <TableCell
@@ -138,7 +140,7 @@ export function TablaBasica({
                           {icono(valor, fila, filaIndex)}
                         </div>
                       )}
-                      {!icono && <span>{valor}</span>}
+                      {!icono && <span>{String(valor)}</span>}
                     </div>
                   </TableCell>
                 );

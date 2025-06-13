@@ -1,5 +1,3 @@
-import { Batch } from "@/types/Batch";
-
 export interface DistributionItem {
   batchId: number; // El ID del batch a distribuir
   receivedByUserId: number; // El ID de la ubicación a la que se asigna

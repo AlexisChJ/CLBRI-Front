@@ -16,6 +16,7 @@ import { getRecentDistributions } from "@/services/dashboard/recentDistributions
 import { BatchLogEntry, Distribution, UserWaste } from "@/types/dashboard/BatchLogs";
 import { FoodLossGraphData, FoodStockGraphData } from "@/types/dashboard/Graph";
 import { GroupFoodLossData, GroupFoodStockData } from "@/utils/graphDataGrouping";
+import { ChartConfig } from "@/components/ui/chart";
 
 const redhat_700 = Red_Hat_Display({
   weight: "700",
@@ -124,7 +125,6 @@ export default function Dashboard() {
     >
       <NavBar
         title="Dashboard"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
       />
@@ -165,7 +165,7 @@ export default function Dashboard() {
               {
                 label: "",
                 key: "icon",
-                icono: (_valor, fila) => getTendenciaIcon(fila.icon),
+                icono: (_valor, fila) => getTendenciaIcon((fila as { icon: string }).icon),
                 align: "center",
               },
               { label: "Pérdida", key: "kg", align: "right" },

@@ -22,6 +22,8 @@ export interface Batch {
     createdAt: string;
     lastUpdated: string;
   };
-  order?: any;
-  admin?: any;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  order?: unknown;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  admin?: unknown;
 }

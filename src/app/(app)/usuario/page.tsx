@@ -42,9 +42,9 @@ export default function SitioTabla() {
         const fetchedBatches = await getBatches(token);
         // eslint-disable-next-line react-hooks/exhaustive-deps
         setBatches(fetchedBatches);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error al cargar los batches:", err);
-        setError(err.message || "Error al cargar los batches.");
+        setError(err instanceof Error ? err.message : "Error al cargar los batches.");
       } finally {
         setLoading(false);
       }
@@ -57,7 +57,18 @@ export default function SitioTabla() {
     setCurrentBatchReceivedStatus(statusMap);
   };
 
-  const handleSaveBatches = async () => {
+  const handleIndividualBatchStatusChange = (batchId: number, received: boolean) => {
+    setCurrentBatchReceivedStatus(prev => ({
+      ...prev,
+      [batchId]: received,
+    }));
+  };
+
+const handleSaveBatches = async () => {
+  if (!user) {
+    setError("Usuario no autenticado.");
+    return;
+  }
   try {
     const token = await user.getIdToken();
 
@@ -67,15 +78,15 @@ export default function SitioTabla() {
     }));
 
     const backendResponse = await updateBatchReceivedStatus(updatesPayload, token);
-    if (backendResponse && Array.isArray(backendResponse.processedBatches)) {
-      setBatches(backendResponse.processedBatches);
+    if (backendResponse && Array.isArray(backendResponse)) {
+      setBatches(backendResponse);
     } else {
-      console.error("Backend did not return expected 'processedBatches' array:", backendResponse);
+      console.error("Backend did not return expected array of batches:", backendResponse);
     }
- // eslint-disable-next-line react-hooks/exhaustive-deps
-  } catch (err: any) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  } catch (err: unknown) {
     console.error("Error al guardar los batches:", err);
-    setError(err.message || "Error al guardar los batches.");
+    setError(err instanceof Error ? err.message : "Error al guardar los batches.");
     // toast.error("Error al guardar el estado de los batches. Por favor, inténtalo de nuevo.");
   } finally {
     setIsSaving(false);
@@ -104,7 +115,6 @@ export default function SitioTabla() {
     <div className="flex flex-col p-5 gap-5 overflow-y-auto h-full">
       <NavBar
         title="Usuario"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
         center={

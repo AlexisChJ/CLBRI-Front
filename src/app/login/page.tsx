@@ -5,7 +5,7 @@ import { BlueLogo } from "@/components/LogoAzul/logoAzul";
 import { PasswordInput } from "@/components/PasswordInput/PasswordInput";
 import { SocialMedia } from "@/components/SocialMedia/SocialMedia";
 import { TextInput } from "@/components/TextInput/TextInput";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Zen_Maru_Gothic } from "next/font/google";
@@ -24,7 +24,7 @@ const zen_500 = Zen_Maru_Gothic({
 
 export default function LoginPage() {
   const router = useRouter();
-  const { user, loading, role } = useAuth();
+  const { user, loading} = useAuth();
 
   useEffect(() => {
     if (!loading && user) {
@@ -47,7 +47,9 @@ export default function LoginPage() {
 
   const validatePassword = (value: string): boolean => {
     const valid = true;
-    value = value
+    if (value.length < 6) {
+      console.log("La contraseña debe tener al menos 6 caracteres.");
+    }
     // const valid = isValidPassword(value);
     setPasswordError(!valid);
     if (!valid) setError("Credenciales incorrectas.");
@@ -108,14 +110,14 @@ export default function LoginPage() {
             value={email}
             placeholder="Correo"
             hasError={emailError}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value)}
           />
           <PasswordInput
             id="password"
             value={password}
             placeholder="Contraseña"
             hasError={passwordError}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)}
           />
 
           {error && <p className="text-red-500">{error}</p>}

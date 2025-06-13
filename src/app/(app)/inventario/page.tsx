@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { NavBar } from "@/components/NavBar/NavBar";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
@@ -12,7 +12,6 @@ import Buttons from "@/components/Buttons/Buttons";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
 import { TextInput } from "@/components/TextInput/TextInput";
 import { DatePicker } from "@/components/DatePicker/DatePicker";
-import { products } from "@/lib/products";
 import { getBatches} from "@/services/batches/getBatches";
 import { Batch } from "@/types/Batch";
 import { addBatch } from "@/services/batches/addBatch";
@@ -132,7 +131,6 @@ export default function SitioTabla() {
     <div className="flex flex-col p-5 gap-5 overflow-y-auto">
       <NavBar
         title="Inventario"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
         center={
@@ -181,7 +179,7 @@ export default function SitioTabla() {
           <TextInput
             placeholder="Nombre del producto"
             value={agregarDescripcion}
-            onChange={(e) => setAgregarDescripcion(e.target.value)}
+            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setAgregarDescripcion(e.target.value)}
           />
 
           {/* Clasificación */}

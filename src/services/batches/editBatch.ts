@@ -1,7 +1,7 @@
 import { EditBatch } from "@/types/EditBatch";
 import api from "../api";
 // eslint-disable-next-line react-hooks/exhaustive-deps
-export const editBatch = async (batchId: number, firebaseToken: string, batchData: EditBatch): Promise<any> => {
+export const editBatch = async (batchId: number, firebaseToken: string, batchData: EditBatch): Promise<unknown> => {
   console.log("=== EDIT BATCH SERVICE DEBUG ===");
   console.log("Batch ID:", batchId);
   console.log("Token length:", firebaseToken.length);
@@ -24,10 +24,12 @@ export const editBatch = async (batchId: number, firebaseToken: string, batchDat
     return data;
   } catch (error) {
     console.error("Edit batch service error:", error);
-    if (error.response) {
-      console.error("Response status:", error.response.status);
-      console.error("Response data:", error.response.data);
-      console.error("Response headers:", error.response.headers);
+    if (typeof error === "object" && error !== null && "response" in error) {
+      const err = error as { response: unknown };
+      const response = err.response as { status?: unknown; data?: unknown; headers?: unknown };
+      console.error("Response status:", response.status);
+      console.error("Response data:", response.data);
+      console.error("Response headers:", response.headers);
     }
     throw error;
   }

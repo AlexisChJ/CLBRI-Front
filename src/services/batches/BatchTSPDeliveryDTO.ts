@@ -3,7 +3,7 @@ import { Batch } from "@/types/Batch";
 
 export interface BatchTSPDeliveryDTO {
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  optimizedRoute?: any[];
+  optimizedRoute?: unknown[];
   totalDistance?: number;
   deliveryOrder?: Batch[];
   executionTime?: number;

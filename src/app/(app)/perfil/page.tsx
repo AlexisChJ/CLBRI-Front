@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { NavBar } from "@/components/NavBar/NavBar";
-import { Prompt } from "next/font/google";
 import ProfileContainer from "@/components/ProfileContainer/ProfileContainer";
 import { useRouter } from "next/navigation";
 import Buttons from "@/components/Buttons/Buttons";
@@ -65,14 +64,30 @@ export default function Perfil() {
       console.log("Cambios guardados con éxito");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    catch (err: any) {
-      if (err.response) {
-        console.error("Backend error:", err.response.data);
-        console.error("Status:", err.response.status);
-      } else if (err.request) {
-        console.error("No response received:", err.request);
+    catch (err: unknown) {
+      if (
+        typeof err === "object" &&
+        err !== null &&
+        "response" in err &&
+        typeof (err as { response?: unknown }).response === "object"
+      ) {
+        const errorWithResponse = err as { response: { data: unknown; status: unknown } };
+        console.error("Backend error:", errorWithResponse.response.data);
+        console.error("Status:", errorWithResponse.response.status);
+      } else if (
+        typeof err === "object" &&
+        err !== null &&
+        "request" in err
+      ) {
+        console.error("No response received:", (err as { request?: unknown }).request);
+      } else if (
+        typeof err === "object" &&
+        err !== null &&
+        "message" in err
+      ) {
+        console.error("Error en la petición:", (err as { message?: unknown }).message);
       } else {
-        console.error("Error en la petición:", err.message);
+        console.error("Unknown error:", err);
       }
     }
   };
@@ -90,7 +105,6 @@ export default function Perfil() {
     <div className="flex flex-1 flex-col p-5 gap-5 h-full overflow-y-auto">
       <NavBar
         title="Perfil"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
         center={""}

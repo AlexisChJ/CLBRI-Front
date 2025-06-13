@@ -29,9 +29,7 @@ const sampleNotifications = [
 export const Default: Story = {
   args: {
     title: 'Mi Aplicación',
-    opts: ['Inicio', 'Perfil', 'Configuración', 'Ayuda'],
     selected: 0,
-    notificaciones: sampleNotifications,
     onValueChange: (index) => console.log('Selected tab:', index),
   },
 };
@@ -39,9 +37,7 @@ export const Default: Story = {
 export const WithoutNotifications: Story = {
   args: {
     title: 'Mi Aplicación',
-    opts: ['Inicio', 'Perfil', 'Configuración'],
     selected: 1,
-    notificaciones: [],
     onValueChange: (index) => console.log('Selected tab:', index),
   },
 };
@@ -49,9 +45,7 @@ export const WithoutNotifications: Story = {
 export const LongTitle: Story = {
   args: {
     title: 'Sistema de Gestión de Proyectos Empresariales',
-    opts: ['Dashboard', 'Proyectos', 'Equipo', 'Reportes', 'Configuración'],
     selected: 2,
-    notificaciones: sampleNotifications,
     onValueChange: (index) => console.log('Selected tab:', index),
   },
 };

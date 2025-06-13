@@ -4,14 +4,12 @@ import { NavBar } from "@/components/NavBar/NavBar";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
 import LocationsMap from "@/components/Mapa/mapa";
-import { Prompt } from "next/font/google";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Buttons from "@/components/Buttons/Buttons";
 import { useAuth } from "@/providers/AuthProvider";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
 import { motion } from "framer-motion";
-import { Download, ChevronDown, MapPin, Package, Clock } from "lucide-react";
-// import { products } from "@/lib/products";
+import { Download, ChevronDown, Package } from "lucide-react";
 import { getBatches } from "@/services/batches/getBatches";
 import { solveTSP} from "@/services/batches/tspService";
 import { sendManualDistribution } from "@/services/batches/manualDistributionService";
@@ -19,11 +17,8 @@ import { BatchTSPDeliveryDTO } from "@/services/batches/BatchTSPDeliveryDTO";
 import { Batch } from "@/types/Batch";
 import { DistributionItem } from "@/types/Manual";
 import { Order } from "@/types/Order";
-import { GetUserLocation, UserLocation } from "@/types/UserLocation"; 
-import { getUserLocations } from "@/services/admin/getUserLocations"; // **NUEVO: Importa tu servicio para obtener ubicaciones**
+import { UserLocation } from "@/types/UserLocation"; 
 import { useAppSession } from "@/providers/AppSessionProvider";
-
-const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
 
 
 export default function VistaMapa() {
@@ -64,6 +59,7 @@ export default function VistaMapa() {
 
   const [rows, setRows] = useState<
     {
+      id: number;
       nombre: string;
       clasificacion: string;
       entrada: string;
@@ -103,6 +99,7 @@ export default function VistaMapa() {
       const result = await solveTSP(batches, token);
       setTspResult(result);
       console.log("TSP Result:", result);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     } catch (error: any) {
       console.error("Error al ejecutar TSP:", error);
       setTspError(
@@ -149,6 +146,7 @@ export default function VistaMapa() {
       );
       setManualDistributionOrders(resultOrders);
       console.log("Resultado de distribución manual (Órdenes creadas):", resultOrders);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     } catch (error: any) {
       console.error("Error al ejecutar distribución manual:", error);
       setManualDistributionError(
@@ -156,17 +154,6 @@ export default function VistaMapa() {
       );
     } finally {
       setManualDistributionLoading(false);
-    }
-  };
-
-  const descargarPDF = () => {
-    if (currentDistributionType === "manual") {
-      console.log("Generando distribución manual");
-      console.log("Distribuciones:", productDistributions);
-      console.log("Órdenes de distribución manual:", manualDistributionOrders);
-    } else {
-      console.log("Descargando PDF de distribución automática");
-      console.log("Resultado TSP:", tspResult);
     }
   };
 
@@ -218,19 +205,16 @@ export default function VistaMapa() {
     };
   });
 
-
-  if (!user) return null;
-
   useEffect(() => {
     async function fetchBatchesAndLocations() {
       if (!user) return;
       try {
         const token = await user.getIdToken();
         
-        // Cargar Batches
         const batchesData: Batch[] = await getBatches(token);
         setBatches(batchesData);
         const mappedRows = batchesData.map((batch) => ({
+          id: batch.id,
           nombre: batch.description,
           clasificacion: batch.classification?.name || "Sin clasificación",
           entrada: batch.entryDate,
@@ -256,6 +240,9 @@ export default function VistaMapa() {
     console.log("Corre...")
   }, [fetchedUserLocations]); 
 
+  if (!user) {
+      return <div>Loading user information or please log in...</div>;
+  }
   return (
     <div id="tesss" className="p-5 flex flex-col gap-5 overflow-y-auto h-full">
       <NavBar

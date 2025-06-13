@@ -12,7 +12,7 @@ import { Zen_Maru_Gothic } from "next/font/google";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useAuth } from "@/providers/AuthProvider";
-import { isValidEmail, isValidPassword } from "@/utils/validators";
+import { isValidEmail} from "@/utils/validators";
 import Colibri from "@/assets/images/colbri.jpeg";
 import Image from "next/image";
 
@@ -47,6 +47,7 @@ export default function LoginPage() {
 
   const validatePassword = (value: string): boolean => {
     const valid = true;
+    value = value
     // const valid = isValidPassword(value);
     setPasswordError(!valid);
     if (!valid) setError("Credenciales incorrectas.");

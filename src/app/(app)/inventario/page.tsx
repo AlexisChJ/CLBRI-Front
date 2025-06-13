@@ -5,7 +5,6 @@ import { NavBar } from "@/components/NavBar/NavBar";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
 import { Prompt } from "next/font/google";
-import { Notification } from "@/types/Notification";
 import { useAuth } from "@/providers/AuthProvider";
 import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale";

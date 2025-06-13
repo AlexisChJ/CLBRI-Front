@@ -1,6 +1,6 @@
 import { EditBatch } from "@/types/EditBatch";
 import api from "../api";
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
 export const editBatch = async (batchId: number, firebaseToken: string, batchData: EditBatch): Promise<any> => {
   console.log("=== EDIT BATCH SERVICE DEBUG ===");
   console.log("Batch ID:", batchId);

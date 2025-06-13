@@ -1,7 +1,6 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis} from "recharts"
 import { Red_Hat_Display } from "next/font/google"
 import { Barlow } from "next/font/google"
 
@@ -11,10 +10,6 @@ const barlow_500 = Barlow({weight: "500", subsets: ['latin'], preload: true,})
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 import {
   ChartConfig,
@@ -24,7 +19,7 @@ import {
   ChartLegend, 
   ChartLegendContent,
 } from "@/components/ui/chart"
-import { FoodLossGraph, FoodLossGraphData, FoodStockGraph, FoodStockGraphData } from "@/types/dashboard/Graph"
+import { FoodLossGraphData, FoodStockGraphData } from "@/types/dashboard/Graph"
 
 
 /*

@@ -240,7 +240,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="flex h-full">
+    <div className="flex min-h-screen">
       {/* Imagen de fondo */}
       <div className="relative flex w-1/2">
         <Image
@@ -258,7 +258,7 @@ const SignUpPage = () => {
       </div>
 
       {/* Formulario */}
-      <div className="flex flex-col justify-center text-center mx-auto w-full max-w-md gap-7 p-6">
+      <div className="flex flex-col justify-center text-center mx-auto max-w-lg w-full gap-7 p-6">
         <div className="relative w-full flex items-center justify-center">
           <button
             onClick={goBack}

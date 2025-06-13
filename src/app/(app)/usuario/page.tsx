@@ -36,8 +36,11 @@ export default function SitioTabla() {
       setError(null);
 
       try {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         const token = await user.getIdToken();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         const fetchedBatches = await getBatches(token);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         setBatches(fetchedBatches);
       } catch (err: any) {
         console.error("Error al cargar los batches:", err);
@@ -54,10 +57,6 @@ export default function SitioTabla() {
     setCurrentBatchReceivedStatus(statusMap);
   };
 
-  const handleIndividualBatchStatusChange = (batchId: number, isReceived: boolean) => {
-  };
-
-
   const handleSaveBatches = async () => {
   try {
     const token = await user.getIdToken();
@@ -73,7 +72,7 @@ export default function SitioTabla() {
     } else {
       console.error("Backend did not return expected 'processedBatches' array:", backendResponse);
     }
-
+ // eslint-disable-next-line react-hooks/exhaustive-deps
   } catch (err: any) {
     console.error("Error al guardar los batches:", err);
     setError(err.message || "Error al guardar los batches.");

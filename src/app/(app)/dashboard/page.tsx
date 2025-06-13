@@ -165,7 +165,7 @@ export default function Dashboard() {
               {
                 label: "",
                 key: "icon",
-                icono: (_valor, fila) => getTendenciaIcon(fila.icon),
+                icono: (_valor, fila) => getTendenciaIcon((fila as { icon: string }).icon),
                 align: "center",
               },
               { label: "Pérdida", key: "kg", align: "right" },

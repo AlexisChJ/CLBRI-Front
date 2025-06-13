@@ -16,6 +16,7 @@ import { getRecentDistributions } from "@/services/dashboard/recentDistributions
 import { BatchLogEntry, Distribution, UserWaste } from "@/types/dashboard/BatchLogs";
 import { FoodLossGraphData, FoodStockGraphData } from "@/types/dashboard/Graph";
 import { GroupFoodLossData, GroupFoodStockData } from "@/utils/graphDataGrouping";
+import { ChartConfig } from "@/components/ui/chart";
 
 const redhat_700 = Red_Hat_Display({
   weight: "700",

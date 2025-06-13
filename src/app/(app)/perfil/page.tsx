@@ -5,8 +5,6 @@ import { Prompt } from "next/font/google";
 import ProfileContainer from "@/components/ProfileContainer/ProfileContainer";
 import { useRouter } from "next/navigation";
 import Buttons from "@/components/Buttons/Buttons";
-import { signOut } from "firebase/auth";
-import { auth } from "@/lib/firebase";
 import { useAuth } from "@/providers/AuthProvider";
 import { editUserData } from "@/services/user/editUserData";
 import { getUserData } from "@/services/user/showData";
@@ -30,8 +28,7 @@ export default function Perfil() {
   }, [user]);
 
   const handleLogout = () => {
-    signOut(auth);
-    router.push("/login");
+    router.push("/logout");
   };
 
     const handleSaveChanges = async (data: {

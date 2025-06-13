@@ -97,7 +97,9 @@ export default function VistaMapa() {
     } catch (error: unknown) {
       console.error("Error al ejecutar TSP:", error);
       setTspError(
-        error.message || "Error al procesar la distribución automática"
+        typeof error === "object" && error !== null && "message" in error
+          ? (error as { message: string }).message
+          : "Error al procesar la distribución automática"
       );
     } finally {
       setTspLoading(false);
@@ -145,7 +147,9 @@ export default function VistaMapa() {
     } catch (error: unknown) {
       console.error("Error al ejecutar distribución manual:", error);
       setManualDistributionError(
-        error.message || "Error al procesar la distribución manual"
+        typeof error === "object" && error !== null && "message" in error
+          ? (error as { message: string }).message
+          : "Error al procesar la distribución manual"
       );
     } finally {
       setManualDistributionLoading(false);
@@ -248,7 +252,6 @@ export default function VistaMapa() {
     <div id="tesss" className="p-5 flex flex-col gap-5 overflow-y-auto h-full">
       <NavBar
         title="Distribución"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
       />

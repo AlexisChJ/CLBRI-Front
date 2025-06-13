@@ -1,7 +1,6 @@
 "use client"
 
 import { CartesianGrid, Line, LineChart, XAxis} from "recharts"
-import { Red_Hat_Display } from "next/font/google"
 import { Barlow } from "next/font/google"
 
 const barlow_500 = Barlow({weight: "500", subsets: ['latin'], preload: true,})

@@ -4,8 +4,7 @@ import { NavBar } from "@/components/NavBar/NavBar";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
 import LocationsMap from "@/components/Mapa/mapa";
-import { Prompt } from "next/font/google";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Buttons from "@/components/Buttons/Buttons";
 import { useAuth } from "@/providers/AuthProvider";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
@@ -24,7 +23,7 @@ import { getUserLocations } from "@/services/admin/getUserLocations"; // **NUEVO
 export default function VistaMapa() {
   const { user } = useAuth();
   const [searchText, setSearchText] = useState("");
-  const [clasificaciones, setClasificaciones] = useState([]);
+  const [clasificaciones] = useState([]);
   const [filterClasificacion, setFilterClasificacion] = useState("");
   const [filterPrioridad, setFilterPrioridad] = useState("");
 

@@ -30,7 +30,7 @@ type EncabezadoObjeto = {
   key: string;
   align?: "left" | "right" | "center";
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  icono?: (valor: any, fila: any, index: number) => JSX.Element;
+  icono?: (valor: unknown, fila: unknown, index: number) => JSX.Element;
 };
 
 type Encabezado = string | EncabezadoObjeto;
@@ -40,7 +40,7 @@ interface TablaBasicaProps {
   fecha?: string | null;
   encabezados?: Encabezado[];
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  datos?: any[];
+  datos?: unknown[];
   className?: string;
 }
 

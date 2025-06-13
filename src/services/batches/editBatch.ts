@@ -25,10 +25,11 @@ export const editBatch = async (batchId: number, firebaseToken: string, batchDat
   } catch (error) {
     console.error("Edit batch service error:", error);
     if (typeof error === "object" && error !== null && "response" in error) {
-      const err = error as { response: any };
-      console.error("Response status:", err.response.status);
-      console.error("Response data:", err.response.data);
-      console.error("Response headers:", err.response.headers);
+      const err = error as { response: unknown };
+      const response = err.response as { status?: unknown; data?: unknown; headers?: unknown };
+      console.error("Response status:", response.status);
+      console.error("Response data:", response.data);
+      console.error("Response headers:", response.headers);
     }
     throw error;
   }

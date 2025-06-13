@@ -76,33 +76,29 @@ const TablaAvanzada = ({
   const itemsPerPage = 10
 
   const auth = getAuth();
-  const [firebaseToken, setFirebaseToken] = useState<string>("");
+  //const [firebaseToken, setFirebaseToken] = useState<string>("");
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   // Improved Firebase token management
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          // Get a fresh token each time
-          const token = await user.getIdToken(true);
-          console.log("Token obtained successfully");
-          setFirebaseToken(token);
-          setIsAuthReady(true);
-        } catch (error) {
-          console.error("Error getting Firebase token:", error);
-          setFirebaseToken("");
-          setIsAuthReady(false);
-        }
-      } else {
-        console.log("No user authenticated");
-        setFirebaseToken("");
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      try {
+        await user.getIdToken(true); 
+        console.log("User authenticated and token refresh attempted successfully");
+        setIsAuthReady(true);
+      } catch (error) {
+        console.error("Error getting Firebase token (user exists but token failed):", error);
         setIsAuthReady(false);
       }
-    });
+    } else {
+      console.log("No user authenticated");
+      setIsAuthReady(false);
+    }
+  });
 
-    return () => unsubscribe();
-  }, [auth]);
+  return () => unsubscribe();
+}, [auth]);
 
   // Filtros y búsqueda
   const filteredRows = rows.filter(row => {

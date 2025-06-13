@@ -24,10 +24,11 @@ export const editBatch = async (batchId: number, firebaseToken: string, batchDat
     return data;
   } catch (error) {
     console.error("Edit batch service error:", error);
-    if (error.response) {
-      console.error("Response status:", error.response.status);
-      console.error("Response data:", error.response.data);
-      console.error("Response headers:", error.response.headers);
+    if (typeof error === "object" && error !== null && "response" in error) {
+      const err = error as { response: any };
+      console.error("Response status:", err.response.status);
+      console.error("Response data:", err.response.data);
+      console.error("Response headers:", err.response.headers);
     }
     throw error;
   }

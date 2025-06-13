@@ -69,22 +69,23 @@ export default function Perfil() {
         typeof err === "object" &&
         err !== null &&
         "response" in err &&
-        typeof (err as any).response === "object"
+        typeof (err as { response?: unknown }).response === "object"
       ) {
-        console.error("Backend error:", (err as any).response.data);
-        console.error("Status:", (err as any).response.status);
+        const errorWithResponse = err as { response: { data: unknown; status: unknown } };
+        console.error("Backend error:", errorWithResponse.response.data);
+        console.error("Status:", errorWithResponse.response.status);
       } else if (
         typeof err === "object" &&
         err !== null &&
         "request" in err
       ) {
-        console.error("No response received:", (err as any).request);
+        console.error("No response received:", (err as { request?: unknown }).request);
       } else if (
         typeof err === "object" &&
         err !== null &&
         "message" in err
       ) {
-        console.error("Error en la petición:", (err as any).message);
+        console.error("Error en la petición:", (err as { message?: unknown }).message);
       } else {
         console.error("Unknown error:", err);
       }

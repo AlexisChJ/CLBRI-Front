@@ -76,7 +76,7 @@ const TablaAvanzada = ({
   const itemsPerPage = 10
 
   const auth = getAuth();
-  const [setFirebaseToken] = useState<string>("");
+  const [firebaseToken, setFirebaseToken] = useState<string>("");
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   // Improved Firebase token management
@@ -223,22 +223,25 @@ const TablaAvanzada = ({
   };
 
   // Función helper para convertir cualquier formato de fecha a YYYY-MM-DD
-  const convertToAPIDateFormat = (dateString) => {
+  const convertToAPIDateFormat = (dateString: string | number | Date) => {
     if (!dateString) return "";
     
     // Si ya está en formato YYYY-MM-DD, devolver tal como está
-    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
-      return dateString;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(String(dateString))) {
+      return String(dateString);
     }
     
     // Manejar formato español "DD-mes-YYYY"
-    if (dateString.includes("-") && dateString.includes("junio") || 
-        dateString.includes("enero") || dateString.includes("febrero") ||
-        dateString.includes("marzo") || dateString.includes("abril") ||
-        dateString.includes("mayo") || dateString.includes("julio") ||
-        dateString.includes("agosto") || dateString.includes("septiembre") ||
-        dateString.includes("octubre") || dateString.includes("noviembre") ||
-        dateString.includes("diciembre")) {
+    const dateStr = String(dateString);
+    if (
+      (dateStr.includes("-") && dateStr.includes("junio")) ||
+      dateStr.includes("enero") || dateStr.includes("febrero") ||
+      dateStr.includes("marzo") || dateStr.includes("abril") ||
+      dateStr.includes("mayo") || dateStr.includes("julio") ||
+      dateStr.includes("agosto") || dateStr.includes("septiembre") ||
+      dateStr.includes("octubre") || dateStr.includes("noviembre") ||
+      dateStr.includes("diciembre")
+    ) {
       
       const monthMap = {
         "enero": "01", "febrero": "02", "marzo": "03", "abril": "04",
@@ -246,10 +249,10 @@ const TablaAvanzada = ({
         "septiembre": "09", "octubre": "10", "noviembre": "11", "diciembre": "12"
       };
       
-      const parts = dateString.split("-");
+      const parts = dateStr.split("-");
       if (parts.length === 3) {
         const day = parts[0].padStart(2, '0');
-        const month = monthMap[parts[1].toLowerCase()];
+        const month = monthMap[parts[1].toLowerCase() as keyof typeof monthMap];
         const year = parts[2];
         
         if (month) {
@@ -325,7 +328,7 @@ const TablaAvanzada = ({
       await editBatch(batchToEdit.id, freshToken, batchUpdateData);
       
       const newRows = [...rows];
-      newRows[editIndex] = editValues;
+      newRows[editIndex] = { ...editValues, id: rows[editIndex].id };
       setRows(newRows);
       setEditIndex(null);
       
@@ -565,7 +568,7 @@ const TablaAvanzada = ({
                 <input
                   type={key === 'entrada' || key === 'caducidad' ? 'date' : 'text'}
                   className="w-full border px-3 py-2 rounded"
-                  value={(editValues as unknown)[key]}
+                  value={(editValues as Record<string, string>)[key]}
                   // eslint-disable-next-line react-hooks/exhaustive-deps
                   onChange={(e) =>
                     // eslint-disable-next-line react-hooks/exhaustive-deps

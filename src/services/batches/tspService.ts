@@ -99,8 +99,11 @@ export const solveTSP = async (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   } catch (error: unknown) {
     console.error("Error en TSP:", error);
-    console.error("Response status:", error.response?.status);
-    console.error("Response data:", error.response?.data);
+    if (typeof error === "object" && error !== null && "response" in error) {
+      const err = error as { response?: { status?: unknown; data?: unknown } };
+      console.error("Response status:", err.response?.status);
+      console.error("Response data:", err.response?.data);
+    }
     throw error;
   }
 };

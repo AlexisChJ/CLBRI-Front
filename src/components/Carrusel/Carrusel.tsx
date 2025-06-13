@@ -82,8 +82,8 @@ const Carrusel = ({ data = [], onValueChange = () => {} }: CarruselProps) => {
     });
   }, [api]);
 
-  const moveIndex = (e) => {
-    const index = Number.parseInt(e.target.getAttribute("data-index"));
+  const moveIndex = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const index = Number.parseInt(e.currentTarget.getAttribute("data-index") ?? "");
     if (api) {
       setCurrent(index + 1);
       api.scrollTo(index);
@@ -106,7 +106,7 @@ const Carrusel = ({ data = [], onValueChange = () => {} }: CarruselProps) => {
                 <DateBadge
                   data_index={index}
                   variant={index === current - 1 ? "selected" : "unselected"}
-                  onClick={moveIndex}
+                  onClick={(e) => moveIndex(e)}
                 >
                   {data}
                 </DateBadge>

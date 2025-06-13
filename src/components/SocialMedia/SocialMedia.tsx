@@ -4,7 +4,7 @@ import Instagram from "@/assets/icons/instagram.png"
 import Linkedin from "@/assets/icons/linkedin.png"
 import Image from "next/image"
 
-const redhat_600 = Red_Hat_Display({weight: "600"})
+const redhat_600 = Red_Hat_Display({weight: "600", subsets: ['latin'] })
 
 export function SocialMedia() {
   return (

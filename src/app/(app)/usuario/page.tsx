@@ -59,6 +59,7 @@ export default function SitioTabla() {
 
   const handleSaveBatches = async () => {
   try {
+    if (!user) return;
     const token = await user.getIdToken();
 
     const updatesPayload: BatchUpdateStatusDTO[] = batches.map(batch => ({
@@ -104,7 +105,6 @@ export default function SitioTabla() {
     <div className="flex flex-col p-5 gap-5 overflow-y-auto h-full">
       <NavBar
         title="Usuario"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
         center={
@@ -138,7 +138,7 @@ export default function SitioTabla() {
         filterClasificacion={filterClasificacion}
         filterPrioridad={filterPrioridad}
         batches={batches}
-        onBatchStatusChange={handleIndividualBatchStatusChange}
+        onBatchStatusChange={() => {}}
         onBatchesStatusReady={handleBatchesStatusReady}
       />
     </div>

@@ -87,7 +87,6 @@ export default function Perfil() {
     <div className="flex flex-1 flex-col p-5 gap-5 h-full overflow-y-auto">
       <NavBar
         title="Perfil"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
         center={""}

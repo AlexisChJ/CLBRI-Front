@@ -19,6 +19,7 @@ import { DistributionItem } from "@/types/Manual";
 import { Order } from "@/types/Order";
 import { UserLocation } from "@/types/UserLocation"; 
 import { useAppSession } from "@/providers/AppSessionProvider";
+import { getAvailableBatches } from "@/services/batches/getAvailableBatches";
 
 
 export default function VistaMapa() {
@@ -146,6 +147,7 @@ export default function VistaMapa() {
       );
       setManualDistributionOrders(resultOrders);
       console.log("Resultado de distribución manual (Órdenes creadas):", resultOrders);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     } catch (error: any) {
       console.error("Error al ejecutar distribución manual:", error);
@@ -211,7 +213,7 @@ export default function VistaMapa() {
       try {
         const token = await user.getIdToken();
         
-        const batchesData: Batch[] = await getBatches(token);
+        const batchesData: Batch[] = await getAvailableBatches(token);
         setBatches(batchesData);
         const mappedRows = batchesData.map((batch) => ({
           id: batch.id,
@@ -247,7 +249,6 @@ export default function VistaMapa() {
     <div id="tesss" className="p-5 flex flex-col gap-5 overflow-y-auto h-full">
       <NavBar
         title="Distribución"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
       />
@@ -432,7 +433,7 @@ export default function VistaMapa() {
                           <select
                             value={productDistributions[batch.id] || ""}
                             onChange={(e) =>
-                              handleLocationAssignment(batch.id, e.target.value)
+                              handleLocationAssignment(batch.id + "", e.target.value)
                             }
                             className="w-full px-5 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-3 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white text-sm font-medium transition-all duration-200 hover:border-gray-400"
                           >

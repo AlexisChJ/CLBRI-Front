@@ -223,7 +223,7 @@ const TablaAvanzada = ({
   };
 
   // Función helper para convertir cualquier formato de fecha a YYYY-MM-DD
-  const convertToAPIDateFormat = (dateString) => {
+  const convertToAPIDateFormat = (dateString: string) => {
     if (!dateString) return "";
     
     // Si ya está en formato YYYY-MM-DD, devolver tal como está

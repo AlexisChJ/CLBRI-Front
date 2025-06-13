@@ -12,7 +12,6 @@ import Buttons from "@/components/Buttons/Buttons";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
 import { TextInput } from "@/components/TextInput/TextInput";
 import { DatePicker } from "@/components/DatePicker/DatePicker";
-import { products } from "@/lib/products";
 import { getBatches} from "@/services/batches/getBatches";
 import { Batch } from "@/types/Batch";
 import { addBatch } from "@/services/batches/addBatch";
@@ -132,7 +131,6 @@ export default function SitioTabla() {
     <div className="flex flex-col p-5 gap-5 overflow-y-auto">
       <NavBar
         title="Inventario"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
         center={

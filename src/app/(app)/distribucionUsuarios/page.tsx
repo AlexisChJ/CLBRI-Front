@@ -18,7 +18,8 @@ import { DistributionItem } from "@/types/Manual";
 import { Order } from "@/types/Order";
 import { UserLocation } from "@/types/UserLocation"; 
 import { useAppSession } from "@/providers/AppSessionProvider";
-import { getAvailableBatches } from "@/services/batches/getAvailableBatches";
+// import { getAvailableBatches } from "@/services/batches/getAvailableBatches";
+import { getBatches } from "@/services/batches/getBatches";
 
 
 export default function VistaMapa() {

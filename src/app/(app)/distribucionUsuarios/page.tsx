@@ -52,7 +52,7 @@ export default function VistaMapa() {
   
   // **NUEVO ESTADO: Para almacenar las ubicaciones de los usuarios**
   const [userLocations, setUserLocations] = useState<UserLocation[]>([]);
-  const [mapLocations, setMapLocations] = useState<
+  const [] = useState<
     { lat: number; lng: number; title: string }[]
   >([]);
 
@@ -142,7 +142,6 @@ export default function VistaMapa() {
 
     try {
       const token = await user.getIdToken();
-      const adminFirebaseId = user.uid;
       const resultOrders = await sendManualDistribution(
         distributions,
         token

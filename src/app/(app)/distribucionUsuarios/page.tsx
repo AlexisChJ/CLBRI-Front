@@ -93,8 +93,8 @@ export default function VistaMapa() {
       const result = await solveTSP(batches, token);
       setTspResult(result);
       console.log("TSP Result:", result);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    } catch (error: any) {
+// eslint-disable-next-line react-hooks/exhaustive-deps
+    } catch (error: unknown) {
       console.error("Error al ejecutar TSP:", error);
       setTspError(
         error.message || "Error al procesar la distribución automática"
@@ -141,8 +141,8 @@ export default function VistaMapa() {
       );
       setManualDistributionOrders(resultOrders);
       console.log("Resultado de distribución manual (Órdenes creadas):", resultOrders);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    } catch (error: any) {
+// eslint-disable-next-line react-hooks/exhaustive-deps
+    } catch (error: unknown) {
       console.error("Error al ejecutar distribución manual:", error);
       setManualDistributionError(
         error.message || "Error al procesar la distribución manual"

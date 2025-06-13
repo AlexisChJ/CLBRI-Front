@@ -42,7 +42,7 @@ export default function SitioTabla() {
         const fetchedBatches = await getBatches(token);
         // eslint-disable-next-line react-hooks/exhaustive-deps
         setBatches(fetchedBatches);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error al cargar los batches:", err);
         setError(err.message || "Error al cargar los batches.");
       } finally {
@@ -73,7 +73,7 @@ export default function SitioTabla() {
       console.error("Backend did not return expected 'processedBatches' array:", backendResponse);
     }
  // eslint-disable-next-line react-hooks/exhaustive-deps
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error al guardar los batches:", err);
     setError(err.message || "Error al guardar los batches.");
     // toast.error("Error al guardar el estado de los batches. Por favor, inténtalo de nuevo.");

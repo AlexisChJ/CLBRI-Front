@@ -34,7 +34,7 @@ export const sendManualDistribution = async (
     console.log("Respuesta de distribución manual completa:", createdOrders);
     return createdOrders;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error en distribución manual:", error);
     console.error("Response status:", error.response?.status);
     console.error("Response data:", error.response?.data);

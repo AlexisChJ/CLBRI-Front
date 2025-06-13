@@ -12,7 +12,6 @@ import Buttons from "@/components/Buttons/Buttons";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
 import { TextInput } from "@/components/TextInput/TextInput";
 import { DatePicker } from "@/components/DatePicker/DatePicker";
-import { products } from "@/lib/products";
 import { getBatches} from "@/services/batches/getBatches";
 import { Batch } from "@/types/Batch";
 import { addBatch } from "@/services/batches/addBatch";

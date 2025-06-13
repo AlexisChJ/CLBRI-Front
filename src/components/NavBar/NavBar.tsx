@@ -8,7 +8,6 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 
 const prompt_300 = Prompt({ weight: "300", subsets: ["latin"], preload: true })
-const prompt_500 = Prompt({ weight: "500", subsets: ["latin"], preload: true })
 
 interface NavBarProps {
   title: string;
@@ -20,10 +19,9 @@ interface NavBarProps {
 export const NavBar = ({
   title = "",
   selected = 0,
-  onValueChange = () => {},
   center,
 }: NavBarProps) => {
-  const [current, setCurrent] = useState<number>(selected);
+  const [] = useState<number>(selected);
   const router = useRouter();
 
   const handleLogout = () => {

@@ -17,7 +17,7 @@ export interface BackendTspAssignmentResponse {
 
 export interface BatchTSPDeliveryDTO {
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  optimizedRoute?: any[];
+  optimizedRoute?: unknown[];
   totalDistance?: number;
   deliveryOrder?: Batch[]; 
   executionTime?: number;
@@ -97,7 +97,7 @@ export const solveTSP = async (
 
     return result;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error en TSP:", error);
     console.error("Response status:", error.response?.status);
     console.error("Response data:", error.response?.data);

@@ -24,7 +24,7 @@ const zen_500 = Zen_Maru_Gothic({
 
 export default function LoginPage() {
   const router = useRouter();
-  const { user, loading, role } = useAuth();
+  const { user, loading} = useAuth();
 
   useEffect(() => {
     if (!loading && user) {
@@ -47,7 +47,9 @@ export default function LoginPage() {
 
   const validatePassword = (value: string): boolean => {
     const valid = true;
-    value = value
+    if (value.length < 6) {
+      console.log("La contraseña debe tener al menos 6 caracteres.");
+    }
     // const valid = isValidPassword(value);
     setPasswordError(!valid);
     if (!valid) setError("Credenciales incorrectas.");

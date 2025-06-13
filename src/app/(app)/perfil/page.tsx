@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { NavBar } from "@/components/NavBar/NavBar";
-import { Prompt } from "next/font/google";
 import ProfileContainer from "@/components/ProfileContainer/ProfileContainer";
 import { useRouter } from "next/navigation";
 import Buttons from "@/components/Buttons/Buttons";
@@ -65,7 +64,7 @@ export default function Perfil() {
       console.log("Cambios guardados con éxito");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    catch (err: any) {
+    catch (err: unknown) {
       if (err.response) {
         console.error("Backend error:", err.response.data);
         console.error("Status:", err.response.status);

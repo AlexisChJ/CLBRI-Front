@@ -76,7 +76,7 @@ const TablaAvanzada = ({
   const itemsPerPage = 10
 
   const auth = getAuth();
-  const [firebaseToken, setFirebaseToken] = useState<string>("");
+  const [setFirebaseToken] = useState<string>("");
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   // Improved Firebase token management
@@ -373,7 +373,7 @@ const TablaAvanzada = ({
       }
     } else {
       let start = Math.max(1, currentPage - Math.floor(showPages / 2))
-      let end = Math.min(totalPages, start + showPages - 1)
+      const end = Math.min(totalPages, start + showPages - 1)
       
       if (end - start < showPages - 1) {
         start = Math.max(1, end - showPages + 1)
@@ -565,7 +565,7 @@ const TablaAvanzada = ({
                 <input
                   type={key === 'entrada' || key === 'caducidad' ? 'date' : 'text'}
                   className="w-full border px-3 py-2 rounded"
-                  value={(editValues as any)[key]}
+                  value={(editValues as unknown)[key]}
                   // eslint-disable-next-line react-hooks/exhaustive-deps
                   onChange={(e) =>
                     // eslint-disable-next-line react-hooks/exhaustive-deps

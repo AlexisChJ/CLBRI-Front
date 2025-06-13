@@ -16,7 +16,9 @@ import { getRecentDistributions } from "@/services/dashboard/recentDistributions
 import { BatchLogEntry, Distribution, UserWaste } from "@/types/dashboard/BatchLogs";
 import { FoodLossGraphData, FoodStockGraphData } from "@/types/dashboard/Graph";
 import { GroupFoodLossData, GroupFoodStockData } from "@/utils/graphDataGrouping";
-import { ChartConfig } from "@/components/ui/chart";
+import { getPredictions } from "@/services/dashboard/prediction";
+import { format, parseISO } from "date-fns";
+import { es } from "date-fns/locale";
 
 const redhat_700 = Red_Hat_Display({
   weight: "700",
@@ -29,7 +31,7 @@ const foodLossGraphConfig = {
     label: "Pérdida de alimentos",
     color: "hsl(var(--chart-1))",
   },
-} satisfies ChartConfig
+}
 
 
 const foodStockGraphConfig = {
@@ -37,7 +39,7 @@ const foodStockGraphConfig = {
     label: "Acoplado",
     color: "hsl(var(--chart-1))",
   },
-} satisfies ChartConfig
+}
 
 
 const calculateNetFood = (batchLogsEntry: BatchLogEntry[], monthDate: Date) => {
@@ -70,6 +72,9 @@ export default function Dashboard() {
   const [foodLossGraphData, setFoodLossGraphData] = useState<FoodLossGraphData[]>([]);
   const [foodStockGraphData, setFoodStockGraphData] = useState<FoodStockGraphData[]>([]);
 
+  const [prediccionMerma, setPrediccionMerma] = useState<{ fecha: string, cantidad: string }[]>([]);
+  const [prediccionStock, setPrediccionStock] = useState<{ fecha: string, cantidad: string }[]>([]);
+
   useEffect(() => {
     async function fetchData() { 
       if (!user) return;
@@ -84,13 +89,20 @@ export default function Dashboard() {
       placeholderMonth.setMonth(1);  
       placeholderMonth.setDate(1);
 
-      const batchLogsData = await getBatchLogs({ from: currentDate.toISOString() }, token);
+      const batchLogsData = await getBatchLogs(token);
       batchLogs.current = batchLogsData;
       setNetFoodData(calculateNetFood(batchLogsData, placeholderMonth));
-      const foodLossEntries = await getFoodLossData({ from: thisMonth.toISOString() }, token);
+      const foodLossEntries = await getFoodLossData(token);
       setUserFoodLoss(foodLossEntries);
       const recentDistributions = await getRecentDistributions(token);
       setDistribuciones(recentDistributions);
+      const predictions = await getPredictions(token);
+      setPrediccionMerma(predictions
+                .filter(entry => !Number.isNaN(Number(entry.wasteAmount)))
+                .map(entry => ({ fecha: format(parseISO(entry.datePrediction), 'dd-MMMM-yyyy', { locale: es }), cantidad: entry.wasteAmount.toFixed(2) })));
+      setPrediccionStock(predictions
+                .filter(entry => !Number.isNaN(Number(entry.stockAmount)))
+                .map(entry => ({ fecha: format(parseISO(entry.datePrediction), 'dd-MMMM-yyyy', { locale: es }), cantidad: entry.stockAmount.toFixed(2) })))
       createGraphData();
     }
 
@@ -179,8 +191,36 @@ export default function Dashboard() {
               { label: "Usuario", key: "usuario" },
               { label: "Fecha", key: "fecha", align: "right" },
             ]}
-            datos={distribuciones.map((entry) => ({ usuario: entry.user.name, fecha: new Date(entry.dateTime).toDateString() }))}
+            datos={distribuciones.map((entry) => ({ usuario: entry.user.name, fecha: (entry.dateTime) ? format(parseISO(entry.dateTime), 'dd-MMMM-yyyy', { locale: es }) : "NA" })).reverse()}
           />
+
+          <TablaBasica
+            titulo="Pronóstico de merma"
+            encabezados={[
+              { label: "Fecha", key: "fecha" },
+              { label: "Cantidad", key: "cantidad" }
+            ]}
+            datos={prediccionMerma}
+          />
+          { 
+            (prediccionMerma.length === 0) && (
+              <h3 className="w-full text-center text-gray-700 mb-10">No hay datos para mostrar</h3>
+            )
+          }
+
+          <TablaBasica 
+            titulo="Pronóstico de alimento acoplado"
+            encabezados={[
+              { label: "Fecha", key: "fecha" },
+              { label: "Cantidad", key: "cantidad" }
+            ]}
+            datos={prediccionStock}
+          />
+          { 
+            (prediccionStock.length === 0) && (
+              <h3 className="w-full text-center text-gray-700 mb-10">No hay datos para mostrar</h3>
+            )
+          }
         </div>
       </div>
     </div>

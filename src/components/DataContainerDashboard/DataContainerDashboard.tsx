@@ -12,7 +12,7 @@ const adventPro = Advent_Pro({ subsets: ["latin"], weight: ["400", "700"], prelo
 
 
 const DataContainerDashboard = ({ totalFood, totalWaste }: NetFood) => {
-  const wastedPercent = 100 * (totalFood / (totalFood + totalWaste));
+  const wastedPercent = 100 * (totalWaste / (totalFood + totalWaste));
 
   return (
     <div className="flex gap-4 w-full justify-between my-2">
@@ -21,7 +21,7 @@ const DataContainerDashboard = ({ totalFood, totalWaste }: NetFood) => {
           <CardTitle className={`text-5xl ${adventPro.className}`}>{totalFood}</CardTitle>
         </CardHeader>
         <CardFooter>
-          <p>Alimento Acopiado (kg)</p>
+          <p>Alimento Acopiado (lote)</p>
         </CardFooter>
       </Card>
 
@@ -30,14 +30,14 @@ const DataContainerDashboard = ({ totalFood, totalWaste }: NetFood) => {
           <CardTitle className={`text-5xl ${adventPro.className}`}>{totalWaste}</CardTitle>
         </CardHeader>
         <CardFooter>
-          <p>Alimento Desechado (kg)</p>
+          <p>Alimento Desechado (lote)</p>
         </CardFooter>
       </Card>
 
       <Card className="w-[170px] bg-white text-black border-black-500">
         <CardHeader>
           <CardTitle className={`text-5xl ${adventPro.className}`}>
-            {(!Number.isNaN(wastedPercent)) ? wastedPercent.toFixed(0) + "%" : "NA"}</CardTitle>
+            {(!Number.isNaN(wastedPercent)) ? wastedPercent.toFixed(0) + "%" : "0%"}</CardTitle>
         </CardHeader>
         <CardFooter>
           <p>Alimento Desechado (%)</p>

@@ -1,6 +1,7 @@
 import { Batch } from "@/types/Batch";
 import api from "../api";
 import axios from "axios";
+import { BatchSave } from "@/types/BatchSave";
 
 export interface BatchUpdateStatusDTO {
   id: number;
@@ -19,7 +20,7 @@ export const getBatches = async (firebaseToken: string): Promise<Batch[]> => {
 export const updateBatchReceivedStatus = async (
   updates: BatchUpdateStatusDTO[],
   firebaseToken: string
-): Promise<Batch[]> => {
+): Promise<BatchSave> => {
   const config = {
     headers: { Authorization: `Bearer ${firebaseToken}` }
   };

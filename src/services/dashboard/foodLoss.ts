@@ -1,8 +1,7 @@
 import { UserWaste } from "@/types/dashboard/BatchLogs";
 import api from "../api";
-import { Timespan } from "@/types/dashboard/Timespan";
 
-export const getFoodLossData = async (timespan: Timespan, firebaseToken: string): Promise<UserWaste[]> => {
+export const getFoodLossData = async (firebaseToken: string): Promise<UserWaste[]> => {
   const config = {
     headers: {
       Authorization: `Bearer ${firebaseToken}`,
@@ -10,6 +9,6 @@ export const getFoodLossData = async (timespan: Timespan, firebaseToken: string)
     }
   };
 
-  const { data } = await api.post("/dashboard/users/food_loss", timespan, config);
+  const { data } = await api.get("/dashboard/users/food_loss", config);
   return data;
 };

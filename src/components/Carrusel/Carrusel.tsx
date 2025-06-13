@@ -106,7 +106,7 @@ const Carrusel = ({ data = [], onValueChange = () => {} }: CarruselProps) => {
                 <DateBadge
                   data_index={index}
                   variant={index === current - 1 ? "selected" : "unselected"}
-                  onClick={moveIndex}
+                  onClick={(e) => moveIndex(e)}
                 >
                   {data}
                 </DateBadge>

@@ -70,6 +70,7 @@ const handleSaveBatches = async () => {
     return;
   }
   try {
+    if (!user) return;
     const token = await user.getIdToken();
 
     const updatesPayload: BatchUpdateStatusDTO[] = batches.map(batch => ({
@@ -148,7 +149,7 @@ const handleSaveBatches = async () => {
         filterClasificacion={filterClasificacion}
         filterPrioridad={filterPrioridad}
         batches={batches}
-        onBatchStatusChange={handleIndividualBatchStatusChange}
+        onBatchStatusChange={() => {}}
         onBatchesStatusReady={handleBatchesStatusReady}
       />
     </div>

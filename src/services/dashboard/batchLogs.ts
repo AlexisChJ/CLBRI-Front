@@ -1,8 +1,7 @@
-import { Timespan } from "@/types/dashboard/Timespan";
 import api from "../api";
 import { BatchLogEntry } from "@/types/dashboard/BatchLogs";
 
-export const getBatchLogs = async (timespan: Timespan, firebaseToken: string): Promise<BatchLogEntry[]> => {
+export const getBatchLogs = async (firebaseToken: string): Promise<BatchLogEntry[]> => {
   const config = {
     headers: {
       Authorization: `Bearer ${firebaseToken}`,
@@ -10,6 +9,6 @@ export const getBatchLogs = async (timespan: Timespan, firebaseToken: string): P
     }
   };
 
-  const { data } = await api.post("/dashboard/batch_logs", timespan, config);
+  const { data } = await api.get("/dashboard/batch_logs", config);
   return data;
 };

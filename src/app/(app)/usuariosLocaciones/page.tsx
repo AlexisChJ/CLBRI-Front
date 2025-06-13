@@ -9,10 +9,7 @@ import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
 import { Prompt, Zen_Maru_Gothic } from "next/font/google";
 import { getLatLngFromAddress } from "@/lib/geocode";
 import { useAuth } from "@/providers/AuthProvider";
-import { UserLocation } from "@/types/UserLocation";
-import { getUserLocations } from "@/services/admin/getUserLocations";
 import { TokenInvitationService } from "@/services/admin/TokenInvitation";
-import { User } from "firebase/auth";
 import { useAppSession } from "@/providers/AppSessionProvider";
 
 const prompt = Prompt({ weight: ["500"], subsets: ["latin"], preload: true });
@@ -24,7 +21,7 @@ const zen_700 = Zen_Maru_Gothic({
 
 export default function AdministerUsers() {
   const { user } = useAuth();
-  const { notifications, fetchedUserLocations } = useAppSession();
+  const { fetchedUserLocations } = useAppSession();
   const [tokenUser, setTokenUser] = useState<string | null>(null);
 
   const [usuarios, setUsuarios] = useState<

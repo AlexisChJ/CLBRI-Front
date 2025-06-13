@@ -217,7 +217,7 @@ export default function VistaMapa() {
       try {
         const token = await user.getIdToken();
         
-        const batchesData: Batch[] = await getAvailableBatches(token);
+        const batchesData: Batch[] = await getBatches(token);
         setBatches(batchesData);
         const mappedRows = batchesData.map((batch) => ({
           id: typeof batch.id === "number" ? batch.id : Number(batch.id), 

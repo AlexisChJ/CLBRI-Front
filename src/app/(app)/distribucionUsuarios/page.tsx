@@ -53,6 +53,7 @@ export default function VistaMapa() {
 
   const [rows, setRows] = useState<
     {
+      id: number;
       nombre: string;
       clasificacion: string;
       entrada: string;
@@ -213,6 +214,7 @@ export default function VistaMapa() {
         const batchesData: Batch[] = await getBatches(token);
         setBatches(batchesData);
         const mappedRows = batchesData.map((batch) => ({
+          id: typeof batch.id === "number" ? batch.id : Number(batch.id), 
           nombre: batch.description,
           clasificacion: batch.classification?.name || "Sin clasificación",
           entrada: batch.entryDate,
@@ -436,7 +438,7 @@ export default function VistaMapa() {
                           <select
                             value={productDistributions[batch.id] || ""}
                             onChange={(e) =>
-                              handleLocationAssignment(batch.id, e.target.value)
+                              handleLocationAssignment(String(batch.id), e.target.value)
                             }
                             className="w-full px-5 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-3 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white text-sm font-medium transition-all duration-200 hover:border-gray-400"
                           >

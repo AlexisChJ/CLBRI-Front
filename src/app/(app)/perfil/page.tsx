@@ -65,13 +65,28 @@ export default function Perfil() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     catch (err: unknown) {
-      if (err.response) {
-        console.error("Backend error:", err.response.data);
-        console.error("Status:", err.response.status);
-      } else if (err.request) {
-        console.error("No response received:", err.request);
+      if (
+        typeof err === "object" &&
+        err !== null &&
+        "response" in err &&
+        typeof (err as any).response === "object"
+      ) {
+        console.error("Backend error:", (err as any).response.data);
+        console.error("Status:", (err as any).response.status);
+      } else if (
+        typeof err === "object" &&
+        err !== null &&
+        "request" in err
+      ) {
+        console.error("No response received:", (err as any).request);
+      } else if (
+        typeof err === "object" &&
+        err !== null &&
+        "message" in err
+      ) {
+        console.error("Error en la petición:", (err as any).message);
       } else {
-        console.error("Error en la petición:", err.message);
+        console.error("Unknown error:", err);
       }
     }
   };
@@ -89,7 +104,6 @@ export default function Perfil() {
     <div className="flex flex-1 flex-col p-5 gap-5 h-full overflow-y-auto">
       <NavBar
         title="Perfil"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
         center={""}

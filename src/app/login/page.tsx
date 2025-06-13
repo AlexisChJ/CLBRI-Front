@@ -5,7 +5,7 @@ import { BlueLogo } from "@/components/LogoAzul/logoAzul";
 import { PasswordInput } from "@/components/PasswordInput/PasswordInput";
 import { SocialMedia } from "@/components/SocialMedia/SocialMedia";
 import { TextInput } from "@/components/TextInput/TextInput";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Zen_Maru_Gothic } from "next/font/google";
@@ -110,14 +110,14 @@ export default function LoginPage() {
             value={email}
             placeholder="Correo"
             hasError={emailError}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value)}
           />
           <PasswordInput
             id="password"
             value={password}
             placeholder="Contraseña"
             hasError={passwordError}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)}
           />
 
           {error && <p className="text-red-500">{error}</p>}

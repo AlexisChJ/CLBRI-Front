@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { NavBar } from "@/components/NavBar/NavBar";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
 import TablaAvanzada from "@/components/TablaAvanzada/TablaAvanzada";
@@ -125,7 +125,6 @@ export default function SitioTabla() {
     <div className="flex flex-col p-5 gap-5 overflow-y-auto">
       <NavBar
         title="Inventario"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
         center={
@@ -174,7 +173,7 @@ export default function SitioTabla() {
           <TextInput
             placeholder="Nombre del producto"
             value={agregarDescripcion}
-            onChange={(e) => setAgregarDescripcion(e.target.value)}
+            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setAgregarDescripcion(e.target.value)}
           />
 
           {/* Clasificación */}

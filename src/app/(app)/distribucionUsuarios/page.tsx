@@ -10,7 +10,6 @@ import { useAuth } from "@/providers/AuthProvider";
 import PopUpWindow from "@/components/PopUpWindow/PopupWindow";
 import { motion } from "framer-motion";
 import { Download, ChevronDown, Package } from "lucide-react";
-import { getBatches } from "@/services/batches/getBatches";
 import { solveTSP} from "@/services/batches/tspService";
 import { sendManualDistribution } from "@/services/batches/manualDistributionService";
 import { BatchTSPDeliveryDTO } from "@/services/batches/BatchTSPDeliveryDTO";
@@ -151,7 +150,7 @@ export default function VistaMapa() {
       console.log("Resultado de distribución manual (Órdenes creadas):", resultOrders);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error al ejecutar distribución manual:", error);
       setManualDistributionError(
         typeof error === "object" && error !== null && "message" in error

@@ -170,7 +170,6 @@ export default function AdministerUsers() {
     <div className="p-5 flex flex-col gap-5 overflow-y-auto h-full">
       <NavBar
         title="Locaciones"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
       />

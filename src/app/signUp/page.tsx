@@ -275,7 +275,7 @@ const SignUpPage = () => {
           value={email}
           placeholder="Correo"
           hasError={emailError}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setEmail(e.target.value)}
         />
         <div className="relative group w-full">
           <PasswordInput
@@ -283,7 +283,7 @@ const SignUpPage = () => {
             value={password}
             placeholder="Contraseña"
             hasError={passwordError}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPassword(e.target.value)}
           />
           <div className="absolute left-0 -bottom-6 w-max bg-gray-700 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             Mínimo 8 caracteres, una mayúscula, una minúscula, un número y un
@@ -294,7 +294,7 @@ const SignUpPage = () => {
           value={confirmPassword}
           placeholder="Confirmar contraseña"
           hasError={confirmPasswordError}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setConfirmPassword(e.target.value)}
         />
 
         <div className="flex gap-4">
@@ -302,13 +302,13 @@ const SignUpPage = () => {
             value={name}
             placeholder="Nombre"
             hasError={nameError}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setName(e.target.value)}
           />
           <TextInput
             value={lastname}
             placeholder="Apellidos"
             hasError={lastnameError}
-            onChange={(e) => setLastname(e.target.value)}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setLastname(e.target.value)}
           />
         </div>
 
@@ -316,7 +316,7 @@ const SignUpPage = () => {
           value={address}
           placeholder="Dirección"
           hasError={addressError}
-          onChange={(e) => setAddress(e.target.value)}
+          onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setAddress(e.target.value)}
         />
 
         <div className="flex gap-4">
@@ -324,13 +324,13 @@ const SignUpPage = () => {
             value={city}
             placeholder="Ciudad"
             hasError={cityError}
-            onChange={(e) => setCity(e.target.value)}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setCity(e.target.value)}
           />
           <TextInput
             value={state}
             placeholder="Estado"
             hasError={stateError}
-            onChange={(e) => setState(e.target.value)}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setState(e.target.value)}
           />
         </div>
 
@@ -339,7 +339,7 @@ const SignUpPage = () => {
             value={postalCode}
             placeholder="Código Postal"
             hasError={postalCodeError}
-            onChange={(e) => setPostalCode(e.target.value)}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPostalCode(e.target.value)}
           />
           <div data-testid="country-combobox">
             <CountryCombobox onCountryChange={onCountryChange} />
@@ -351,13 +351,13 @@ const SignUpPage = () => {
             value={phone}
             placeholder="Teléfono"
             hasError={phoneError}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPhone(e.target.value)}
           />
           <TextInput
             value={workplace}
             placeholder="Workplace"
             hasError={workplaceError}
-            onChange={(e) => setWorkplace(e.target.value)}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setWorkplace(e.target.value)}
           />
         </div>
 
@@ -367,7 +367,7 @@ const SignUpPage = () => {
             value={adminToken}
             placeholder="Token de Administrador"
             hasError={adminTokenError}
-            onChange={(e) => setAdminToken(e.target.value)}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setAdminToken(e.target.value)}
             disabled={isAdmin}
           />
         </div>

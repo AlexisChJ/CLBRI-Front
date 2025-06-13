@@ -125,7 +125,6 @@ export default function Dashboard() {
     >
       <NavBar
         title="Dashboard"
-        opts={[]}
         selected={0}
         onValueChange={() => {}}
       />
